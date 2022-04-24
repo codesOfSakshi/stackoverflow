@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    _id:{
+    tagId:{
         type: String,
         required: true,
+        unique:true
     },
     createdAt:{
         type:String,
@@ -20,9 +21,10 @@ const userSchema = new mongoose.Schema({
     name:{
         type:String,
         required: true,
+        unique:true
     },
     numQuestions:{
-        type:String,
+        type:Number,
         required: true,
     }
 });
