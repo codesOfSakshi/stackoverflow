@@ -4,7 +4,7 @@ const QuestionModel = require('../models/question')
 // Get All Tags
 exports.getAllTags = async (result) => {
     try{
-        const tags = await TagModel.find();
+        const tags = await TagModel.find().sort({numQuestions: -1});
         console.log(tags);
 
         result(null, tags);
@@ -40,9 +40,18 @@ exports.updateNumQuestions = async(tagId, result) => {
 
     try{
         await TagModel.findOneAndUpdate({tagId: tagId} , 
-            {$inc: {'numQuestions': 1}}, {returnOriginal:false});
+            {
+                $inc: { 'numQuestions': 1, 
+                        'numQuestionsToday': 1,
+                        'numQuestionsThisWeek': 1 
+                },
+                $set:{
+                    updatedAt:Date.now()
+                }
+            },  
+            {returnOriginal:false});
 
-        result(null, {status: true, message: "Num of Questions updated"});
+        result(null, {status: true, message: "Num of Questions updated for: "+tagId});
     }
     catch(err){
         result(err);
@@ -55,7 +64,7 @@ exports.searchTags = async(name, result) => {
     
     console.log("Searching for tags named: ", name)
     try{
-        const query = await TagModel.find({'name': {'$regex': name, '$options': 'i'}});
+        const query = await TagModel.find({'name': {'$regex': name, '$options': 'i'}}).sort({numQuestions: -1});
 
         console.log(query);
 
@@ -76,15 +85,16 @@ exports.searchTags = async(name, result) => {
 exports.createTag = async(reqBody, result) => {
 
     const tagId = reqBody.tagId;
-    const createdAt = reqBody.createdAt;
-    const updatedAt = reqBody.updatedAt;
     const description = reqBody.description;
     const name = reqBody.name;
-    const numQuestions = reqBody.numQuestions;
+    const numQuestions = 0;
+    const numQuestionsToday = 0;
+    const numQuestionsThisWeek = 0;
+
 
     console.log(reqBody);
     try{
-        await TagModel.create({tagId, createdAt, updatedAt, description, name, numQuestions});
+        await TagModel.create({tagId, description, name, numQuestions, numQuestionsToday, numQuestionsThisWeek});
 
         result(null, {status: true, message:"Tag created: ", name});
     }
