@@ -1,10 +1,17 @@
-
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+// import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
 
 function App() {
   return (
     <div className="App">
-    <h1>React App</h1>
+      <div className="App">
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact element={Error} />
+        </Routes>
+      </div>
     </div>
   );
 }
