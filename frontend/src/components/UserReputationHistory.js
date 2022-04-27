@@ -1,7 +1,7 @@
 import React from 'react';
 import "../styles/reputation.css";
 
-const Reputation = () => {
+const UserReputationHistory = () => {
   return (
     <div className="reputation-container">
         <div className="reputation-title">upvote</div>
@@ -11,4 +11,4 @@ const Reputation = () => {
   )
 }
 
-export default Reputation
+export default UserReputationHistory

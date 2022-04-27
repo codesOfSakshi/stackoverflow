@@ -1,17 +1,17 @@
 import React from 'react';
 import {Nav} from 'react-bootstrap';
-import Reputation from './Reputation.js';
+import UserReputationHistory from './UserReputationHistory.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import "../styles/reputationlist.css";
 
-const ReputationList = () => {
+const UserReputationList = () => {
   return (
       <div>
         <div className="usertaglist-count">56,145 Reputation</div>
         <div className="usertaglist-tab">
             <Nav variant="tabs" defaultActiveKey="/score">
                 <Nav.Item>
-                    <Nav.Link href="/score">Post</Nav.Link>
+                    <Nav.Link eventKey="/score">Post</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link eventKey="/time">Time</Nav.Link>
@@ -21,9 +21,9 @@ const ReputationList = () => {
                 </Nav.Item>
             </Nav>
         </div>
-        <Reputation/>
+        <UserReputationHistory/>
       </div>
   )
 }
 
-export default ReputationList
+export default UserReputationList

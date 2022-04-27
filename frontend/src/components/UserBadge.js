@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/badge.css';
 
-const Badge = () => {
+const UserBadge = () => {
   return (
     <div className="badge-container">
         <div className="badge-title">
@@ -13,4 +13,4 @@ const Badge = () => {
   )
 }
 
-export default Badge
+export default UserBadge

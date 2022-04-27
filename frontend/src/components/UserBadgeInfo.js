@@ -1,8 +1,8 @@
 import React from 'react';
-import Badge from './Badge.js';
+import UserBadge from './UserBadge.js';
 import '../styles/badgeinfo.css';
 
-const BadgeInfo = () => {
+const UserBadgeInfo = () => {
       
   return (
     <div className="badgeinfo-container">
@@ -15,9 +15,9 @@ const BadgeInfo = () => {
                 <div className="badgeinfo-item-value">8</div>
                 <div className="badgeinfo-item-heading">gold badges</div>
           </div>
-          <Badge></Badge>
+          <UserBadge/>
       </div>
   )
 }
 
-export default BadgeInfo
+export default UserBadgeInfo

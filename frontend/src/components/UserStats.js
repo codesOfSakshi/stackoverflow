@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/stats.css';
 
-const Stats = () => {
+const UserStats = () => {
 
   return (
       <div className="stats-container">
@@ -25,4 +25,4 @@ const Stats = () => {
   )
 }
 
-export default Stats
+export default UserStats

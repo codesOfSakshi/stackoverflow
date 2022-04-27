@@ -12,7 +12,7 @@ const UserTagList = () => {
             <div className="usertaglist-tab">
                 <Nav variant="tabs" defaultActiveKey="/score">
                     <Nav.Item>
-                        <Nav.Link href="/score">Score</Nav.Link>
+                        <Nav.Link eventKey="/score">Score</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link eventKey="/name">Name</Nav.Link>
