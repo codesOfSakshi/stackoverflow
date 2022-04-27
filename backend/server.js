@@ -1,11 +1,11 @@
 const express = require("express");
+const cors = require('cors');
+const mongoose = require('mongoose');
+const config = require("config");
+const user = require("./controllers/user");
+
 const app = express();
 
-app.get("/",(req,res)=>{
-    res.send("API is running!")
-});
-
-var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
 mongoose.connect(
@@ -16,11 +16,17 @@ mongoose.connect(
 )
 .then(
     () => {
-        app.listen(5000,console.log("Server Running on port 5000"));
+        app.listen(config.get("BACKEND_SERVER_PORT"), console.log(`Server running on port ${config.get("BACKEND_SERVER_PORT")}`))
+
     },
     (err) => {
         console.log("Mongoose is Not Connected"+ err);
     }
 );
 
-app.listen(5000, console.log("Server running on port 5000"))
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/user',user);
+
+
