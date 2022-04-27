@@ -2,7 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
-    
+    questionTitle: {type:String,required: true},
+    markedApproved: {type:String,required: true},
+    questionTags: {type:String,required: true},
+    numVotesDate: {type:String,required: true},
+    timePosting: {type:String,required: true},
+    user: { type: Schema.Types.ObjectId, ref: 'user' },
 },
 {
     versionKey: false,
@@ -18,3 +23,6 @@ answerSchema.virtual('id').get(function() {
 
 const answerModel = mongoose.model('answer', answerSchema);
 module.exports = answerModel;
+
+
+

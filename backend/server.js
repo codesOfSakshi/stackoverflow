@@ -11,7 +11,9 @@ var options = {
     useUnifiedTopology: true
 };
 
-mongoose.connect(config.get("MONGODB_SERVER")+config.get("MONGODB_DB"), options, (err, res) => {
+const mongo_url = "mongodb+srv://root:atlasalpha098@cluster0.g9k9g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+mongoose.connect(mongo_url, options, (err, res) => {
     if (err) {
         console.log(err);
         console.log(`MongoDB Connection Failed`);
@@ -19,6 +21,7 @@ mongoose.connect(config.get("MONGODB_SERVER")+config.get("MONGODB_DB"), options,
         console.log(`MongoDB Connected`);
     }
 });
+
 
 app.use(cors());
 app.use(express.json());
