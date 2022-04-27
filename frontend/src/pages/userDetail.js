@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import ImageUploadCard from '../components/ImageUpload';
+import ImageUploadCard from '../components/user/ImageUpload';
 import CardMedia from "@mui/material/CardMedia";
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 import UserTag from './UserTag.js';
 import {Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import "../styles/usertaglist.css";
+import "../../styles/usertaglist.css";
 
 const UserTagList = () => {
   return (

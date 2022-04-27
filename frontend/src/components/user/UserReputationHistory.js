@@ -1,5 +1,5 @@
 import React from 'react';
-import "../styles/reputation.css";
+import "../../styles/reputation.css";
 
 const UserReputationHistory = () => {
   return (

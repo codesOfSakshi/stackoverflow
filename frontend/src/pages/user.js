@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
-import Profile from '../components/ProfileView'
-import ProfileTab from '../components/ProfileTab'
-import ActivityTab from '../components/ActivityTab'
+import Profile from '../components/user/ProfileView'
+import ProfileTab from '../components/user/ProfileTab'
+import ActivityTab from '../components/user/ActivityTab'
 
 
 

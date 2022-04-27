@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/stats.css';
+import '../../styles/stats.css';
 
 const UserStats = () => {
 

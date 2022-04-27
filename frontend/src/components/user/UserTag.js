@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import "../styles/usertag.css";
+import "../../styles/usertag.css";
 
 const UserTag = () => {
   return (

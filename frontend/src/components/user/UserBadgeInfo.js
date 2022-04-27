@@ -1,6 +1,6 @@
 import React from 'react';
 import UserBadge from './UserBadge.js';
-import '../styles/badgeinfo.css';
+import '../../styles/badgeinfo.css';
 
 const UserBadgeInfo = () => {
       

@@ -2,7 +2,7 @@ import React from 'react';
 import {Nav} from 'react-bootstrap';
 import UserReputationHistory from './UserReputationHistory.js';
 import 'bootstrap/dist/css/bootstrap.css';
-import "../styles/reputationlist.css";
+import "../../styles/reputationlist.css";
 
 const UserReputationList = () => {
   return (
