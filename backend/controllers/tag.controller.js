@@ -29,12 +29,12 @@ exports.getTaggedQuestions = (req, res) => {
             console.log(err);
             res.status(400).send(err);
         }
-        else if(result == null){
-            console.log("No questions tagged with: ", req.tagId)
+        else if(result.status == false){
+            console.log("No questions tagged with: ", req.params.tagId)
             res.status(404).send(result);
         }
         else{
-            console.log("All Tags:");
+            console.log("Tagged Questions for: ", req.params.tagId);
             console.log(result);
             res.status(200).send(result);
         }

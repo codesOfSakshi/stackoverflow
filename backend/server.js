@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Tag Routes
 const tagRoutes = require('./routes/tag.route');
-app.use('/api/', tagRoutes);
+app.use('/api/tags/', tagRoutes);
 
 
 

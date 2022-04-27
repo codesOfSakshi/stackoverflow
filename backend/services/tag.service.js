@@ -18,7 +18,9 @@ exports.getAllTags = async (result) => {
 // Get All questions per tag
 exports.getTaggedQuestions = async (tagId, result) => {
     try{
-        const questions = await QuestionModel.find({'tags.tagId' : tagId});
+
+        console.log("HERE", tagId)
+        const questions = await QuestionModel.find({'tags' : tagId});
 
         console.log(questions);
 
@@ -26,7 +28,7 @@ exports.getTaggedQuestions = async (tagId, result) => {
             result(null, questions);
         }
         else{
-            result(null , {status:false});
+            result(null , {status:false , message:"No Questions for this tag"});
         }
     }
     catch(err){
