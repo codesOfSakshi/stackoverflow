@@ -1,5 +1,5 @@
 import React from 'react'
-import Profile from '../component/ProfileView'
+import Profile from '../components/ProfileView'
 
 function user() {
     return (
