@@ -1,21 +1,14 @@
 
 import './App.css';
-import Stats from './components/Stats';
-import BadgeInfo from './components/BadgeInfo';
-import UserTagList from './components/UserTagList';
-import ReputationList from './components/ReputationList';
+import {Route, Routes} from 'react-router-dom';
+import User from './pages/user.js';
+
 
 function App() {
   return (
-    <div>
-      <Stats/>
-      <br/>
-      <BadgeInfo/>
-      <br/>
-      <UserTagList/>
-      <br/>
-      <ReputationList/>
-    </div>
+    <Routes>
+        <Route exact path="/user/:userId" element={<User/>} />
+    </Routes>
   );
 }
 
