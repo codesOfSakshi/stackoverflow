@@ -1,0 +1,6 @@
+{
+    "constants": {
+        "questionAccepted" : "approved",
+        "questionRejected" : "rejected"
+    }
+}

@@ -1,26 +1,32 @@
 const express = require("express");
-const app = express();
+const cors = require('cors');
+const mongoose = require('mongoose');
+const admin = require("./routes/admin");
 
-app.get("/",(req,res)=>{
-    res.send("API is running!")
-});
 
-var mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+
+var options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
 
 mongoose.connect(
     "mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority",
-    {
-        maxpoolSize: 10,
-    }
+    options
 )
 .then(
     () => {
-        app.listen(5000,console.log("Server Running on port 5000"));
+        console.log("Connected to MongoDB");
     },
     (err) => {
         console.log("Mongoose is Not Connected"+ err);
     }
 );
 
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 app.listen(5000, console.log("Server running on port 5000"))
+
+app.use("/api/admin", admin);
