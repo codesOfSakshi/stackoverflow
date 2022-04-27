@@ -1,15 +1,22 @@
-/* --------------------------------- imports -------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                  immports                                  */
+/* -------------------------------------------------------------------------- */
+
+/* ------------------------------ import paths ------------------------------ */
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-// require("./config/passport-config");
+
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
-/* ----------------------------- start of config ---------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                               start of config                              */
+/* -------------------------------------------------------------------------- */
 dotenv.config();
 
 const PORT = process.env.PORT || 3001;
@@ -29,7 +36,10 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-/* -------------------------- connecting to mongoDB ------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                            connecting to mongoDB                           */
+/* -------------------------------------------------------------------------- */
+
 // const mongoURI =
 //   "mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority";
 // const mongoURI =
@@ -74,7 +84,12 @@ mongoose.connection.on("disconnected", () => {
   );
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                    APIs                                    */
+/* -------------------------------------------------------------------------- */
+
 /* ---------------------- sample api to test the server --------------------- */
 app.use("/", testAPI);
+
 /* ------------------------------- actual APIs ------------------------------ */
 app.use("/user", userRoute);
