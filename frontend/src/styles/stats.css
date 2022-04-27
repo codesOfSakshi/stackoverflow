@@ -1,0 +1,65 @@
+
+
+.stats-container{
+    display:grid;
+    width:250px;
+    height:150px;
+    border:1px solid #afacac;
+    border-radius:5px;
+    padding:10px;
+    grid-template-columns: [first] 1fr [second] 1fr [third];
+    grid-template-rows: [first] 1fr [second] 1fr [third];
+    grid-template-areas: "reputation-item reached-item" "answers-item questions-item";
+}
+
+
+.stats-item-reputation-container {
+    grid-area:reputation-item;
+    justify-self: start;
+    align-self: center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.stats-item-reached-container {
+    grid-area: reached-item;
+    justify-self: start;
+    align-self: center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.stats-item-answers-container {
+    grid-area: answers-item;
+    justify-self: start;
+    align-self: center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.stats-item-questions-container {
+    grid-area: questions-item;
+    justify-self: start;
+    align-self: center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.stats-item-heading{
+    color: rgb(152, 152, 152);
+}
+
+.stats-item-value {
+}
