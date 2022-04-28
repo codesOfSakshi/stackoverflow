@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const reputationActionSchema = new mongoose.Schema({
     _id:{
         type: String,
         required: true,
@@ -23,4 +23,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("reputationAction", userSchema);
+
+const reputationActionModel = mongoose.model('reputationaction', reputationActionSchema);
+module.exports = reputationActionModel;
