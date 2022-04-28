@@ -1,0 +1,26 @@
+{
+  "name": "stackoverflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm runserver\" \"npm run client\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codesOfSakshi/stackoverflow.git"
+  },
+  "author": "Sakshi Mishra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codesOfSakshi/stackoverflow/issues"
+  },
+  "homepage": "https://github.com/codesOfSakshi/stackoverflow#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10"
+  }
+}
