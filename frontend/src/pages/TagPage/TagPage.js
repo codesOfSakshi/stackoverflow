@@ -1,4 +1,5 @@
 import React, {useEffect, useState, Fragment} from 'react';
+import TaggedQuestions from '../../components/Tags/TaggedQuestions';
 // import {useLocation} from 'react-router';
 import axios from 'axios';
 import './TagPage.scss'
@@ -14,7 +15,7 @@ const TagPage = () => {
         async function getQuestions(){
      
             //location.state.tag
-            let response = axios.get("http://localhost:5000/api/tags/questionbytag/" + "java" );
+            let response = axios.get("http://localhost:5000/api/tags/questionbytag/" + "python" );
             response = await response;
             
             setTaggedQuestions(response.data)
@@ -28,7 +29,7 @@ const TagPage = () => {
 
     return (
         <Fragment>
-            <div id='mainbar' className='questions-page fc-black-800'>
+            <div id='mainbar' class='questions-page fc-black-800 ' >
 
                 <div class="s-page-title">
                     <div class="s-page-title--text">
@@ -48,12 +49,29 @@ const TagPage = () => {
                         {count} Questions
                     </div>
                     <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
-                        Buttons here
+                        //////Buttons here//////
                     </div>
                 </div>
-                <div className='questions'>
+
+                {count > 0 ? 
+                    <div id="questions" class=" flush-left">
+
+                        {/* {tags.map((tag, index) => (
+                            <TagPanel key={index} tag={tag} />
+                        ))} */}
+
+                        {taggedQuestions.map((question, index) => ( 
+                            <TaggedQuestions key={index} question={question}/>
+                        ))}
+
+                    </div>
+            
+                :
                 
-                </div>
+                
+                "No Tagged questions"}
+
+                
             </div>
     </Fragment>
     )
