@@ -142,18 +142,12 @@ router.post("/edit-partial/:userId",  async (req, res) => {
     const response = {};
     try{
         
-        const successData = await User.editUser(req);
+        const successData =  User.editUserPartially(req);
         console.log("successData", successData)
-        if(successData){
-            response.success = true;
-            response.data = successData;
-            response.status = 200;
-            res.status(200).send(response);
-        }else{
-            response.success = false;
-            response.status = 400;
-            res.status(400).send(response);
-        }
+        response.success = true;
+        response.data = successData;
+        response.status = 200;
+        res.status(200).send(response);
     }catch(e){
         console.log(e);
         response.success = false;
