@@ -26,6 +26,7 @@ function SignIn() {
           setMessage("");
           const token = response.data.token;
           window.localStorage.setItem("token", token);
+          console.log("signed in"); // will be replaced by navigating to a new page
         }
       })
       .catch((error) => {

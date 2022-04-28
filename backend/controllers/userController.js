@@ -1,4 +1,5 @@
-const USERSERVICE = require("../services/userService.js");
+// const User = require("../services/User.js");
+const { User } = require("../services/user.js");
 const ENCRYPT = require("../services/encrypt");
 const jwt = require("jsonwebtoken");
 
@@ -20,7 +21,7 @@ module.exports = class UserController {
       returnMessage.message = "All the fields are required";
       return resp.status(404).send(returnMessage);
     }
-    const userObj = await USERSERVICE.getUser(data);
+    const userObj = await User.getUser(data);
 
     /* ------------ if the return object is null, there is some error ----------- */
     if (!userObj) {
@@ -84,7 +85,7 @@ module.exports = class UserController {
       return resp.status(returnMessage.status).send(returnMessage);
     }
 
-    const userObj = await USERSERVICE.getUser(data);
+    const userObj = await User.getUser(data);
 
     /* ------------ if the return object is null, there is some error ----------- */
     if (!userObj) {
@@ -105,7 +106,7 @@ module.exports = class UserController {
     const encryptedPassword = await ENCRYPT.cryptPassword(data.password);
     data.password = encryptedPassword;
 
-    let user = await USERSERVICE.createUser(data);
+    let user = await User.createUser(data);
 
     /* ---- if the user is null, there was some error in the service function --- */
     if (!user) {
