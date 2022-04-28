@@ -2,7 +2,6 @@ import React, {useEffect, useState, Fragment} from 'react';
 import TaggedQuestions from '../../components/Tags/TaggedQuestions';
 // import {useLocation} from 'react-router';
 import axios from 'axios';
-import './TagPage.scss'
 
 const TagPage = () => {
 
