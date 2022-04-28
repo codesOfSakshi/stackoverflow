@@ -145,6 +145,35 @@ class User {
     }
   };
 
+    static editUserPartially =  (req)=>{
+        try{
+             let user =  UserModel.findOneAndUpdate(
+                mongoose.Types.ObjectId(req.params.userId), // query
+                {
+                    $set: {
+                        "location": req.body.location,
+                        "name": req.body.name,
+                        "title": req.body.title
+                    }
+                }, // replacement
+                {new:true}, // options
+                function (err, object) {
+                    if (err) {
+                        console.warn(err.message);  // returns error if no matching object found
+                    } else {
+                        console.dir("data", object);
+                        return object;
+                    }
+                }
+                );
+
+        }catch(err){
+            console.log(err);
+            throw new Error("Error while updating user details");
+        }
+    }
+
+
   static answerActivityDetailForUser = async (req) => {
     try {
       const userId = req.params.userId;
