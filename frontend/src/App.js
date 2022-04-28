@@ -12,6 +12,8 @@ function App() {
       <Route exact path="/signin" element={<SignIn />} />
       <Route exact path="/signup" element={<SignUp />} />
       <Route exact element={Error} />
+        <Route exact path="/user/:userId" element={<User/>} />
+        <Route exact path="/user/edit/:userId" element={<UserDetail/>} />
     </Routes>
   );
 }
