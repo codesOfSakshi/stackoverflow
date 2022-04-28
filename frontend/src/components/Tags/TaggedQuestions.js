@@ -5,7 +5,6 @@ const TaggedQuestions = (props) => {
     return (
         <div>
             
-
             <div id="question-summary-72023260" class="s-post-summary js-post-summary" data-post-id="72023260" data-post-type-id="1">
                 <div class="s-post-summary--stats js-post-summary-stats">
                     <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized" title="Score of 0">
@@ -32,9 +31,25 @@ const TaggedQuestions = (props) => {
                     </div>
                     <div class="s-post-summary--meta">
                         <div class="s-post-summary--meta-tags tags js-tags t-javascript t-css t-wordpress">
-                            <a href="/questions/tagged/javascript" class="post-tag flex--item mt0 js-tagname-javascript" title="show questions tagged 'javascript'" rel="tag">javascript</a> <a href="/questions/tagged/css" class="post-tag flex--item mt0 js-tagname-css" title="show questions tagged 'css'" rel="tag">css</a> <a href="/questions/tagged/wordpress" class="post-tag flex--item mt0 js-tagname-wordpress" title="" rel="tag">wordpress</a> 
+
+                            {props.question.tags.map((tag, index) => ( 
+                                <a href="/questions/tagged/<TagName>" class="flex--item s-tag" title="show questions tagged <TagName>" rel="tag">
+                                    {tag}
+                                </a>
+                            ))}
+                            {/* <a href="/questions/tagged/javascript" class="post-tag flex--item mt0 js-tagname-javascript" title="show questions tagged 'javascript'" rel="tag">
+                                javascript
+                            </a>
+                            
+                            <a href="/questions/tagged/css" class="post-tag flex--item mt0 js-tagname-css" title="show questions tagged 'css'" rel="tag">
+                                css
+                            </a>
+                            
+                            <a href="/questions/tagged/wordpress" class="post-tag flex--item mt0 js-tagname-wordpress" title="" rel="tag">
+                                wordpress
+                            </a>  */}
                         </div>
-                        
+
                         <div class="s-user-card s-user-card__minimal">
                 
                             {/* <a href="/users/16834391/arvydas" class="s-avatar s-avatar__16 s-user-card--avatar">        
@@ -45,7 +60,7 @@ const TaggedQuestions = (props) => {
                         
                             <div class="s-user-card--info">
                                 <div class="s-user-card--link d-flex gs4">
-                                    <a href="/users/16834391/arvydas" class="flex--item">Arvydas</a>
+                                    <a href="/users/16834391/arvydas" class="flex--item">{props.question.userId}</a>
                                 </div>
                             
                                 {/* <ul class="s-user-card--awards">
@@ -62,8 +77,6 @@ const TaggedQuestions = (props) => {
                     </div>
                 </div>
             </div>
-
-
 
         </div>
     )

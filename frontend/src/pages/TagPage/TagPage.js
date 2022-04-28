@@ -14,7 +14,7 @@ const TagPage = () => {
         async function getQuestions(){
      
             //location.state.tag
-            let response = axios.get("http://localhost:5000/api/tags/questionbytag/" + "python" );
+            let response = axios.get("http://localhost:5000/api/tags/questionbytag/" + "java" );
             response = await response;
             
             setTaggedQuestions(response.data)
@@ -27,7 +27,7 @@ const TagPage = () => {
     },[setTaggedQuestions, setCount]);
 
     return (
-        <Fragment>
+        <div>
             <div id='mainbar' class='questions-page fc-black-800 ' >
 
                 <div class="s-page-title">
@@ -67,12 +67,10 @@ const TagPage = () => {
             
                 :
                 
-                
                 "No Tagged questions"}
-
                 
             </div>
-    </Fragment>
+    </div>
     )
 }
 
