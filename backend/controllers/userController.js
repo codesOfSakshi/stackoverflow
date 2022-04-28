@@ -88,7 +88,6 @@ module.exports = class UserController {
 
     /* ------------ if the return object is null, there is some error ----------- */
     if (!userObj) {
-      // console.log("1");
       returnMessage.status = 500;
       returnMessage.success = false;
       returnMessage.message = "Something went wrong!";
@@ -110,7 +109,6 @@ module.exports = class UserController {
 
     /* ---- if the user is null, there was some error in the service function --- */
     if (!user) {
-      // console.log("1");
       returnMessage.status = 500;
       returnMessage.success = false;
       returnMessage.message = "Something went wrong!";
