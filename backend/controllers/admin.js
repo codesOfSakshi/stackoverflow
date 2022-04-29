@@ -22,14 +22,14 @@ module.exports = class AdminController{
         console.log("INSIDE APPROVE");
         const {questionID, status} = req.body;
         try{
-            if(questionID && (status.toLowerCase() == CONSTANTS.constants.questionAccepted || status.toLowerCase() == CONSTANTS.constants.questionRejected)){
+            if(questionID && (status.toLowerCase() == CONSTANTS.common.questionAccepted || status.toLowerCase() == CONSTANTS.common.questionRejected)){
                 const response = await ADMIN.approve({questionID, status});
             //console.log(response);
         res.send(response);
         res.status(200);
         res.end();
             }
-            res.send("Expected questionID and status: "+CONSTANTS.constants.questionRejected+ " or "+ CONSTANTS.constants.questionAccepted);
+            res.send("Expected questionID and status: "+CONSTANTS.common.questionRejected+ " or "+ CONSTANTS.common.questionAccepted);
             res.send(400)
             res.end();
         }
