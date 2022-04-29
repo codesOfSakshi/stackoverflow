@@ -1,6 +1,6 @@
 const QUESTION = require("../models/question");
-const TAG = require("../models/tag");
-const USER = require("../models/user");
+const TAGS = require("../models/tag");
+const USERS = require("../models/user");
 
 module.exports = class AdminService {
   static async test() {
@@ -87,7 +87,7 @@ module.exports = class AdminService {
     const query = {};
     try {
         console.log("****");
-      const result = await TAGS.find(query)
+      const result = await USERS.find(query)
         .sort({ reputation: -1 })
         .limit(10);
       console.log(result);
@@ -105,7 +105,7 @@ module.exports = class AdminService {
     const query = {};
     try {
         console.log("*****");
-      const result = await TAGS.find(query)
+      const result = await USERS.find(query)
         .sort({ reputation })
         .limit(10);
       console.log(result);
