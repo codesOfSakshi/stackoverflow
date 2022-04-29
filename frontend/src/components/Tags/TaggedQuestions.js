@@ -2,6 +2,12 @@ import React from 'react'
 
 const TaggedQuestions = (props) => {
 
+
+    const navigateToQuestion = () => {
+        // Route to Question page
+        // Which routing tool to use
+    }
+
     return (
         <div>
             
@@ -37,17 +43,6 @@ const TaggedQuestions = (props) => {
                                     {tag}
                                 </a>
                             ))}
-                            {/* <a href="/questions/tagged/javascript" class="post-tag flex--item mt0 js-tagname-javascript" title="show questions tagged 'javascript'" rel="tag">
-                                javascript
-                            </a>
-                            
-                            <a href="/questions/tagged/css" class="post-tag flex--item mt0 js-tagname-css" title="show questions tagged 'css'" rel="tag">
-                                css
-                            </a>
-                            
-                            <a href="/questions/tagged/wordpress" class="post-tag flex--item mt0 js-tagname-wordpress" title="" rel="tag">
-                                wordpress
-                            </a>  */}
                         </div>
 
                         <div class="s-user-card s-user-card__minimal">

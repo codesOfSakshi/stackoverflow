@@ -4,10 +4,16 @@ import React, { useEffect } from 'react';
 const TagPanel = (props) => {
 
     // console.log(props.tag.name)
+
+    const navitateToTag = () => {
+        // Route to the Tag Page
+        // Ask which routing tool to use
+    }
+
     return (
         <div className="grid--item s-card js-tag-cell d-flex fd-column">
-            <div className="d-flex jc-space-between ai-center mb12">
-                <a class="flex--item s-tag" href='#'>{props.tag.name}</a>
+            <div onClick={navitateToTag} className="d-flex jc-space-between ai-center mb12">
+                <a class="flex--item s-tag">{props.tag.name}</a>
                 {/* <a size={'s-tag'} float={'left'}>{props.tag.name}</a> */}
             </div>
 

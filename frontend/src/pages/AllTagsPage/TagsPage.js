@@ -6,6 +6,7 @@ import TagPanel from '../../components/Tags/TagPanel';
 const TagsPage = () => {
 
     const [tags, setTags] = useState([]);
+    const [query, setQuery] = useState();
 
     useEffect(() => {
 
@@ -21,8 +22,37 @@ const TagsPage = () => {
 
     },[setTags]);
 
-    const handleSearch = () => {
-        // Handle Tag Search here
+    // Only shows the results when typed >= 3 characters
+    // TOP 5 suggestions only 
+    const handleSearch = (e) => {
+
+        setQuery(e.target.value);
+        let query = e.target.value
+
+        if(query.length === 0){
+            async function getTags() {
+                let response = axios.get("http://localhost:5000/api/tags");
+                response = await response;
+        
+                setTags(response.data);
+            }
+            
+            getTags();
+        }
+        else if(query.length >= 3){
+
+            console.log("Search tag: ", query);
+            // Handle Tag Search here
+            axios.get("http://localhost:5000/api/tags/search/" + query)
+                .then(response => {
+                    if(response.data.length > 0){
+                        setTags(response.data.slice(0, 5));
+                    }
+                    else{
+                        setTags([])
+                    }
+                })  
+        }
     }
 
     return(
@@ -58,11 +88,18 @@ const TagsPage = () => {
                 </div>
                 <br/>
                 <div className='user-browser'>
-                    <div className='grid-layout'>
-                        {tags.map((tag, index) => (
-                            <TagPanel key={index} tag={tag} />
-                        ))}
-                    </div>
+                    {tags.length > 0 ? 
+                    
+                        <div className='grid-layout'>
+                            {tags.map((tag, index) => (
+                                <TagPanel key={index} tag={tag} />
+                            ))}
+                        </div>
+                    
+                    :
+                        'No Tags Available for: "' + query + '"'
+                    
+                    }
                 </div>
             </div>
         </Fragment>

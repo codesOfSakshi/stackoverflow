@@ -28,7 +28,7 @@ const TagPage = () => {
 
     return (
         <div>
-            <div id='mainbar' class='questions-page fc-black-800 ' >
+            <div id='mainbar' class='questions-page fc-black-800 ' style={{marginLeft:250, marginRight:250}} >
 
                 <div class="s-page-title">
                     <div class="s-page-title--text">
@@ -48,7 +48,7 @@ const TagPage = () => {
                         {count} Questions
                     </div>
                     <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
-                        //////Buttons here//////
+                        {/* //////Buttons here////// */}
                     </div>
                 </div>
 
