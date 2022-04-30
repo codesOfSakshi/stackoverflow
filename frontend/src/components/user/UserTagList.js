@@ -6,7 +6,10 @@ import "../../styles/usertaglist.css";
 
 const UserTagList = () => {
   return (
-    <div>
+    <div className="profiletab-item-usertaglist-container usertaglist-container">
+        <div className="usertaglist-title">
+            Top Tags
+        </div>
         <div>
             <div className="usertaglist-count">621 Tags</div>
             <div className="usertaglist-tab">
