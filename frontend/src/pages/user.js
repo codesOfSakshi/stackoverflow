@@ -16,9 +16,10 @@ function User() {
     }
 
     return (
-        <div>
-            <div><h1>Headers</h1></div>
+
+        <div className="snippet-hidden mt48 mr48 mb48 ml48">
             <Profile/>
+
             <nav className="user-nav">
                 <ul className="s-navigation user-nav-options">
                     <li onClick={()=>{changeTab("profile")}}><a className={"s-navigation--item"+( tabSelected==="profile" ? " is-selected":"")}>Profile</a></li>
@@ -32,6 +33,7 @@ function User() {
                 tabSelected==="activity" && <ActivityTab/>
             }
         </div>
+
     )
 }
 
