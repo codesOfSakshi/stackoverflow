@@ -1,0 +1,53 @@
+.usertag-container{
+    border: 1px solid rgb(149, 145, 145);
+    border-radius:10px;
+    padding:10px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    width:1000px;
+}
+
+.usertag-title {
+    display: inline-block;
+    background-color: rgb(230, 224, 224);
+    padding: 8px;
+    border-radius: 5px;
+    color: rgb(104, 102, 102);
+    margin-right: 70px;
+}
+
+.usertag-gold-type {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: rgb(244, 192, 5);
+    margin-right: 10px;
+}
+
+.usertag-silver-type {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: rgb(105, 104, 101);
+    margin-right: 10px;
+}
+
+.usertag-bronze-type {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: rgba(255, 115, 0, 0.792);
+    margin-right: 10px;
+}
+
+.usertag-score {
+    margin-left:528px;
+}
+
+.usertag-posts {
+    margin-left: 16px;
+}
