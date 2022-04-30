@@ -1,3 +1,5 @@
+var mongoose = require("mongoose");
+const { constants } = require("../config/config");
 const QUESTION = require("../models/question");
 const TAGS = require("../models/tag");
 const USERS = require("../models/user");
@@ -11,15 +13,26 @@ module.exports = class AdminService {
     const query = { _id: questionID };
     const newData = { status };
 
-    const result = await QUESTION.findOneAndUpdate(query, newData, {
-      new: true,
-    });
-    if (result) {
-      console.log(result);
-      return result;
-    } else {
-      throw result;
+    console.log(query, newData);
+    let result = await QUESTION.findOne(query);
+
+    if(result && result.status.toLowerCase() != constants.questionWaiting){
+      throw "Question already "+ result.status;
     }
+    else{
+      result = await QUESTION.findOneAndUpdate(query, newData, {
+        new: true,
+      });
+  
+      console.log(result);
+      if (result) {
+        
+        return result;
+      } else {
+        throw result;
+      }
+    }
+    
   }
 
   static async getCountOfTodaysQuestions() {
@@ -31,7 +44,6 @@ module.exports = class AdminService {
       },
     };
     try {
-        console.log("*");
       const result = await QUESTION.countDocuments(query);
       console.log("COUNT", result);
       if (result) {
@@ -44,15 +56,13 @@ module.exports = class AdminService {
     }
   }
 
-  // should I get entire object?
   static async getMostViewedQuestions() {
     const query = {};
     try {
         console.log("**");
       const result = await QUESTION.find(query)
         .sort({ views: -1 })
-        .limit(10)
-        .select("_id");
+        .limit(10);
       console.log(result);
       if (result) {
         return result;
@@ -106,7 +116,7 @@ module.exports = class AdminService {
     try {
         console.log("*****");
       const result = await USERS.find(query)
-        .sort({ reputation })
+        .sort({ reputation: 1 })
         .limit(10);
       console.log(result);
       if (result) {

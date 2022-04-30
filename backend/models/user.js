@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     // required: true,
   },
   reputation: {
-    type: String,
+    type: Number,
     // required: true,
   },
   badge: {

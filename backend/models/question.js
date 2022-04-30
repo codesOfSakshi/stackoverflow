@@ -1,41 +1,41 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
+  // _id: {
+  //   type: String,
+  //   required: true,
+  // },
   createdAt: {
-    type: String,
-    required: true,
+    type: Date,
+    required: false,
   },
   updatedAt: {
-    type: String,
-    required: true,
+    type: Date,
+    required: false,
   },
   upVotes: {
-    type: Array,
-    required: true,
+    type: Number,
+    required: false,
   },
   downVotes: {
-    type: Array,
-    required: true,
+    type: Number,
+    required: false,
   },
   views: {
-    type: String,
-    required: true,
+    type: Number,
+    required: false,
   },
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   tags: {
     type: Array,
-    required: true,
+    required: false,
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   answers: {
     type: Array,
@@ -43,34 +43,34 @@ const questionSchema = new mongoose.Schema({
   },
   images: {
     type: Array,
-    required: true,
+    required: false,
   },
   userId: {
     type: String,
-    required: true,
+    required: false,
   },
   commentId: {
     type: String,
-    required: true,
+    required: false,
   },
   bastAns: {
     type: String,
-    required: true,
+    required: false,
   },
   status: {
     type: String,
-    required: true,
+    required: false,
   },
   badges: {
     type: String,
-    required: true,
+    required: false,
   },
   activity: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
-module.exports = mongoose.model("question", questionSchema);
+module.exports = mongoose.model("questions", questionSchema);
 
 // module.exports = questionModel;
