@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 const QuestionModel = require('../models/question.js');
 const TagModel = require('../models/tag.js');
 const AnswerModel = require('../models/answer.js');
-const {Utility} = require('../config/utility.js')
 
 class Question{
 
