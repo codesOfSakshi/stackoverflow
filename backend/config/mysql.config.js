@@ -12,7 +12,7 @@ db.connect(function(err){
     if(err){
         throw err;
     }
-    console.log("Database Connected");
+    console.log("MySQL RDS Connected");
 })
 
 module.exports = db;

@@ -19,6 +19,7 @@ require("./models/tag.js")
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
 const tagRoute = require('./routes/tag.route');
+const messageRoute = require('./routes/message.route');
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -48,7 +49,7 @@ app.listen(PORT, () => {
 
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+const mongoURI = "mongodb+srv://parmeet:5Z1emt6qRzhFkdHI@cluster-273lab.aik5z.mongodb.net/273Lab?retryWrites=true&w=majority";
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -99,4 +100,5 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use('/api/questions',question);
-app.use('/api.tags', tagRoute)
+app.use('/api/tags', tagRoute);
+app.use('/api/messages', messageRoute);
