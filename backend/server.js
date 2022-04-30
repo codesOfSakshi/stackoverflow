@@ -49,7 +49,7 @@ app.listen(PORT, () => {
 
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-const mongoURI = "mongodb+srv://parmeet:5Z1emt6qRzhFkdHI@cluster-273lab.aik5z.mongodb.net/273Lab?retryWrites=true&w=majority";
+const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
