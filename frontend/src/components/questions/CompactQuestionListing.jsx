@@ -2,7 +2,6 @@ import {Form,Row,Col,Card,Button} from 'react-bootstrap';
 import axios from 'axios';
 import {useEffect,useState} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
-import {PaginatedList} from 'react-paginated-list';
 import { useNavigate } from "react-router-dom";
 
 function CompactQuestionListing(props) {  
@@ -80,11 +79,12 @@ function CompactQuestionListing(props) {
             </div>
             </Col>
             </Row>
-        <PaginatedList
-        list={questionsAll}
-        itemsPerPage={10}
-        renderList={(list) => (list.map(question =>(<><hr></hr><CompactQuestion questions={question}></CompactQuestion></>)))}
-        ></PaginatedList>
+            {questionsAll.map(question =>(<><hr></hr><CompactQuestion questions={question}></CompactQuestion></>))}
+            {/* <PaginatedList
+            list={questionsAll}
+            itemsPerPage={10}
+            renderList={(list) => (list.map(question =>(<><hr></hr><CompactQuestion questions={question}></CompactQuestion></>)))}
+            ></PaginatedList> */}
         </div>
     </div>
   );
