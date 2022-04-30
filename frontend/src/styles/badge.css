@@ -1,0 +1,56 @@
+
+.badge-title {
+    display:inline-block;
+    background-color: rgb(230, 224, 224);
+    padding:8px;
+    border-radius:5px;
+    color:rgb(104, 102, 102);
+    margin-right:70px;
+}
+
+.badge-date{
+    display: inline-block;
+    align-self: center;
+}
+
+.badge-container {
+    grid-area: badgeinfo-badges;
+    justify-self: start;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.badge-name{
+    display: inline-block;
+}
+
+.badge-gold-type {
+    display: inline-block;
+    height:16px;
+    width:16px;
+    border-radius:50%;
+    background-color: rgb(244, 192, 5);
+    margin-right:10px;
+}
+
+.badge-silver-type {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: rgb(105, 104, 101);
+    margin-right:10px;
+}
+
+.badge-bronze-type {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: rgba(255, 115, 0, 0.792);
+    margin-right:10px;
+}

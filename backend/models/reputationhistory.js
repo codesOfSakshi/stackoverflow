@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-    _id:{
-        type: String,
-        required: true,
-    },
+const reputationHistorySchema = new mongoose.Schema({
+    // _id:{
+    //     type: mongoose.ObjectId,
+    //     required: true,
+    // },
     createdAt:{
         type:String,
         required: true,
@@ -19,4 +19,6 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("repuationHistory", userSchema);
+
+const reputationHistoryModel = mongoose.model('reputationhistory', reputationHistorySchema);
+module.exports = reputationHistoryModel;

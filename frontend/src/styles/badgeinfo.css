@@ -1,0 +1,61 @@
+
+.badgeinfo-container {
+    margin-top: 32px;
+    margin-left: 16px;
+}
+
+.badgeinfo-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.badgeinfo-data-outer-container {
+    display: flex;
+
+}
+
+.badgeinfo-data-inner-container {
+    display: grid;
+    width: 350px;
+    height: 150px;
+    border: 1px solid #afacac;
+    border-radius: 5px;
+    padding: 10px;
+    grid-template-columns: [first] 1fr [second] 2fr [third];
+    grid-template-rows: [first] 1fr [second] 1fr [third];
+    grid-template-areas: "badgeinfo-img-item badgeinfo-info" "badgeinfo-badges badgeinfo-badges";
+    margin-right:16px;
+}
+
+
+.badgeinfo-item-img-container {
+    grid-area: badgeinfo-img-item;
+    justify-self: start;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.badgeinfo-item-img {
+    height:48px;
+    width:48px;
+}
+
+.badgeinfo-item-info-container {
+    grid-area: badgeinfo-info;
+    justify-self: start;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+
+.badgeinfo-color-gold{
+    color:rgb(255, 204, 0);
+}

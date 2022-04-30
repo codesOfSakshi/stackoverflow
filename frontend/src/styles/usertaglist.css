@@ -1,0 +1,18 @@
+.usertaglist-count{
+    display: inline-block;
+}
+
+.usertaglist-tab{
+    margin-left:650px;
+    display: inline-block;
+}
+
+.usertaglist-container {
+    margin-top: 32px;
+    margin-left: 16px;
+}
+
+.usertaglist-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}

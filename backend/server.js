@@ -1,78 +1,102 @@
+/* -------------------------------------------------------------------------- */
+/*                                  immports                                  */
+/* -------------------------------------------------------------------------- */
+
+/* ------------------------------ import paths ------------------------------ */
 const express = require("express");
-const bodyParser = require('body-parser');
+const dotenv = require("dotenv");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const user = require("./controllers/user");
+const question = require("./controllers/questions");
+
+require("./models/tag.js")
+
+/* ---------------------------- importing routes ---------------------------- */
+const testAPI = require("./routes/testRoute");
+const userRoute = require("./routes/userRoute");
+const tagRoute = require('./routes/tag.route');
+
+/* -------------------------------------------------------------------------- */
+/*                               start of config                              */
+/* -------------------------------------------------------------------------- */
+dotenv.config();
+
+const PORT = process.env.PORT || 3001;
 const app = express();
-const cors = require('cors');
-const db = require('./config/mysql.config')
-
-app.use(cors());
-
-app.use(bodyParser.urlencoded({extended: false}));
-//app.use(bodyParser.json());
 app.use(express.json());
+app.use(passport.initialize());
 
-// Tag Routes
-const tagRoutes = require('./routes/tag.route');
-app.use('/api/tags/', tagRoutes);
-
-// Message Routes
-const messsageRoutes = require('./routes/message.route');
-app.use('/api/messages/', messsageRoutes);
-
-
-app.get("/",(req,res)=>{
-    res.send("API is running!")
-});
-
-var mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-
-mongoose.connect(
-    //"mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority",
-    "mongodb+srv://parmeet:5Z1emt6qRzhFkdHI@cluster-273lab.aik5z.mongodb.net/273Lab?retryWrites=true&w=majority",
-    {
-        maxpoolSize: 10,
-    }
-)
-.then(
-    () => {
-        app.listen(5000,console.log("Server Running on port 5000"));
-    },
-    (err) => {
-        console.log("Mongoose is Not Connected"+ err);
-    }
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_IP_ADDRESS],
+    methods: ["GET", "POST", "PUT"],
+    credentials: true,
+  })
 );
 
-//app.listen(5000, console.log("Server running on port 5000"))
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});
 
-// const express = require("express");
-// const cors = require('cors');
-// const mongoose = require('mongoose');
-// const config = require("config");
-// const user = require("./controllers/user");
-// const tagRoutes = require('./routes/tag.route');
+/* -------------------------------------------------------------------------- */
+/*                            connecting to mongoDB                           */
+/* -------------------------------------------------------------------------- */
 
-// const app = express();
+// const mongoURI =
+//   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
+const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+let options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  maxPoolSize: 500,
+  wtimeoutMS: 2500,
+};
 
-// mongoose.Promise = global.Promise;
+mongoose.connect(mongoURI, options, (err, res) => {
+  if (err) {
+    console.log(err);
+    console.log(`MongoDB Connection Failed`);
+  }
+});
 
-// mongoose.connect(
-//     "mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority",
-//     {
-//         maxpoolSize: 10,
-//     }
-// )
-// .then(
-//     () => {
-//         app.listen(config.get("BACKEND_SERVER_PORT"), console.log(`Server running on port ${config.get("BACKEND_SERVER_PORT")}`))
+mongoose.connection.on("connecting", () => {
+  console.log(
+    "connecting to mongoDB...and the readyState is",
+    mongoose.connection.readyState
+  );
+});
+mongoose.connection.on("connected", () => {
+  console.log(
+    "connected to mongoDB...and the readyState is",
+    mongoose.connection.readyState
+  );
+});
+mongoose.connection.on("disconnecting", () => {
+  console.log(
+    "disconnecting to mongoDB...and the readyState is",
+    mongoose.connection.readyState
+  );
+});
+mongoose.connection.on("disconnected", () => {
+  console.log(
+    "disconnected to mongoDB...and the readyState is",
+    mongoose.connection.readyState
+  );
+});
 
-//     },
-//     (err) => {
-//         console.log("Mongoose is Not Connected"+ err);
-//     }
-// );
+/* -------------------------------------------------------------------------- */
+/*                                    APIs                                    */
+/* -------------------------------------------------------------------------- */
 
-// app.use(cors());
-// app.use(express.json());
+/* ---------------------- sample api to test the server --------------------- */
+app.use("/", testAPI);
 
-// app.use('/api/user',user);
-// app.use('/api/tags/', tagRoutes);
+/* ------------------------------- actual APIs ------------------------------ */
+app.use("/api/user", userRoute);
+app.use("/api/user", user);
+app.use('/api/questions',question);
+app.use('/api.tags', tagRoute)
