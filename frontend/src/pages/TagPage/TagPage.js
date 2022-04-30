@@ -1,30 +1,34 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import TaggedQuestions from '../../components/Tags/TaggedQuestions';
-// import {useLocation} from 'react-router';
+import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 
 const TagPage = () => {
 
     const [taggedQuestions , setTaggedQuestions] = useState();
     const [count, setCount] = useState(0);
-    // const location = useLocation();
+    const location = useLocation();
 
     useEffect(() => {
 
         async function getQuestions(){
      
-            //location.state.tag
-            let response = axios.get("http://localhost:5000/api/tags/questionbytag/" + "java" );
+            let response = axios.get("http://localhost:3001/api/tags/questionbytag/" + location.state.tagId );
             response = await response;
-            
-            setTaggedQuestions(response.data)
-            setCount(response.data.length);
+    
+            if(response.status === 200){
+                setTaggedQuestions(response.data)
+                setCount(response.data.length);
+            }
+            else{
+                setCount(0);
+            }
 
             console.log(response.data);
 
         }
         getQuestions();
-    },[setTaggedQuestions, setCount]);
+    },[setTaggedQuestions, setCount, location.state.tagId]);
 
     return (
         <div>
@@ -32,10 +36,10 @@ const TagPage = () => {
 
                 <div class="s-page-title">
                     <div class="s-page-title--text">
-                        <h1 class="s-page-title--header">Questions tagged [java]</h1>
+                        <h1 class="s-page-title--header">Questions tagged [{location.state.tagId}]</h1>
                         <br/>
                         <p class="s-page-title--description">
-                            Tag Description here: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+                            {location.state.description}
                         </p>
                     </div>
                     <div class="s-page-title--actions">

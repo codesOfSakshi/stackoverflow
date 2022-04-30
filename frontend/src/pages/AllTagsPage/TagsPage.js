@@ -11,7 +11,7 @@ const TagsPage = () => {
     useEffect(() => {
 
         async function getTags() {
-            let response = axios.get("http://localhost:5000/api/tags");
+            let response = axios.get("http://localhost:3001/api/tags");
             response = await response;
     
             setTags(response.data);
@@ -31,7 +31,7 @@ const TagsPage = () => {
 
         if(query.length === 0){
             async function getTags() {
-                let response = axios.get("http://localhost:5000/api/tags");
+                let response = axios.get("http://localhost:3001/api/tags");
                 response = await response;
         
                 setTags(response.data);
@@ -43,7 +43,7 @@ const TagsPage = () => {
 
             console.log("Search tag: ", query);
             // Handle Tag Search here
-            axios.get("http://localhost:5000/api/tags/search/" + query)
+            axios.get("http://localhost:3001/api/tags/search/" + query)
                 .then(response => {
                     if(response.data.length > 0){
                         setTags(response.data.slice(0, 5));

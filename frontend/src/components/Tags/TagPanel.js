@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-// import { CCard, CCardBody, CCardTitle, CCardText } from '@coreui/react'
+import {useNavigate} from 'react-router-dom';
 
 const TagPanel = (props) => {
 
-    // console.log(props.tag.name)
+    const navigate = useNavigate();
+
+    const tag = props.tag.tagId;
+    const tagDescription = props.tag.description;
 
     const navitateToTag = () => {
-        // Route to the Tag Page
-        // Ask which routing tool to use
+        navigate('/tag/' + tag ,{state:{tagId:tag, description: tagDescription}});
     }
 
     return (

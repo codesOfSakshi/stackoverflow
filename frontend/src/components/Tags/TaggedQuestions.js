@@ -1,11 +1,22 @@
 import React from 'react'
+import {useNavigate} from 'react-router-dom';
 
 const TaggedQuestions = (props) => {
+    
+    
+    const navigate = useNavigate();
 
-
+    // Navigates to the question page for question clicked
     const navigateToQuestion = () => {
-        // Route to Question page
-        // Which routing tool to use
+
+        console.log("Navigating to Question: ", props.question._id);
+        // navigate('/question/' + props.question._id ,{state:{question:props.question._id}});
+    }
+
+    // Navigates to the Tag page for Tag clicked
+    const navitateToTag = (tag) => {
+        navigate('/tag/' + tag ,{state:{tagId:tag}});
+        console.log("Navigating to Tag: ", tag);
     }
 
     return (
@@ -29,9 +40,9 @@ const TaggedQuestions = (props) => {
 
                 <div class="s-post-summary--content">
             
-                    <h3 class="s-post-summary--content-title">
-                        <a href="/questions/72023260/from-p-to-a-list" class="s-link">{props.question.title}</a>
-                    </h3>
+                        <h3 class="s-post-summary--content-title">
+                            <a onClick={() => navigateToQuestion()} class="s-link">{props.question.title}</a>
+                        </h3>
                     <div class="s-post-summary--content-excerpt">
                         {props.question.description}
                     </div>
@@ -39,7 +50,7 @@ const TaggedQuestions = (props) => {
                         <div class="s-post-summary--meta-tags tags js-tags t-javascript t-css t-wordpress">
 
                             {props.question.tags.map((tag, index) => ( 
-                                <a href="/questions/tagged/<TagName>" class="flex--item s-tag" title="show questions tagged <TagName>" rel="tag">
+                                <a onClick={() => navitateToTag(tag)} class="flex--item s-tag" title="show questions tagged <TagName>" rel="tag">
                                     {tag}
                                 </a>
                             ))}
