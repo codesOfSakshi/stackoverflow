@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const db = require('./config/mysql.config')
 
 app.use(cors());
 
@@ -13,6 +14,9 @@ app.use(express.json());
 const tagRoutes = require('./routes/tag.route');
 app.use('/api/tags/', tagRoutes);
 
+// Message Routes
+const messsageRoutes = require('./routes/message.route');
+app.use('/api/messages/', messsageRoutes);
 
 
 app.get("/",(req,res)=>{
