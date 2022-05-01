@@ -7,7 +7,9 @@ const ReviewQuestions = ()=>{
 
     const [questions, setQuestions ]=useState([]);
 
-    getQuestions
+    const getQuestions = ()=>{
+
+    }
     useEffect(getQuestions, []);
 
     return (
