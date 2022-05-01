@@ -9,7 +9,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const config = require("config");
+const config = require("./config/config");
 const user = require("./controllers/user");
 
 
@@ -17,6 +17,7 @@ const user = require("./controllers/user");
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
 const admin = require("./routes/admin");
+const tag = require("./routes/tag");
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -30,7 +31,7 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_IP_ADDRESS],
+    origin: config.config.baseURL,
     methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
@@ -101,3 +102,4 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use("/api/admin", admin);
+app.use("/api/tag", tag)

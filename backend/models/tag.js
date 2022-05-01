@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 
 const tagSchema = new mongoose.Schema({
-    _id:{
-        type: String,
-        required: true,
-    },
+    // _id:{
+    //     type: String,
+    //     required: true,
+    // },
     createdAt:{
         type:String,
         required: true,
+        default: new Date()
     },
     updatedAt:{
         type:String,
         required: true,
+        default: new Date()
     },
     description:{
         type:String,
@@ -24,6 +26,7 @@ const tagSchema = new mongoose.Schema({
     numQuestions:{
         type:String,
         required: true,
+        default: 0
     }
 });
 

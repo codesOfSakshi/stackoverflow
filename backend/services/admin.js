@@ -16,23 +16,20 @@ module.exports = class AdminService {
     console.log(query, newData);
     let result = await QUESTION.findOne(query);
 
-    if(result && result.status.toLowerCase() != constants.questionWaiting){
-      throw "Question already "+ result.status;
-    }
-    else{
+    if (result && result.status.toLowerCase() != constants.questionWaiting) {
+      throw "Question already " + result.status;
+    } else {
       result = await QUESTION.findOneAndUpdate(query, newData, {
         new: true,
       });
-  
+
       console.log(result);
       if (result) {
-        
         return result;
       } else {
         throw result;
       }
     }
-    
   }
 
   static async getCountOfTodaysQuestions() {
@@ -59,10 +56,8 @@ module.exports = class AdminService {
   static async getMostViewedQuestions() {
     const query = {};
     try {
-        console.log("**");
-      const result = await QUESTION.find(query)
-        .sort({ views: -1 })
-        .limit(10);
+      console.log("**");
+      const result = await QUESTION.find(query).sort({ views: -1 }).limit(10);
       console.log(result);
       if (result) {
         return result;
@@ -77,7 +72,7 @@ module.exports = class AdminService {
   static async getMostUsedTags() {
     const query = {};
     try {
-        console.log("***");
+      console.log("***");
       const result = await TAGS.find(query)
         .sort({ numQuestions: -1 })
         .limit(10)
@@ -96,10 +91,8 @@ module.exports = class AdminService {
   static async getHighestedRepUsers() {
     const query = {};
     try {
-        console.log("****");
-      const result = await USERS.find(query)
-        .sort({ reputation: -1 })
-        .limit(10);
+      console.log("****");
+      const result = await USERS.find(query).sort({ reputation: -1 }).limit(10);
       console.log(result);
       if (result) {
         return result;
@@ -114,10 +107,8 @@ module.exports = class AdminService {
   static async getLowestRepUsers() {
     const query = {};
     try {
-        console.log("*****");
-      const result = await USERS.find(query)
-        .sort({ reputation: 1 })
-        .limit(10);
+      console.log("*****");
+      const result = await USERS.find(query).sort({ reputation: 1 }).limit(10);
       console.log(result);
       if (result) {
         return result;
@@ -127,5 +118,15 @@ module.exports = class AdminService {
     } catch (err) {
       throw err;
     }
+  }
+
+  static async getUnreviewed() {
+    const query = { status : constants.questionWaiting};
+    try{
+      const result = await QUESTION.find(query);
+      console.log(result);
+      return result;
+    }
+    catch(err){throw err;}
   }
 };

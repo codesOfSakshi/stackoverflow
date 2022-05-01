@@ -55,11 +55,37 @@ module.exports = class AdminController {
       response.HighestReputatedsers = await ADMIN.getHighestedRepUsers();
       response.LowestReputatedUsers = await ADMIN.getLowestRepUsers();
       //console.log(response);
+      response.status=200;
+      response.success=true;
       res.send(response);
       res.status(200);
       res.end();
     } catch (err) {
-      res.send("Something went wrong: " + err);
+      response.message="Something went wrong: " + err;
+      response.status=500;
+      response.success=false;
+      res.send(response);
+      res.status(500);
+      res.end();
+    }
+  }
+
+  static async getUnreviewed(req, res) {
+    console.log("INSIDE GET UNREVIEWED");
+    const response = {};
+    try {
+      response.result = await ADMIN.getUnreviewed();
+      //console.log(response);
+      response.status=200;
+      response.success=true;
+      res.send(response);
+      res.status(200);
+      res.end();
+    } catch (err) {
+      response.message="Something went wrong: " + err;
+      response.status=500;
+      response.success=false;
+      res.send(response);
       res.status(500);
       res.end();
     }
