@@ -138,6 +138,26 @@ router.post("/edit/:userId",  async (req, res) => {
 });
 
 
+router.post("/edit-partial/:userId",  async (req, res) => {
+    const response = {};
+    try{
+        
+        const successData =  User.editUserPartially(req);
+        console.log("successData", successData)
+        response.success = true;
+        response.data = successData;
+        response.status = 200;
+        res.status(200).send(response);
+    }catch(e){
+        console.log(e);
+        response.success = false;
+        response.error = "Request Failed! Please try again later";
+        response.status = 500;
+        res.status(500).send(response);
+    }
+});
+
+
 router.get("/answer/activity/:userId/:answerId",  async (req, res) => {
     const userId = req.params.userId;
     const response = {};

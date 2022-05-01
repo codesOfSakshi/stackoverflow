@@ -6,6 +6,10 @@ import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import AddTag from "./components/admin/AddTag";
 import ReviewQuestions from "./components/admin/ReviewQuestions";
+import Question from './pages/Question';
+import AskQuestion from './pages/AskQuestion';
+import TagsPage from './pages/AllTagsPage/TagsPage'
+import TagPage from './pages/TagPage/TagPage'
 
 function App() {
   return (
@@ -17,8 +21,11 @@ function App() {
       <Route exact path="/user/edit/:userId" element={<UserDetail/>} />
       <Route exact path="/signin" element={<SignIn />} />
       <Route exact path="/signup" element={<SignUp />} />
+      <Route path='/question' element={<Question/>}/>
+      <Route path='/askquestion' element={<AskQuestion/>}/>
+      <Route path='/tags' element={<TagsPage/>}/>
+      <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route exact element={Error} />
-
 
     </Routes>
   );

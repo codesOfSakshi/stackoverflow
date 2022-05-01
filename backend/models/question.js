@@ -1,29 +1,25 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const questionSchema = new mongoose.Schema({
   // _id: {
-  //   type: String,
+  //   type: mongoose.ObjectId,
   //   required: true,
   // },
   createdAt: {
     type: Date,
-    required: false,
   },
   updatedAt: {
     type: Date,
-    required: false,
   },
   upVotes: {
-    type: Number,
-    required: false,
+    type: Array,
   },
   downVotes: {
-    type: Number,
-    required: false,
+    type: Array,
   },
   views: {
-    type: Number,
-    required: false,
+    type: String,
   },
   title: {
     type: String,
@@ -31,7 +27,7 @@ const questionSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
-    required: false,
+    ref: 'tag',
   },
   description: {
     type: String,
@@ -43,31 +39,24 @@ const questionSchema = new mongoose.Schema({
   },
   images: {
     type: Array,
-    required: false,
   },
   userId: {
     type: String,
-    required: false,
   },
   commentId: {
     type: String,
-    required: false,
   },
   bastAns: {
     type: String,
-    required: false,
   },
   status: {
     type: String,
-    required: false,
   },
   badges: {
-    type: String,
-    required: false,
+    type: Array,
   },
   activity: {
     type: String,
-    required: false,
   },
 });
 

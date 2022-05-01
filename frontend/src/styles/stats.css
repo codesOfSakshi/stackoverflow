@@ -1,6 +1,12 @@
 
-
 .stats-container{
+    margin-left:16px;
+}
+
+.stats-title{
+    font-size: 2rem;
+}
+.stats-info-container{
     display:grid;
     width:250px;
     height:150px;
@@ -10,6 +16,8 @@
     grid-template-columns: [first] 1fr [second] 1fr [third];
     grid-template-rows: [first] 1fr [second] 1fr [third];
     grid-template-areas: "reputation-item reached-item" "answers-item questions-item";
+    margin-top:16px;
+    font-size:1.5rem;
 }
 
 
@@ -59,6 +67,7 @@
 
 .stats-item-heading{
     color: rgb(152, 152, 152);
+    font-size:1.2rem;
 }
 
 .stats-item-value {

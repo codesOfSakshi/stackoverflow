@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   // _id: {
-  // type: String,
+  // type: mongoose.ObjectId,
   // required: true,
   // },
   createdAt: {
@@ -86,7 +87,17 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
+    title: {type:String,required: true},
+
 });
 
-const userModel = mongoose.model("user", userSchema);
+userSchema.set('toObject', { virtuals: true })
+userSchema.set('toJSON', { virtuals: true })
+
+userSchema.virtual('id').get(function() {
+  return this._id.toString();
+});
+
+const userModel = mongoose.model('user', userSchema);
 module.exports = userModel;
+
