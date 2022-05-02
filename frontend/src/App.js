@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import User from "./pages/user.js";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
+// import ProfileTab from "./components/user/ProfileTab";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route exact path="/user/:userId" element={<User />} />
       <Route exact path="/signin" element={<SignIn />} />
       <Route exact path="/signup" element={<SignUp />} />
+      {/* <Route exact path="/test" element={<ProfileTab />} /> */}
       <Route exact element={Error} />
     </Routes>
   );

@@ -11,6 +11,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const user = require("./controllers/user");
+const search = require("./routes/search");
 
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
@@ -46,7 +47,10 @@ app.listen(PORT, () => {
 //   "mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority";
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+// const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+// const mongoURI =
+//   "mongodb+srv://anupriya:anupriya123@cluster0.nfuhn.mongodb.net/stackoverflow?retryWrites=true&w=majority";
+const mongoURI = `mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority`;
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -96,3 +100,4 @@ app.use("/", testAPI);
 /* ------------------------------- actual APIs ------------------------------ */
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
+app.use("/api/search", search);
