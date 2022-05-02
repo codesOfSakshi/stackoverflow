@@ -22,7 +22,6 @@ function App() {
       <Route path='/tags' element={<TagsPage/>}/>
       <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route exact element={Error} />
-
     </Routes>
   );
 }
