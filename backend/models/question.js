@@ -3,11 +3,7 @@ const { Schema } = mongoose;
 
 const questionSchema = new mongoose.Schema({
   // _id: {
-<<<<<<< HEAD
-  //   type: String,
-=======
   //   type: mongoose.ObjectId,
->>>>>>> origin/master
   //   required: true,
   // },
   createdAt: {
@@ -31,7 +27,7 @@ const questionSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
-    ref: 'tag',
+    ref: "tag",
   },
   description: {
     type: String,

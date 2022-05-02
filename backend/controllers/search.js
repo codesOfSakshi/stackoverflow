@@ -8,7 +8,7 @@ module.exports = class SearchController {
     const data = {
       type: req.body.type,
       keyword: req.body.keyword,
-      searchString: req.body.string,
+      searchString: req.body.string.trim(),
     };
     let questions = {};
     const response = {};
@@ -19,19 +19,19 @@ module.exports = class SearchController {
       case "user":
         data.mongoParameter = "userId";
         questions = await SearchService.searchByUser(data);
-        console.log(data.type);
         break;
       case "exact phrase":
         questions = await SearchService.searchExactPhrase(data);
-        console.log(data.type);
         break;
       case "question":
+        questions = await SearchService.searchQuestion(data);
         console.log(data.type);
         break;
       case "answer":
-        console.log(data.type);
+        questions = await SearchService.searchAnswer(data);
         break;
       case "isaccepted":
+        questions = await SearchService.searchStatus(data);
         console.log(data.type);
         break;
     }

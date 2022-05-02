@@ -110,7 +110,7 @@ module.exports = class SearchService {
       return final_ans;
     } catch (error) {
       console.log(
-        "There was an error in search service searchTag and the error is",
+        "There was an error in search service searchByUser and the error is",
         error
       );
       return null;
@@ -156,7 +156,132 @@ module.exports = class SearchService {
       return final_ans;
     } catch (error) {
       console.log(
-        "There was an error in search service searchTag and the error is",
+        "There was an error in search service searchExactPhrase and the error is",
+        error
+      );
+      return null;
+    }
+  }
+
+  static async searchQuestion({ searchString }) {
+    console.log("here too");
+    const query = {
+      $or: [
+        {
+          title: { $regex: searchString, $options: "i" },
+        },
+        {
+          tags: { $regex: searchString, $options: "i" },
+        },
+        {
+          description: { $regex: searchString, $options: "i" },
+        },
+        {
+          answers: { $regex: searchString, $options: "i" },
+        },
+      ],
+    };
+
+    try {
+      const questions = await QUESITONMODEL.find(query)
+        .populate("answers")
+        .lean();
+      if (questions) {
+        return questions;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log(
+        "There was an error in search service searchQuestion and the error is",
+        error
+      );
+      return null;
+    }
+  }
+
+  static async searchAnswer({ searchString }) {
+    try {
+      const questions = await QUESITONMODEL.find().populate("answers").lean();
+      // if questions is null or undefined, return null
+      if (questions == null) {
+        return null;
+      }
+      let final_ans = [];
+      for (const question of questions) {
+        for (let answer of question.answers) {
+          if (
+            answer.comment.toLowerCase().includes(searchString.toLowerCase()) ||
+            answer.description
+              .toLowerCase()
+              .includes(searchString.toLowerCase())
+          ) {
+            final_ans.push(question);
+            break;
+          }
+        }
+      }
+
+      return final_ans;
+    } catch (error) {
+      console.log(
+        "There was an error in search service searchAnswer and the error is",
+        error
+      );
+      return null;
+    }
+  }
+
+  static async searchStatus({ keyword, searchString }) {
+    try {
+      const questions = await QUESITONMODEL.find().populate("answers").lean();
+      // if questions is null or undefined, return null
+      if (questions == null) {
+        return null;
+      }
+      let final_ans = [];
+      for (const question of questions) {
+        if (!question.status) {
+          console.log(question._id);
+          continue;
+        }
+        if (
+          question.status.toString().toLowerCase() !==
+          keyword.toString().toLowerCase()
+        ) {
+          continue;
+        }
+        if (
+          question.title.toLowerCase().includes(searchString.toLowerCase()) ||
+          question.description
+            .toLowerCase()
+            .includes(searchString.toLowerCase()) ||
+          question.tags
+            .toString()
+            .toLowerCase()
+            .includes(searchString.toLowerCase())
+        ) {
+          final_ans.push(question);
+          continue;
+        }
+
+        for (let answer of question.answers) {
+          if (
+            answer.comment.toLowerCase().includes(searchString.toLowerCase()) ||
+            answer.description
+              .toLowerCase()
+              .includes(searchString.toLowerCase())
+          ) {
+            final_ans.push(question);
+            break;
+          }
+        }
+      }
+
+      return final_ans;
+    } catch (error) {
+      console.log(
+        "There was an error in search service searchStatus and the error is",
         error
       );
       return null;

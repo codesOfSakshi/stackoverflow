@@ -11,19 +11,16 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const user = require("./controllers/user");
-<<<<<<< HEAD
 const search = require("./routes/search");
-=======
 const question = require("./controllers/questions");
 
-require("./models/tag.js")
->>>>>>> origin/master
+require("./models/tag.js");
 
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
-const tagRoute = require('./routes/tag.route');
-const messageRoute = require('./routes/message.route');
+const tagRoute = require("./routes/tag.route");
+const messageRoute = require("./routes/message.route");
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -107,6 +104,6 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use("/api/search", search);
-app.use('/api/questions',question);
-app.use('/api/tags', tagRoute);
-app.use('/api/messages', messageRoute);
+app.use("/api/questions", question);
+app.use("/api/tags", tagRoute);
+app.use("/api/messages", messageRoute);
