@@ -11,7 +11,7 @@ class Question{
                 "_id": {"$in": questionIds}
             }
             //TODO rushabh populate comment, tagIds, answerIds for every question
-            const questions = await QuestionModel.find(query);
+            const questions = await QuestionModel.find(query).populate("tags");
             if(questions?.length){
                 return questions;
             }else{

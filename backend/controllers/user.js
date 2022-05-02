@@ -7,6 +7,32 @@ const { ReputationHistory } = require("../services/reputationhistory");
 const { ReputationAction } = require("../services/reputationaction");
 
 
+router.get("/:userId",  async (req, res) => {
+    const userId = req.params.userId;
+    const response = {};
+    try{
+        const userObj = {userId};
+        const user = await User.getUserById(userObj);
+        if(user){
+                response.success = true;
+                response.user = user;
+                response.status = 200;
+                res.status(200).send(response);
+            }else{
+                response.success = true;
+                response.user = {};
+                response.status = 200;
+                res.status(200).send(response);
+            }
+    }catch(e){
+        console.log(e);
+        response.success = false;
+        response.error = "Some error occurred. Please try again later";
+        response.status = 500;
+        res.status(500).send(response);
+    }
+});
+
 router.get("/bookmark/:userId",  async (req, res) => {
     const userId = req.params.userId;
     const response = {};

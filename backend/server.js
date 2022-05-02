@@ -31,13 +31,16 @@ const app = express();
 app.use(express.json());
 app.use(passport.initialize());
 
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_IP_ADDRESS],
-    methods: ["GET", "POST", "PUT"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [],
+//     methods: ["GET", "POST", "PUT"],
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

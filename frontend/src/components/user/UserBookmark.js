@@ -1,29 +1,29 @@
 import React from 'react'
 import Stack from '@mui/material/Stack';
 
-function UserBookmark() {
+function UserBookmark({bookMarkQuestion}) {
     return (
         <div className="ba bc-black-100">
             <div className="s-post-summary--stats">
                 <Stack direction="row" spacing={2}>
                 <div className="s-post-summary--stats-item has-answers">
-                    1 answer
+                    {bookMarkQuestion.answers.length+" answers"}
+                </div>
+                 <div className="s-post-summary--stats-item">
+                    {(bookMarkQuestion?.views ? bookMarkQuestion?.views : 0 )+" views"}
                 </div>
                 <div className="s-post-summary--stats-item">
-                    0 votes
+                    {(bookMarkQuestion?.upvotes?.length ? bookMarkQuestion?.upvotes?.length : 0 )+" upvotes"}
                 </div>
                 <div className="s-post-summary--stats-item">
-                    222 views
-                </div>
-                <div className="s-post-summary--stats-item">
-                    1 bookmarks
+                    {(bookMarkQuestion?.downvotes?.length ? bookMarkQuestion?.downvotes?.length : 0 )+" downvotes"}
                 </div>
                 </Stack>
             </div>
             <div className="s-post-summary--content">
                 <span>
                     <a href="/questions/63110429/jaspersoft-template-type-change-from-xml-to-html"
-                       className="s-post-summary--content-title s-link">JasperSoft Template Type change from xml to html</a>
+                       className="s-post-summary--content-title s-link">{bookMarkQuestion.description}</a>
                 </span>
 
                 <div className="s-popover px0 py4 w-auto" id="post-menu-63110429" role="menu">
@@ -36,14 +36,15 @@ function UserBookmark() {
                             </div>
 
                 </div>
-                <div className="s-post-summary--meta">
-                    <a className="flex--item s-tag" href="#">jquery</a>
-
-                    <div className="s-user-card s-user-card__minimal">
-                        <time className="s-user-card--time">
-                            <span title="2020-07-27 07:18:02Z" className="relativetime">Jul 27, 2020 at 7:18</span>
-                        </time>
-                    </div>
+                {bookMarkQuestion.tags && bookMarkQuestion.tags.map((tag)=>{
+                    return (<div key={tag._id} className="s-post-summary--meta">
+                        <a className="flex--item s-tag" href="#">{tag.name}</a>
+                    </div>)
+                })}
+                <div className="s-user-card s-user-card__minimal">
+                    <time className="s-user-card--time">
+                        <span title="2020-07-27 07:18:02Z" className="relativetime">{bookMarkQuestion?.createdAt}</span>
+                    </time>
                 </div>
             </div>
         </div>

@@ -87,6 +87,10 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
+  tags: {
+    type: Array,
+    ref: 'tag',
+  },
     title: {type:String,required: true},
 
 });

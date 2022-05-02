@@ -3,4 +3,5 @@ exports.constants = {
     ipAddress: "localhost",
     port: "3001",
   },
+  baseUrl:'http://localhost:3001'
 };
