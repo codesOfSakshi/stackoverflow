@@ -14,8 +14,8 @@ const ActivityTab = () => {
     }
 
   return (
-      <>
-        <div>ActivityTab</div>
+      <div className="d-flex">
+          <div className="flex--item">
         <nav>
             <ul class="s-navigation s-navigation__vertical">
                 <li><a onClick={()=>{changeTab("answers")}} className={"s-navigation--item"+( tabSelected==="answers" ? " is-selected":"")}>Answers</a></li>
@@ -26,6 +26,8 @@ const ActivityTab = () => {
                 <li><a onClick={()=>{changeTab("reputation")}} className={"s-navigation--item"+( tabSelected==="reputation" ? " is-selected":"")}>Reputation</a></li>
             </ul>
         </nav>
+          </div>
+          <div className="flex--item fl-grow1">
         {
                 tabSelected==="answers" && <UserAnswerList/>
         }
@@ -44,7 +46,8 @@ const ActivityTab = () => {
         {
             tabSelected==="reputation" && <UserReputationList/>
         }
-    </>
+          </div>
+    </div>
   )
 }
 

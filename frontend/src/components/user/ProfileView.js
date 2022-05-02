@@ -20,21 +20,19 @@ export default function ProfileView() {
     const theme = useTheme();
 
     return  (
-        <Card sx={{ display: 'flex' }}>
-            <CardMedia
-                component="img"
-                sx={{ width: 151 }}
-                image="./images/user.png"
-                alt="Live from space album cover"
-            />
+        <div className="d-flex">
+        <div className="flex--item fl-grow1">
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <img
+                    src="https://www.gravatar.com/avatar/90e6eb5665442d70692337c9cab713ea?s=328&amp;d=identicon&amp;r=PG&amp;f=1"
+                    alt="user avatar" width="164" height="164" className="bar-sm main-image"/>
+
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="mt48">
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
+                    <Typography component="div" variant="h3">
                         Sakshi
                     </Typography>
-                </CardContent>
-
-
 
             <Stack direction="row" spacing={2}>
                  <Stack direction="row">
@@ -56,15 +54,23 @@ export default function ProfileView() {
                     </Typography>
                 </Stack>
             </Stack>
-
+                </CardContent>
+                </div>
 
             </Box>
-          <Stack sx={{  }}>
-            <Button variant="outlined" size="small" >
-                <EditIcon/>
-                <div> Edit </div>
-               </Button>
-          </Stack>
-        </Card>
+            </Box>
+        </div>
+            <div className="flex--item">
+
+            <a className="flex--item s-btn s-btn__outlined s-btn__muted s-btn__icon s-btn__sm"
+               href="/users/edit/6599710">
+                <svg aria-hidden="true" className="svg-icon iconPencil" width="18" height="18" viewBox="0 0 18 18">
+                </svg>
+                Edit profile</a>
+
+            </div>
+        </div>
+
+
     );
 }

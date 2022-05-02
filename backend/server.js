@@ -11,11 +11,19 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const user = require("./controllers/user");
+<<<<<<< HEAD
 const search = require("./routes/search");
+=======
+const question = require("./controllers/questions");
+
+require("./models/tag.js")
+>>>>>>> origin/master
 
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
+const tagRoute = require('./routes/tag.route');
+const messageRoute = require('./routes/message.route');
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -43,8 +51,6 @@ app.listen(PORT, () => {
 /*                            connecting to mongoDB                           */
 /* -------------------------------------------------------------------------- */
 
-// const mongoURI =
-//   "mongodb+srv://admin:admin@etsy.p9dvg.mongodb.net/etsy?retryWrites=true&w=majority";
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
 // const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
@@ -101,3 +107,6 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use("/api/search", search);
+app.use('/api/questions',question);
+app.use('/api/tags', tagRoute);
+app.use('/api/messages', messageRoute);

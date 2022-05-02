@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    _id:{
-        type: String,
-        required: true,
-    },
+    // _id:{
+    //     type: mongoose.ObjectId,
+    //     required: true,
+    // },
     createdAt:{
         type:String,
         required: true,

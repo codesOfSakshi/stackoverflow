@@ -1,31 +1,42 @@
 const mongoose = require("mongoose");
 
 const tagSchema = new mongoose.Schema({
-    _id:{
+    tagId:{
         type: String,
         required: true,
+        unique:true
     },
     createdAt:{
-        type:String,
+        type:Date,
         required: true,
+        default: Date.now
     },
     updatedAt:{
-        type:String,
+        type:Date,
         required: true,
+        default: Date.now
     },
     description:{
         type:String,
-        required: true,
     },
     name:{
         type:String,
         required: true,
+        unique:true
     },
     numQuestions:{
-        type:String,
+        type:Number,
         required: true,
-    }
+    },
+    numQuestionsToday:{
+        type:Number,
+        required: true,
+    },
+    numQuestionsThisWeek:{
+        type:Number,
+        required: true,
+    },
+
 });
 
-const tagModel = mongoose.model('tag', tagSchema);
-module.exports = tagModel;
+module.exports = mongoose.model('tag', tagSchema);

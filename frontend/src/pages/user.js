@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import Profile from '../components/user/ProfileView'
 import ProfileTab from '../components/user/ProfileTab'
 import ActivityTab from '../components/user/ActivityTab'
+import "../styles/user.css";
 
 
 
@@ -15,11 +16,12 @@ function User() {
     }
 
     return (
-        <div>
-            <div><h1>Headers</h1></div>
+
+        <div className="snippet-hidden mt48 mr48 mb48 ml48">
             <Profile/>
-            <nav>
-                <ul className="s-navigation">
+
+            <nav className="user-nav">
+                <ul className="s-navigation user-nav-options">
                     <li onClick={()=>{changeTab("profile")}}><a className={"s-navigation--item"+( tabSelected==="profile" ? " is-selected":"")}>Profile</a></li>
                     <li onClick={()=>{changeTab("activity")}}><a className={"s-navigation--item"+( tabSelected==="activity" ? " is-selected":"")}>Activity</a></li>
                 </ul>
@@ -31,6 +33,7 @@ function User() {
                 tabSelected==="activity" && <ActivityTab/>
             }
         </div>
+
     )
 }
 
