@@ -17,25 +17,6 @@ function QuestionsPage(){
         })
     },[])
 
-    // const question = {
-    //     _id : "123456789",
-    //     createdAt:"12 Feburary 2020",
-    //     upvotes:[1,2,3,4],
-    //     downvotes:[1,2,3,4],
-    //     views:5,
-    //     title:"Duplicated calculation using subquery",
-    //     tags:["PYTHON","JAVA"],
-    //     description:"I am trying to reproduce the following calc: ((final_value - init_value) / init_value) * 100 Although I am getting the correct value I would like to ask if there is a better way to do this? At least, ...I am trying to reproduce the following calc: ((final_value - init_value) / init_value) * 100 Although I am getting the correct value I would like to ask if there is a better way to do this? At least, ...",
-    //     answers:[1,2,3,4,5],
-    //     images:[1,2,3,4,5],
-    //     userId:"snichat97",
-    //     commentIds:[1,2,3,4],
-    //     bestAns:"12231232",
-    //     asked: 'today',
-    //     modified: 'today',
-    //     views: '3 times'
-    // }
-
     
 
     return(
@@ -107,24 +88,6 @@ function QuestionsPage(){
                     </Col>
                 </Row>
             </div>
-            {/* <div>
-                <PaginatedList
-                    list={answersall}
-                    itemsPerPage={4}
-                    renderList={(list) => list.map((ans)=>{
-                        return(<><hr></hr><Row>
-                            <div>
-                                {ans.answer}
-                                <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
-                                    <form style={{height:"20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none"}}>
-                                        <textarea style={{border:"none", outline:"none", height:"20px", width: "900px", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment"></textarea>
-                                    </form>
-                                </div>
-                            </div>
-                            </Row></>);
-                    })}
-                ></PaginatedList>
-            </div> */}
             <div>
                 {answersall && answersall.map((ans)=>{
                     return(<><hr></hr>
