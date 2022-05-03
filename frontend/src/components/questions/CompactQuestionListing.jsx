@@ -9,6 +9,9 @@ function CompactQuestionListing(props) {
     const routeQuestion = () =>{
       navigate(`/askquestion`)
     }
+    // Question - id, createdAt, updatedAt, upvotes[] (array of userIds), downvotes[] (array of userIds),
+    //  views, title, tags[] (tag collection ids), description, 
+    //  answers[] (answer collection ids), images[], userId, commentId, bestAns, status, badges, activity
   const question = {
       _id : "123456789",
       createdAt:"12 Feburary 2020",
@@ -77,6 +80,11 @@ function CompactQuestionListing(props) {
             </Col>
             </Row>
             {questionsAll.map(question =>(<><hr></hr><CompactQuestion questions={question}></CompactQuestion></>))}
+            {/* <PaginatedList
+            list={questionsAll}
+            itemsPerPage={10}
+            renderList={(list) => (list.map(question =>(<><hr></hr><CompactQuestion questions={question}></CompactQuestion></>)))}
+            ></PaginatedList> */}
         </div>
     </div>
   );

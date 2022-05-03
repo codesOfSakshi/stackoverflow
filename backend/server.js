@@ -9,15 +9,19 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const config = require("config");
+const config = require("./config/config");
 const user = require("./controllers/user");
 const question = require("./controllers/questions");
 
 require("./models/tag.js")
 
+
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
+const admin = require("./routes/admin");
+const tagRoute = require('./routes/tag.route');
+const messageRoute = require('./routes/message.route');
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -31,7 +35,7 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_IP_ADDRESS],
+    origin: config.config.baseURL,
     methods: ["GET", "POST", "PUT"],
     credentials: true,
   })
@@ -47,7 +51,9 @@ app.listen(PORT, () => {
 
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-const mongoURI = `mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority`;
+// const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+
+const mongoURI = "mongodb+srv://anupriya:anupriya123@cluster0.nfuhn.mongodb.net/stackoverflow?retryWrites=true&w=majority";
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -97,4 +103,7 @@ app.use("/", testAPI);
 /* ------------------------------- actual APIs ------------------------------ */
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
+app.use("/api/admin", admin);
 app.use('/api/questions',question);
+app.use('/api/tags', tagRoute);
+app.use('/api/messages', messageRoute);
