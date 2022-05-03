@@ -4,7 +4,7 @@ const { User } = require("../services/user");
 const { Question } = require("../services/question");
 
 router.post("/add",  async (req, res) => {
-    const question = req.query
+    const question = req.body
     console.log("in route",question)
     const response = {};
     try{
