@@ -208,4 +208,31 @@ router.get("/question/activity/:questionId",  async (req, res) => {
     }
 });
 
+router.get("/searchbyname/:name", async (req, res) => {
+
+    const query = req.params.name;
+    const response = {};
+    try{
+
+        const successData = await User.getUsersByName(query);
+        if(successData){
+            response.success = true;
+            response.data = successData;
+            response.status = 200;
+            res.status(200).send(response);
+        }
+        else{
+            response.success = false;
+            response.status = 400;
+            res.status(400).send(response);
+        }
+    }catch(e){
+        console.log(e);
+        response.success = false;
+        response.error = "Request Failed! Please try again later";
+        response.status = 500;
+        res.status(500).send(response);
+    }
+})
+
 module.exports = router;
