@@ -1,4 +1,5 @@
 .bottom {
+    padding-bottom: 10px;
     align-items: center;
     column-gap: var(--su6);
     display: flex;
@@ -15,5 +16,6 @@
 }
 
 .center {
-    text-align: center;
+    font-size: var(--fs-headline1);
+    margin-bottom: 1em;
 }

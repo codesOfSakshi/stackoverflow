@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosApi from "../../config/axios.config";
 import { constants } from "../../config/config";
 import "./AddTag.css";
 
 const AddTag = () => {
-  const [tags, setTags] = useState(["bug", "css", "design"]);
+  const [tags, setTags] = useState();
   // const [newTag, setNewTag] = useState({name: "", description: ""});
 
   const [tagName, setTagName] = useState();
   const [tagDesc, setTagDesc] = useState();
+
   const handleInput = (e) => {
     e.preventDefault();
     let newTag = {
+      tagId: tagName,
       name: tagName,
       description: tagDesc,
     };
@@ -21,10 +23,10 @@ const AddTag = () => {
       .then(
         (res) => {
           // console.log(res);
-          if (res && res.data && res.data.success === true) {
+          if (res && res.data && res.data.status === true) {
             setTags([...tags, tagName]);
             console.log(tags);
-          }else{
+          } else {
             console.log(res.data);
           }
         },
@@ -35,14 +37,33 @@ const AddTag = () => {
   };
 
   const handleNameInput = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setTagName(e.target.value);
   };
 
   const handleDescInput = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setTagDesc(e.target.value);
   };
+
+  const getTags = () => {
+    axiosApi.get(constants.API.TAG.getTags).then(
+      (res) => {
+        // console.log(res);
+        if(res && res.data){
+          let tagNames = res.data.map(x=>x.name);
+          // console.log(tagNames);
+          setTags([...tagNames]);
+          // console.log(tags);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  useEffect(getTags, []);
 
   return (
     <div>

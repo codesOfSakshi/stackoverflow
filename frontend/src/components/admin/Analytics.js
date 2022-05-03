@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosApi from "../../config/axios.config";
 import { constants } from "../../config/config";
-import "./Analytics.css"
+import "./Analytics.css";
 
 const Analytics = () => {
   const [HighestReputedUsers, setHighestReputedUsers] = useState();
@@ -31,38 +31,40 @@ const Analytics = () => {
   useEffect(getAnalytics, []);
   return (
     <div id="questions">
-      <h1 class="center">ANALYTICS</h1>
-      <div  class="">
+      
+      <div class="" style={{marginBottom: "20px"}}>
         <h2>Most Viewed Questions</h2>
         {MostViewedQuestions &&
           MostViewedQuestions.map((question, idx) => (
             <QuestionSummary idx={idx} question={question} />
           ))}
       </div>
-            <hr />
+      
       <div class="bottom">
-      <div class="tags">
+        <div >
           <h2>Most Used Tags:</h2>
-          <div class="tags">
+          <div class="tags" style={{paddingBottom: "40px"}}>
             {MostUsedTags && MostUsedTags.map((tag, idx) => <Tags tag={tag} />)}
           </div>
-        </div>
-        <div class="tags">
+          
+          <div class="tags" style={{paddingBottom: "240px"}}>
           <h2>Todays Questions: {TodaysQuestions}</h2>&ensp;
         </div>
+        </div>
+        
+        
         <div>
           <h2>Highest Reputed Users:</h2>&ensp;
           {HighestReputedUsers &&
             HighestReputedUsers.map((user, idx) => <User user={user} />)}
         </div>
         <div>
-          <h2>Lowest Reputed Users:</h2>
+          <h2>Lowest Reputed Users:</h2>&ensp;
           {LowestReputedUsers &&
             LowestReputedUsers.map((user, idx) => <User user={user} />)}
         </div>
       </div>
-      {/* <div>Lowest Reputed Users: {LowestReputatedUsers}</div>
-      <div>Todays Questions: {}</div> */}
+      
     </div>
   );
 };
@@ -103,7 +105,9 @@ const Tags = ({ tag }) => (
 
 const User = ({ user }) => (
   <div class="s-user-card s-user-card__full">
-    {console.log("IN USER", user)}
+    {//console.log("IN USER", user)
+      //TODO: Add user image
+    }
     <a href="…" class="s-avatar s-avatar__48 s-user-card--avatar">
       {" "}
       {user.name}
