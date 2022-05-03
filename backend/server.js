@@ -20,7 +20,6 @@ require("./models/tag.js")
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
 const admin = require("./routes/admin");
-const tag = require("./routes/tag");
 const tagRoute = require('./routes/tag.route');
 const messageRoute = require('./routes/message.route');
 
@@ -105,7 +104,6 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use("/api/admin", admin);
-app.use("/api/tag", tag)
 app.use('/api/questions',question);
 app.use('/api/tags', tagRoute);
 app.use('/api/messages', messageRoute);
