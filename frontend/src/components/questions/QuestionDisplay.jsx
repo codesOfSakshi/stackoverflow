@@ -20,7 +20,7 @@ function QuestionsPage(){
     
 
     return(
-        // <div>
+        <div>
             <div style={{ width: '60rem',textAlign:'justify'}}>
                 <h2>
                 {question.title}
@@ -120,7 +120,7 @@ function QuestionsPage(){
                 </Row>
             </div>
         </div>
-    // </div>
+    </div>
     );
 
 }
