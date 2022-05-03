@@ -5,6 +5,7 @@ import UserDetail from "./pages/userDetail.js";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Question from './pages/Question';
+import QuestionDisplayPage from './pages/QuestionDisplayPage';
 import AskQuestion from './pages/AskQuestion';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Route exact path="/signup" element={<SignUp />} />
       <Route path='/question' element={<Question/>}/>
       <Route path='/askquestion' element={<AskQuestion/>}/>
+      <Route path='/question/:id' element = {<QuestionDisplayPage />}/>
       <Route exact element={Error} />
 
 

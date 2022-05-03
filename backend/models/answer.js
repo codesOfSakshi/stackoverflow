@@ -7,11 +7,9 @@ const answerSchema = new mongoose.Schema({
     // },
     createdAt:{
         type:String,
-        required: true,
     },
     updatedAt:{
         type:String,
-        required: true,
     },
     upVotes:{
         type:Array,
