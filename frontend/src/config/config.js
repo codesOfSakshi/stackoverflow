@@ -12,7 +12,11 @@ exports.constants = {
       getUnreviewed : "/api/admin/unreviewed",
       getAnalytics : "/api/admin/analytics",
       approval : "/api/admin/approval",
-
     }
+  },
+  constants: {
+    questionApproved: "approved",
+    questionRejected: "rejected",
+    questionWaiting: "waiting for approval",
   }
 };

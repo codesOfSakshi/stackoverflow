@@ -1,0 +1,19 @@
+.bottom {
+    align-items: center;
+    column-gap: var(--su6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: var(--su8);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--su4);
+
+}
+
+.center {
+    text-align: center;
+}

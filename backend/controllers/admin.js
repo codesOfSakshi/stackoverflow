@@ -20,28 +20,32 @@ module.exports = class AdminController {
   static async approve(req, res) {
     console.log("INSIDE APPROVE");
     const { questionID, status } = req.body;
+    const response ={};
     try {
       if (
         questionID &&
         (status.toLowerCase() == CONSTANTS.questionApproved ||
           status.toLowerCase() == CONSTANTS.questionRejected)
       ) {
-        const response = await ADMIN.approve({ questionID, status });
+        response.result = await ADMIN.approve({ questionID, status });
         //console.log(response);
+        response.success=true;
+        response.status=200;
         res.status(200);
         res.send(response);
       } else {
+        response.message="Expected questionID and status: " + CONSTANTS.questionRejected +" or " + CONSTANTS.questionApproved;
+        response.success=false;
+        response.status=400;
         res.status(400);
-        res.send(
-          "Expected questionID and status: " +
-            CONSTANTS.questionRejected +
-            " or " +
-            CONSTANTS.questionApproved
-        );
+        res.send(response);
       }
     } catch (err) {
+      response.message="Something went wrong: " + err;
+        response.success=false;
+        response.status=500;
       res.status(500);
-      res.send("Something went wrong: " + err);
+      res.send(response);
     }
   }
 
@@ -52,8 +56,8 @@ module.exports = class AdminController {
       response.TodaysQuestions = await ADMIN.getCountOfTodaysQuestions();
       response.MostViewedQuestions = await ADMIN.getMostViewedQuestions();
       response.MostUsedTags = await ADMIN.getMostUsedTags();
-      response.HighestReputatedsers = await ADMIN.getHighestedRepUsers();
-      response.LowestReputatedUsers = await ADMIN.getLowestRepUsers();
+      response.HighestReputedUsers = await ADMIN.getHighestedRepUsers();
+      response.LowestReputedUsers = await ADMIN.getLowestRepUsers();
       //console.log(response);
       response.status=200;
       response.success=true;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { constants } from './config';
 
 const axiosApi = axios.create({
-    baseURL: constants.IP.ipAddress + constants.IP.xport,
+    baseURL: constants.API.baseURL,
 });
 
 axiosApi.interceptors.request.use(
