@@ -106,4 +106,8 @@ app.use("/api/user", user);
 app.use("/api/admin", admin);
 app.use('/api/questions',question);
 app.use('/api/tags', tagRoute);
+<<<<<<< HEAD
 app.use('/api/messages', messageRoute);
+=======
+app.use('/api/messages', messageRoute);
+>>>>>>> master
