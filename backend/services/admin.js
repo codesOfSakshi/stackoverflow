@@ -33,7 +33,7 @@ module.exports = class AdminService {
   }
 
   static async getCountOfTodaysQuestions() {
-    console.log("*");
+    console.log("Getting list of todays question");
     const query = {
       created_on: {
         $gte: new Date(),
@@ -42,7 +42,7 @@ module.exports = class AdminService {
     };
     try {
       const result = await QUESTION.countDocuments(query);
-      console.log("COUNT", result);
+      //console.log("COUNT", result);
       if (result) {
         return result;
       } else {
@@ -56,9 +56,9 @@ module.exports = class AdminService {
   static async getMostViewedQuestions() {
     const query = {};
     try {
-      console.log("**");
+      console.log("Getting most viewed questions");
       const result = await QUESTION.find(query).sort({ views: -1 }).limit(10);
-      console.log(result);
+      //console.log(result);
       if (result) {
         return result;
       } else {
@@ -72,12 +72,12 @@ module.exports = class AdminService {
   static async getMostUsedTags() {
     const query = {};
     try {
-      console.log("***");
+      console.log("Getting most used tags.");
       const result = await TAGS.find(query)
         .sort({ numQuestions: -1 })
         .limit(10)
         .select("name");
-      console.log(result);
+      //console.log(result);
       if (result) {
         return result;
       } else {
@@ -91,9 +91,9 @@ module.exports = class AdminService {
   static async getHighestedRepUsers() {
     const query = {};
     try {
-      console.log("****");
+      console.log("Get highest reputed users.");
       const result = await USERS.find(query).sort({ reputation: -1 }).limit(10);
-      console.log(result);
+      //console.log(result);
       if (result) {
         return result;
       } else {
@@ -107,9 +107,9 @@ module.exports = class AdminService {
   static async getLowestRepUsers() {
     const query = {};
     try {
-      console.log("*****");
+      console.log("Get lowest reputed users.");
       const result = await USERS.find(query).sort({ reputation: 1 }).limit(10);
-      console.log(result);
+      //console.log(result);
       if (result) {
         return result;
       } else {
