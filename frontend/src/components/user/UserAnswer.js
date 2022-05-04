@@ -3,9 +3,11 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 
 
-export default function UserAnswer() {
-
+export default function UserAnswer({answer}) {
+   console.log(answer)
     return (
+        answer.map(ans=> {
+
 
             <div id="question-summary-61933462" className="s-post-summary s-post-summary__minimal js-post-summary"
                  data-post-id="61933462" data-post-type-id="1">
@@ -14,16 +16,8 @@ export default function UserAnswer() {
 
                     <div className="s-post-summary--stats-item s-post-summary--stats-item__emphasized"
                          title="Score of 1">
-                        <span className="s-post-summary--stats-item-number">1</span>
+                        <span className="s-post-summary--stats-item-number">{ans.questionId.upVotesCount.length-ans.questionId.downVotesCount.length}</span>
                         <span className="s-post-summary--stats-item-unit">vote</span>
-                    </div>
-                    <div className="s-post-summary--stats-item has-answers " title="1 answer">
-                        <span className="s-post-summary--stats-item-number">1</span>
-                        <span className="s-post-summary--stats-item-unit">answer</span>
-                    </div>
-                    <div className="s-post-summary--stats-item " title="297 views">
-                        <span className="s-post-summary--stats-item-number">297</span>
-                        <span className="s-post-summary--stats-item-unit">views</span>
                     </div>
 
 
@@ -33,17 +27,16 @@ export default function UserAnswer() {
                     <h3 className="s-post-summary--content-title">
 
 
-                        <a href="/questions/61933462/aerospike-as-cache" className="s-link">Aerospike as cache</a>
+                        <a href="/questions/61933462/aerospike-as-cache" className="s-link">ans.questionId.title</a>
                     </h3>
                     <div className="s-post-summary--meta">
                         <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
-
+                            ans.tags.map(tag=>{
                             <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
-                               title="" rel="tag">spring</a> <a href="/questions/tagged/caching"
-                                                                className="post-tag flex--item mt0 js-tagname-caching"
-                                                                title="" rel="tag">caching</a> <a
-                            href="/questions/tagged/aerospike" className="post-tag flex--item mt0 js-tagname-aerospike"
-                            title="" rel="tag">aerospike</a>
+                               title="" rel="tag">{tag.title}</a>
+                        })
+
+
                         </div>
 
 
@@ -59,14 +52,14 @@ export default function UserAnswer() {
                             </div>
 
                             <time className="s-user-card--time">asked <span title="2020-05-21 11:26:53Z"
-                                                                            className="relativetime">May 21, 2020 at 11:26</span>
+                                                                            className="relativetime">{ans.question.createdAt}</span>
                             </time>
                         </div>
 
                     </div>
                 </div>
             </div>
-
+        })
 
     );
 }
