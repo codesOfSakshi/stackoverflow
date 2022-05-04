@@ -22,8 +22,6 @@ const userRoute = require("./routes/userRoute");
 const tagRoute = require("./routes/tag.route");
 const messageRoute = require("./routes/message.route");
 const admin = require("./routes/admin");
-const tagRoute = require('./routes/tag.route');
-const messageRoute = require('./routes/message.route');
 const s3Route = require('./routes/s3Route');
 const answer = require("./controllers/answer")
 const comment = require("./controllers/comment")
@@ -116,8 +114,6 @@ app.use("/api/tags", tagRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/admin", admin);
 app.use('/api/questions',question);
-app.use('/api/tags', tagRoute);
-app.use('/api/messages', messageRoute);
 app.use('/api/s3', s3Route);
 app.use("/api/answer", answer)
 app.use("/api/answer/mark", answer)
