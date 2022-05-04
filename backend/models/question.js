@@ -14,9 +14,11 @@ const questionSchema = new mongoose.Schema({
   },
   upVotes: {
     type: Array,
+    ref: "user",
   },
   downVotes: {
     type: Array,
+    ref: "user",
   },
   views: {
     type: Number,
@@ -47,7 +49,8 @@ const questionSchema = new mongoose.Schema({
     type: String,
   },
   bastAns: {
-    type: String,
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'answer',
   },
   status: {
     type: String,
