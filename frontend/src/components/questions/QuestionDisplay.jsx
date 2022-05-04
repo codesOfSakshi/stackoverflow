@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Row, Col, Badge, Button} from 'react-bootstrap';
 // import {PaginatedList} from 'react-paginated-list';
-import Editor from '../../Atom/EditorQuestion';
+// import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 
 
@@ -21,39 +21,39 @@ function QuestionsPage(){
 
     return(
         <div>
-        <div style={{ width: '60rem',textAlign:'justify'}}>
-            <h2>
-            {question.title}
-            </h2>
-            <div>
+            <div style={{ width: '60rem',textAlign:'justify'}}>
+                <h2>
+                {question.title}
+                </h2>
+                <div>
+                    <Row>
+                        <Col>
+                            
+                                Asked : <b>{question.asked}</b>
+                            
+                        </Col>
+                        <Col>
+                            
+                                Modified : <b>{question.modified}</b>
+                            
+                        </Col>
+                        <Col>
+                            
+                                Viewed : <b>{question.views}</b>
+                            
+                        </Col>
+                    </Row>
+                </div>
+                <br/>
+                <hr></hr>
                 <Row>
-                    <Col>
-                        
-                            Asked : <b>{question.asked}</b>
-                        
-                    </Col>
-                    <Col>
-                        
-                            Modified : <b>{question.modified}</b>
-                        
-                    </Col>
-                    <Col>
-                        
-                            Viewed : <b>{question.views}</b>
-                        
-                    </Col>
+                    <p>
+                        <>
+                        {question.description}
+                        </>
+                    </p>
                 </Row>
-            </div>
-            <br/>
-            <hr></hr>
-            <Row>
-                <p>
-                    <>
-                    {question.description}
-                    </>
-                </p>
-            </Row>
-            
+           
             <div class="displayFlex" style={{"margin-bottom":"1rem"}}>
                 {question.tags && question.tags.map( tag =>{
                     return(<>
@@ -112,9 +112,9 @@ function QuestionsPage(){
                         Your Answer
                     </h3>
                 </Row>
-                <Row style={{}}>
+                {/* <Row style={{}}>
                     <Editor></Editor>
-                </Row>
+                </Row> */}
                 <Row style={{width:"200px", marginTop:"300px", marginLeft: "0.5px"}}>
                     <Button>Post Your Answer</Button>
                 </Row>
