@@ -31,7 +31,9 @@ router.post("/mark",  async (req, res) => {
     const response = {};
     try{
         const bestAns = await Answer.postBestAnswer(answerId, questionId);
-        if(bestAns?.length){
+        console.log("BEST ANS IN CONTROLLER IS", bestAns, bestAns.length)
+        if(bestAns){
+            console.log("best answer")
             response.success = true;
             response.questionId = questionId;
             response.answerId = answerId;

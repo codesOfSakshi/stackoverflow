@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {Comment} = require("../services/comment");
 
 router.post("/",  async (req, res) => {
     const questionId = req.body.questionId;
@@ -9,7 +10,7 @@ router.post("/",  async (req, res) => {
     const response = {};
     try{
         const addComment = await Comment.postComment(answerId,questionId,type,comment);
-        if(addComment?.length){
+        if(addComment){
             response.success = true;
             response.questionId = questionId;
             response.answerId = answerId;
