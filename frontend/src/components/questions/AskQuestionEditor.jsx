@@ -86,11 +86,11 @@ function AskQuestionEditor(props) {
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
         <Form.Group className="mb-3" controlId="formBasicTags" onChange={e=>chooseOther(e)}>
-            <Form.Select>
+            <select>
                 {tags.map ( tag =>{
                   return(
                 <option value={tag} >{tag}</option>)})}
-            </Form.Select>
+            </select>
         </Form.Group>
         <div class="d-flex gs4">
           {selectedTags.map(tag => 
