@@ -23,7 +23,7 @@ const questionSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   tags: {
     type: Array,
@@ -31,7 +31,7 @@ const questionSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   answers: {
     type: Array,
@@ -60,6 +60,6 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("question", questionSchema);
+module.exports = mongoose.model("questions", questionSchema);
 
 // module.exports = questionModel;

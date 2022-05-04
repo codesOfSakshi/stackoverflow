@@ -2,6 +2,7 @@
 const { User } = require("../services/user.js");
 const ENCRYPT = require("../services/encrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../config/config.js").config;
 
 module.exports = class UserController {
   /* -------------------------------------------------------------------------- */
@@ -55,7 +56,7 @@ module.exports = class UserController {
 
     const user = JSON.parse(JSON.stringify(userObj.user));
     delete user.password;
-    const token = jwt.sign(user, process.env.SECRET_KEY, {
+    const token = jwt.sign(user, config.SECRET_KEY, {
       expiresIn: "24h",
     });
 
@@ -119,7 +120,7 @@ module.exports = class UserController {
     /* ----------------- create a token and return the response ----------------- */
     user = JSON.parse(JSON.stringify(user));
     delete user.password;
-    const token = jwt.sign(user, process.env.SECRET_KEY, {
+    const token = jwt.sign(user, config.SECRET_KEY, {
       expiresIn: "24h",
     });
     returnMessage.token = token;

@@ -1,0 +1,16 @@
+
+.s-post-summary {
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid var(--bc-light);
+    padding: var(--su16);
+    flex-direction: column;
+}
+
+#questions {
+    width: 95%;
+    float: center;
+    margin:0 auto;
+    margin-bottom: 20px;
+    border: 1px solid var(--black-100);
+}

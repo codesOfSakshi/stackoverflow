@@ -9,12 +9,12 @@ const tagSchema = new mongoose.Schema({
     createdAt:{
         type:Date,
         required: true,
-        default: Date.now
+        default: new Date()
     },
     updatedAt:{
         type:Date,
         required: true,
-        default: Date.now
+        default: new Date()
     },
     description:{
         type:String,
