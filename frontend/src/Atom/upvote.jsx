@@ -20,7 +20,7 @@ const Upvote = ({ type, object, upVote, downVote }) => {
                     <div id="--stacks-s-tooltip-zo65mq8u" class="s-popover s-popover__tooltip pe-none" aria-hidden="true" role="tooltip" >This answer is not useful<div class="s-popover--arrow" ></div>
                     </div>
 
-                    {/* should show only for answer? */}
+                    {/* TODO: add attribute to show its checked answer */}
                     {type && type == "answer" && 
                         <div class="js-accepted-answer-indicator flex--item fc-green-500 py6 mtn8" data-s-tooltip-placement="right" tabindex="0" role="note" aria-label="Accepted" data-controller="null s-tooltip" aria-describedby="--stacks-s-tooltip-0bkl8i4o">
                             <div class="">
