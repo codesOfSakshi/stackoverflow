@@ -13,11 +13,13 @@ import TagsPage from './pages/AllTagsPage/TagsPage'
 import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
+import Upvote from "./Atom/upvote";
 
 function App() {
   return (
     <Routes>
       <Route exact path="/" element={<SignIn />} />
+      <Route exact path="/upvote" element={<Upvote />} />
       <Route exact path="/admin" element={<Admin />} />
       <Route exact path="/user/:userId" element={<User />} />
       <Route exact path="/user/edit/:userId" element={<UserDetail/>} />
