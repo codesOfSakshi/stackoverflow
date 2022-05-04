@@ -11,6 +11,7 @@
     "@mui/material": "^5.6.3",
     "@popperjs/core": "^2.11.5",
     "@stackoverflow/stacks": "^1.0.1",
+    "@stackoverflow/stacks-icons": "^2.27.0",
     "@stackoverflow/stacks-editor": "^0.4.2",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
