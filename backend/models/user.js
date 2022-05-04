@@ -87,6 +87,9 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
+  tags: {
+    type: Array
+  },
     title: {type:String,required: true},
 
 });

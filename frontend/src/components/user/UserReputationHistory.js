@@ -1,12 +1,12 @@
 import React from 'react';
 import "../../styles/reputation.css";
 
-const UserReputationHistory = () => {
+const UserReputationHistory = ({eachReputationHistory}) => {
   return (
     <div className="reputation-container">
-        <div className="reputation-title">upvote</div>
-        <div className="reputation-points-gain">+10</div>
-        <div className="reputation-info">Swarmplot with connected dots with Python Seaborn</div>
+        {eachReputationHistory.action.gain && <div className="reputation-points-gain">+{eachReputationHistory.action.points}</div>}
+        {!eachReputationHistory.action.gain && <div className="reputation-points-loss">-{eachReputationHistory.action.points}</div>}
+        <div className="reputation-info">{eachReputationHistory.action.description}</div>
     </div>
   )
 }

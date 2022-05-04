@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
 const tagSchema = new mongoose.Schema({
-    tagId:{
-        type: String,
-        required: true,
-        unique:true
-    },
+    // _id: {
+  // type: mongoose.ObjectId,
+  // required: true,
+  // },
     createdAt:{
         type:Date,
         required: true,

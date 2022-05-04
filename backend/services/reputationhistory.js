@@ -9,8 +9,10 @@ class ReputationHistory {
                 user:mongoose.Types.ObjectId(userId),
             }
             //TODO rushabh sort by date desc
-            let reputationHistory = await ReputationHistoryModel.find(query).populate('user').populate('action');
+            let reputationHistory = await ReputationHistoryModel.find(query).populate('action').populate('user').sort({"createdAt":-1});
             reputationHistory = JSON.parse(JSON.stringify(reputationHistory));
+            console.log(query);
+            console.log(reputationHistory);
             if(reputationHistory?.length){
                 return reputationHistory;
             }else{
