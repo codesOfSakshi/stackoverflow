@@ -1,11 +1,7 @@
 import {Form,Row,Card,Button} from 'react-bootstrap';
 //import axios from 'axios';
 import {useEffect,useState} from 'react';
-import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
-import MyEditor from '../../Atom/EditorQuestion';
-// Don’t forget to include the styles as well
-import "@stackoverflow/stacks-editor/dist/";
 import axios from 'axios';
 
 
@@ -86,17 +82,18 @@ function AskQuestionEditor(props) {
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
         <Form.Group className="mb-3" controlId="formBasicTags" onChange={e=>chooseOther(e)}>
-            <Form.Select>
-                {tags.map ( tag =>{
+            <select className="mb-3">
+                {tags && tags.map ( tag =>{
                   return(
                 <option value={tag} >{tag}</option>)})}
-            </Form.Select>
+            </select>
         </Form.Group>
         <div class="d-flex gs4">
           {selectedTags.map(tag => 
           {return(<a class="flex--item s-tag s-tag__moderator" href="#">{tag}
           <span class="s-tag--dismiss"> <div val={tag} onClick={(e,tag)=>deleteTag(e,tag)}>X</div></span></a>)})}
-      </div></div>
+      </div>
+      </div>
 
         <center>
         <Button variant="primary" type="submit" style={{'marginTop':"2rem"}}>
