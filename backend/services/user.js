@@ -258,6 +258,15 @@ class User {
                     if(tagUserObj && tagUserObj.length){
                       tagUserObj = tagUserObj[0];
                       tagsObj.score = tagUserObj.score;
+                      if(tagsObj.score>=20){
+                        tagsObj.color="gold";
+                      }else if(tagsObj.score>=15){
+                        tagsObj.color="silver";
+                      }else if(tagsObj.score>=10){
+                        tagsObj.color="bronze";
+                      }else{
+                        tagsObj.color="";
+                      }
                     }
                     console.log(tagsObj);
                     tagsCombined.push(tagsObj);

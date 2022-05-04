@@ -98,6 +98,7 @@ router.get("/tags/:userId",  async (req, res) => {
                 response.status = 500;
                 res.status(500).send(response);
         }else{
+            console.log("tags");
             if(tags?.length){
                 response.success = true;
                 response.tags = tags;
