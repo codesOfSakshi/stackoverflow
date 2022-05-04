@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const answerSchema = new mongoose.Schema({
-    // _id:{
+  // _id:{
     //     type: mongoose.ObjectId,
     //     required: true,
     // },
@@ -33,5 +33,5 @@ const answerSchema = new mongoose.Schema({
     }
 });
 
-const answerModel = mongoose.model('answer', answerSchema);
+const answerModel = mongoose.model("answer", answerSchema);
 module.exports = answerModel;

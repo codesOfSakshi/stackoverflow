@@ -10,7 +10,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const signUpURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/user/signup`;
+  const signUpURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/user/signup`;
 
   /* ------------------------------ handle submit ----------------------------- */
   const handleSubmit = (e) => {
