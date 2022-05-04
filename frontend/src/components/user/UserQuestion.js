@@ -37,10 +37,10 @@ export default function UserQuestion({question}) {
                 </h3>
                 <div className="s-post-summary--meta">
                     <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
-                        (que.tags).map(tag=>{
+                        {(que.tags).map(tag=>{
                         <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
                            title="" rel="tag">{tag.title}</a>
-                    })
+                    })}
                     </div>
 
 
