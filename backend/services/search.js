@@ -242,7 +242,6 @@ module.exports = class SearchService {
       let final_ans = [];
       for (const question of questions) {
         if (!question.status) {
-          console.log(question._id);
           continue;
         }
         if (
@@ -282,6 +281,28 @@ module.exports = class SearchService {
     } catch (error) {
       console.log(
         "There was an error in search service searchStatus and the error is",
+        error
+      );
+      return null;
+    }
+  }
+
+  static async searchUsersByName({ name }) {
+    try {
+      const query = {};
+      if (name !== "") {
+        query.name = { $regex: `^${name}`, $options: "i" };
+      }
+
+      const users = await USERMODEL.find(query);
+      if (users) {
+        return users;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log(
+        "There was an error in SearchService.searchUsersByName and the error is \n",
         error
       );
       return null;

@@ -50,10 +50,10 @@ app.listen(PORT, () => {
 
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-// const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
 // const mongoURI =
 //   "mongodb+srv://anupriya:anupriya123@cluster0.nfuhn.mongodb.net/stackoverflow?retryWrites=true&w=majority";
-const mongoURI = `mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority`;
+// const mongoURI = `mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority`;
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -99,7 +99,6 @@ mongoose.connection.on("disconnected", () => {
 
 /* ---------------------- sample api to test the server --------------------- */
 app.use("/", testAPI);
-
 /* ------------------------------- actual APIs ------------------------------ */
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
