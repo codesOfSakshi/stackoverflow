@@ -9,6 +9,7 @@ const AddTag = () => {
 
   const [tagName, setTagName] = useState();
   const [tagDesc, setTagDesc] = useState();
+  const [tagExists, setTagExists] = useState(false);
 
   const handleInput = (e) => {
     e.preventDefault();
@@ -26,12 +27,17 @@ const AddTag = () => {
           if (res && res.data && res.data.status === true) {
             setTags([...tags, tagName]);
             console.log(tags);
+            setTagExists(false);
           } else {
             console.log(res.data);
+            setTagExists(true);
+            console.log(tagExists);
           }
         },
         (err) => {
           console.log(err);
+          setTagExists(true);
+          console.log(tagExists);
         }
       );
   };
@@ -99,6 +105,8 @@ const AddTag = () => {
           >
             Add tag
           </button>
+          
+          {tagExists && <aside class="s-notice s-notice__danger" role="status">Tag already exists.</aside>}
         </form>
         <ul id="tagList">{tags && tags.map((tag) => displayTag(tag))}</ul>
       </div>
