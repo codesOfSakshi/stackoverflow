@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import UserAnswer from './UserAnswer'
 import axiosService from "../../services/axiosservice";
+import {useParams} from "react-router-dom";
 function UserAnswerList() {
 
 
     const [answer, setAnswer] = useState(0);
 
+    const GET_USER_API = "api/user/";
+    const params = useParams();
+    console.log(params)
+    const { userId: userId } = params;
+    console.log(params)
 
     const getUser = async () => {
 
