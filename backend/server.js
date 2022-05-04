@@ -53,7 +53,7 @@ app.listen(PORT, () => {
 
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
-const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+const mongoURI = `mongodb+srv://alpha:beta@cluster0.g9k9g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -61,7 +61,7 @@ let options = {
   wtimeoutMS: 2500,
 };
 
-mongoose.connect(mongoURI, options, (err, res) => {
+mongoose.connect(mongoURI, (err, res) => {
   if (err) {
     console.log(err);
     console.log(`MongoDB Connection Failed`);
