@@ -171,5 +171,30 @@ static editQuestion = async (question)=>{
     }
 }
 
+static updateAnswerId = async (answerId,questionId)=>{
+    try{
+
+        const findCondition = {
+            _id:mongoose.Types.ObjectId(questionId),
+        };
+        console.log("==========="+answerId)
+        const updateCondition = {
+            $push: { "answers": answerId }
+        }
+        console.log(findCondition);
+        const result = await QuestionModel.updateOne(findCondition,updateCondition);
+        console.log("Question result is", result);
+        if(result){
+            return result
+        }else{
+            return {}; 
+        }
+    }
+    catch(err){
+        console.log(err);
+        throw new Error("Some unexpected error occurred while updating answer Id");
+    }
+}
+
 }
 module.exports.Question = Question;

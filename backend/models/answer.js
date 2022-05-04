@@ -13,11 +13,11 @@ const answerSchema = new mongoose.Schema({
     },
     upVotes:{
         type:Array,
-        required: true,
+        ref: "user",
     },
     downVotes:{
         type:Array,
-        required: true,
+        ref: "user",
     },
     comment:{
         type:Array,

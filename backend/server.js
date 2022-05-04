@@ -15,13 +15,16 @@ const question = require("./controllers/questions");
 
 require("./models/tag.js")
 
-
 /* ---------------------------- importing routes ---------------------------- */
 const testAPI = require("./routes/testRoute");
 const userRoute = require("./routes/userRoute");
 const admin = require("./routes/admin");
 const tagRoute = require('./routes/tag.route');
 const messageRoute = require('./routes/message.route');
+const s3Route = require('./routes/s3Route');
+const answer = require("./controllers/answer")
+const comment = require("./controllers/comment")
+
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -33,7 +36,6 @@ const app = express();
 app.use(express.json());
 app.use(passport.initialize());
 
-
 // app.use(
 //   cors({
 //     origin: [],
@@ -43,6 +45,7 @@ app.use(passport.initialize());
 // );
 
 app.use(cors());
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -56,7 +59,7 @@ app.listen(PORT, () => {
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
 // const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
 
-const mongoURI = "mongodb+srv://anupriya:anupriya123@cluster0.nfuhn.mongodb.net/stackoverflow?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority";
 let options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -110,3 +113,7 @@ app.use("/api/admin", admin);
 app.use('/api/questions',question);
 app.use('/api/tags', tagRoute);
 app.use('/api/messages', messageRoute);
+app.use('/api/s3', s3Route);
+app.use("/api/answer", answer)
+app.use("/api/answer/mark", answer)
+app.use("/api/comment", comment)

@@ -7,13 +7,24 @@ import axios from 'axios';
 function QuestionsPage(){
     const [question,setQuestion] = useState({})
     const[answersall, setlans] =  useState([])  
+    var questionDisplay, answerDisplay;
+
     useEffect(() => {
-      var api="http://localhost:3001/api/questions/626cca47021472214c424d6d"
+      var api="http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
       axios.get(api).then(response => {
         console.log(response)
         setQuestion(response.data.data)
         setlans(response.data.data.answers)
+
+        questionDisplay = new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-container-questionDisplay"),
+            response.data.data.description, )
         })
+
+
+    answerDisplay = new window.stacksEditor.StacksEditor(
+        document.querySelector("#editor-container-answerDisplay"),
+        "", )
     },[])
 
     
@@ -48,7 +59,7 @@ function QuestionsPage(){
                 <Row>
                     <p>
                         <>
-                        {question.description}
+                            <div id="editor-container-questionDisplay"></div>
                         </>
                     </p>
                 </Row>
@@ -98,7 +109,7 @@ function QuestionsPage(){
                             {ans.description}
                             <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
                                 <form style={{height:"20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none"}}>
-                                    <textarea style={{border:"none", outline:"none", height:"20px", width: "800px", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment"></textarea>
+                                    <textarea style={{border:"none", outline:"none", height:"20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment"></textarea>
                                 </form>
                             </div>
                         </Col>
@@ -114,7 +125,8 @@ function QuestionsPage(){
                 {/* <Row style={{}}>
                     <Editor></Editor>
                 </Row> */}
-                <Row style={{width:"200px", marginTop:"300px", marginLeft: "0.5px"}}>
+                    <div id="editor-container-answerDisplay"></div>
+                <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
                     <Button>Post Your Answer</Button>
                 </Row>
             </div>

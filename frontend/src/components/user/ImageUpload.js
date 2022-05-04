@@ -34,10 +34,10 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import ReplayIcon from "@material-ui/icons/Replay";
-
+import Cookies from 'universal-cookie';
 import { withStyles } from "@material-ui/core/styles";
 
-
+const cookies = new Cookies();
 const imageGallery = [
     "https://raw.githubusercontent.com/dxyang/StyleTransfer/master/style_imgs/mosaic.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1280px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
@@ -163,7 +163,7 @@ class ImageUploadCard extends React.Component {
 
         const imageUrl = this.state.uploadUrl.split('?')[0]
         console.log(imageUrl)
-
+        cookies.set('imageUrl', imageUrl, { path: '/' });
 
 
         this.setState({
