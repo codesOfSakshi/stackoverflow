@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 function UserAnswerList() {
 
 
-    const [answer, setAnswer] = useState(0);
+    const [answer, setAnswer] = useState([]);
 
     const GET_USER_API = "api/user/";
     const params = useParams();
