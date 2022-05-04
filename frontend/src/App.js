@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import AddTag from "./components/admin/AddTag";
 import ReviewQuestions from "./components/admin/ReviewQuestions";
+import QuestionDisplayPage from './pages/QuestionDisplayPage';
 import Question from './pages/Question';
 import AskQuestion from './pages/AskQuestion';
 import TagsPage from './pages/AllTagsPage/TagsPage'
@@ -26,8 +27,8 @@ function App() {
       <Route path='/askquestion' element={<AskQuestion/>}/>
       <Route path='/tags' element={<TagsPage/>}/>
       <Route path='/tag/:tagId' element={<TagPage/>}/>
+      <Route path='/question/:id' element = {<QuestionDisplayPage />}/>
       <Route exact element={Error} />
-
     </Routes>
   );
 }

@@ -1,11 +1,17 @@
 import {Card,Col,Row,Badge} from 'react-bootstrap';
 import {useEffect,useState} from 'react';
-import './atom.css'
+import './atom.css';
+import { useNavigate } from "react-router-dom";
 
 function CompactQuestion(props) {  
     const question = props.questions
     const questionLink = "/question/"+props.questions._id
     const userLink = "/user/"+"abhsjdahj"
+
+    let navigate = useNavigate();
+    const questiondisplay = () =>{
+      navigate(`/question/${props.questions._id}`)
+    }
 
   useEffect(() => {
     // var api="http://localhost:3900/api"+'/orders/user/'+props.user._id

@@ -7,19 +7,17 @@ const answerSchema = new mongoose.Schema({
     // },
     createdAt:{
         type:String,
-        required: true,
     },
     updatedAt:{
         type:String,
-        required: true,
     },
     upVotes:{
         type:Array,
-        required: true,
+        ref: "user",
     },
     downVotes:{
         type:Array,
-        required: true,
+        ref: "user",
     },
     comment:{
         type:Array,
