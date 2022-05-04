@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import UserAnswerList from './UserAnswerList.js';
 import UserQuestionList from './UserQuestionList.js';
 import UserTagList from './UserTagList.js';
@@ -6,18 +6,19 @@ import UserReputationList from './UserReputationList.js';
 import UserBadgeList from './UserBadgeList.js';
 import UserBookmarkList from './UserBookmarkList.js';
 
+
+
 const ActivityTab = () => {
     const [tabSelected,setTabSelected] = useState("answers");
-
+    
     const changeTab = (tabName)=>{
         setTabSelected(tabName);
     }
-
   return (
       <div className="d-flex">
           <div className="flex--item">
         <nav>
-            <ul class="s-navigation s-navigation__vertical">
+            <ul className="s-navigation s-navigation__vertical">
                 <li><a onClick={()=>{changeTab("answers")}} className={"s-navigation--item"+( tabSelected==="answers" ? " is-selected":"")}>Answers</a></li>
                 <li><a onClick={()=>{changeTab("questions")}} className={"s-navigation--item"+( tabSelected==="questions" ? " is-selected":"")}>Questions</a></li>
                 <li><a onClick={()=>{changeTab("tags")}} className={"s-navigation--item"+( tabSelected==="tags" ? " is-selected":"")}>Tags</a></li>

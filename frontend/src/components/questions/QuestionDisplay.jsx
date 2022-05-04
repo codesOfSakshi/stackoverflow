@@ -1,6 +1,5 @@
 import React, {useState,useEffect} from 'react';
 import {Row, Col, Badge, Button} from 'react-bootstrap';
-// import {PaginatedList} from 'react-paginated-list';
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 

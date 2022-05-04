@@ -10,12 +10,12 @@ const reputationHistorySchema = new mongoose.Schema({
         required: true,
     },
     user:{
-        type:String,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
     },
     action:{
-        type:String,
-        required: true,
+       type: mongoose.Schema.Types.ObjectId,
+        ref: "reputationaction",
     },
 });
 
