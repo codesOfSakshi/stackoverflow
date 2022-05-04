@@ -1,42 +1,19 @@
-const aws = require( 'aws-sdk');
+const s3service = require('../services/s3service');
 
-const crypto =require('crypto')
-const { query} = require("express");
-var main = require("../server")
-const mysql = require('mysql');
-var express = require('express');
-var app= main.app;
-var router = express.Router();
+// Get All Tags
+exports.uploadImage = (req, res) => {
+    console.log("Inside Tags Controller: Get All Tags");
 
-
-const region = "us-east-2"
-const bucketName = "etsyproto"
-const accessKeyId = "AKIAY4GW4OHN6XLAVW6X"
-const secretAccessKey = "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"
-
-const s3Controller = new aws.S3({
-  region,
-  accessKeyId,
-  secretAccessKey,
-  signatureVersion: 'v4'
-})
-
-exports.imageUpload =  (req, res) => {
-    const server_url =  generateUploadURL()
-    res.send({server_url})
-  }
-
- async function generateUploadURL() {
-  const rawBytes = await crypto.randomBytes(16)
-  const imageName = rawBytes.toString('hex')
-
-  const params = ({
-    Bucket: bucketName,
-    Key: imageName,
-    Expires: 120
-  })
-  
-  const uploadURL = await s3Controller.getSignedUrlPromise('putObject', params)
-  return uploadURL
+    s3service.imageUpload((err, result) => {
+        if(err)
+        {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        else{
+            console.log("Image uploaded:");
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
 }
-module.exports = router;
