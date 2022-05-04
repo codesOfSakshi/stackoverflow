@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
     type: Array,
   },
   views: {
-    type: String,
+    type: Number,
   },
   title: {
     type: String,
@@ -58,6 +58,7 @@ const questionSchema = new mongoose.Schema({
   activity: {
     type: String,
   },
+
 });
 
 module.exports = mongoose.model("question", questionSchema);
