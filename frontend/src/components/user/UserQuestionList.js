@@ -4,7 +4,7 @@ import axiosService from "../../services/axiosservice";
 import {useParams} from "react-router-dom";
 function UserAnswerList() {
 
-    const [question, setQuestion] = useState(0);
+    const [question, setQuestion] = useState([]);
     const GET_USER_API = "api/user/";
     const params = useParams();
     console.log(params)
