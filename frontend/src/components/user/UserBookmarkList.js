@@ -1,11 +1,45 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react';
 import UserBookmark from "./UserBookmark";
-function UserBookmarkList() {
+import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
+import axiosService from '../../services/axiosservice';
+
+const GET_USER_BOOKMARKS_API = "api/user/bookmark/";
+
+function UserBookmarkList({bookmarkQuestions}) {
+
+    const navigate = useNavigate();
+    const search = useLocation().search;
+    const {userId} = new useParams(search);
+    const [bookMarkQuestions, setBookMarkQuestions] = useState([]);
+    const [gettingUserBookMarks,setGettingUserBookMarks] = useState(true);
+
+     const getUserBookMarks = async () => {
+      setGettingUserBookMarks(true);
+      try{
+          const response = await axiosService.get(GET_USER_BOOKMARKS_API+userId);
+          if(response && response.data && response.data.success && response.data.bookMarkQuestions){
+              console.log(response.data.bookMarkQuestions);
+              setGettingUserBookMarks(false);
+              setBookMarkQuestions(response.data.bookMarkQuestions);
+          }else{
+              setGettingUserBookMarks(false);
+          }
+      }catch(e){
+          console.log(e);
+          setGettingUserBookMarks(false);
+      }
+  }
+
+  useEffect(() => {
+    getUserBookMarks();
+  },[]);
+
     return (
 
             <div className="ba bc-black-100 bar-md">
-
-            <UserBookmark/>
+                {!gettingUserBookMarks && bookMarkQuestions && bookMarkQuestions.map((bookMarkQuestion) =>{
+                    return  <UserBookmark key={bookMarkQuestion._id} bookMarkQuestion={bookMarkQuestion}/>;
+                })}
 
             </div>
 

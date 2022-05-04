@@ -14,16 +14,18 @@ const questionSchema = new mongoose.Schema({
   },
   upVotes: {
     type: Array,
+    ref: "user",
   },
   downVotes: {
     type: Array,
+    ref: "user",
   },
   views: {
-    type: String,
+    type: Number,
   },
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   tags: {
     type: Array,
@@ -31,7 +33,7 @@ const questionSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   answers: {
     type: Array,
@@ -47,7 +49,8 @@ const questionSchema = new mongoose.Schema({
     type: String,
   },
   bastAns: {
-    type: String,
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'answer',
   },
   status: {
     type: String,
@@ -58,8 +61,9 @@ const questionSchema = new mongoose.Schema({
   activity: {
     type: String,
   },
+
 });
 
-module.exports = mongoose.model("question", questionSchema);
+module.exports = mongoose.model("questions", questionSchema);
 
 // module.exports = questionModel;

@@ -7,11 +7,9 @@ const userSchema = new mongoose.Schema({
     // },
     createdAt:{
         type:String,
-        required: true,
     },
     updatedAt:{
         type:String,
-        required: true,
     },
     data:{
         type:String,
