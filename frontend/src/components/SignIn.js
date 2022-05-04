@@ -3,6 +3,7 @@ import { constants } from "../config/config";
 import { ReactComponent as Logo } from "../images/StackoverflowLogo.svg";
 import "../styles/login.css";
 import axios from "axios";
+import Navbar from "./user/Navbar";
 
 function SignIn() {
   /* -------------------------------- variables ------------------------------- */
@@ -38,6 +39,7 @@ function SignIn() {
   /* ------------------------------- return jsx ------------------------------- */
   return (
     <div className="body">
+      <Navbar />
       <div className="flexbox-container">
         <div className="login-container">
           <Logo />

@@ -2,6 +2,7 @@ import {Form,Row,Card,Button} from 'react-bootstrap';
 //import axios from 'axios';
 import {useEffect,useState} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
+import {PaginatedList} from 'react-paginated-list';
 import { useNavigate } from "react-router-dom";
 import MyEditor from '../../Atom/EditorQuestion';
 // Don’t forget to include the styles as well

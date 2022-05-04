@@ -5,6 +5,8 @@ import UserDetail from "./pages/userDetail.js";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import AddTag from "./components/admin/AddTag";
+import SearchUser from "./pages/searchUsers";
+import CompactUser from "./Atom/CompactUser";
 import ReviewQuestions from "./components/admin/ReviewQuestions";
 import QuestionDisplayPage from './pages/QuestionDisplayPage';
 import Question from './pages/Question';
@@ -14,15 +16,17 @@ import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
 
+
 function App() {
   return (
     <Routes>
       <Route exact path="/" element={<SignIn />} />
       <Route exact path="/admin" element={<Admin />} />
       <Route exact path="/user/:userId" element={<User />} />
-      <Route exact path="/user/edit/:userId" element={<UserDetail/>} />
+      <Route exact path="/user/edit/:userId" element={<UserDetail />} />
       <Route exact path="/signin" element={<SignIn />} />
       <Route exact path="/signup" element={<SignUp />} />
+      <Route path="/users" element={<SearchUser />} />
       <Route path='/question' element={<Question/>}/>
       <Route path='/askquestion' element={<AskQuestion/>}/>
       <Route path='/tags' element={<TagsPage/>}/>

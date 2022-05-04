@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
@@ -93,6 +93,7 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
+    title: { type: String },
   tagIds: [{
     tagId:{
       type: mongoose.Schema.Types.ObjectId,
@@ -103,16 +104,14 @@ const userSchema = new mongoose.Schema({
     }
   }],
     title: {type:String,required: true},
-
 });
 
-userSchema.set('toObject', { virtuals: true })
-userSchema.set('toJSON', { virtuals: true })
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
-userSchema.virtual('id').get(function() {
+userSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-const userModel = mongoose.model('user', userSchema);
+const userModel = mongoose.model("user", userSchema);
 module.exports = userModel;
-
