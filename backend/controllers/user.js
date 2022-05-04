@@ -86,6 +86,33 @@ router.post("/addbookmark/:userId",  async (req, res) => {
     }
 });
 
+router.get("/tags/:userId",  async (req, res) => {
+    const userId = req.params.userId;
+    const response = {};
+    const userObj = {userId};
+    const tags = User.getUserTags(userObj,function(error,tags){
+        if(error){
+                console.log(error);
+                response.success = false;
+                response.error = "Some error occurred. Please try again later";
+                response.status = 500;
+                res.status(500).send(response);
+        }else{
+            if(tags?.length){
+                response.success = true;
+                response.tags = tags;
+                response.status = 200;
+                res.status(200).send(response);
+            }else{
+                response.success = true;
+                response.tags = [];
+                response.status = 200;
+                res.status(200).send(response);
+            }
+        }
+    });
+});
+
 router.get("/reputation/history/:userId",  async (req, res) => {
     const userId = req.params.userId;
     const response = {};

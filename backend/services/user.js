@@ -1,7 +1,9 @@
 var mongoose = require("mongoose");
-
+const async = require("async");
 const UserModel = require("../models/user.js");
 const AnswerModel = require("../models/answer.js");
+const TagModel = require("../models/tag.js");
+const QuestionModel = require("../models/question.js");
 
 class User {
   /* -------------------------------------------------------------------------- */
@@ -94,7 +96,7 @@ class User {
   static getBookMarkQuestionIds = async ({ userId }) => {
     try {
       const query = {
-        user: mongoose.Types.ObjectId(userId),
+        _id: mongoose.Types.ObjectId(userId),
       };
       let user = await UserModel.findOne(query);
       console.log(user, "user");
@@ -216,6 +218,69 @@ class User {
       throw new Error("Error while fetching answers details");
     }
   };
+
+  static getUserTags = async ({userId},outercb)=>{
+     try{
+        const query = {
+            user:mongoose.Types.ObjectId(userId),
+        }
+        let user = await UserModel.findOne(query);
+        user = JSON.parse(JSON.stringify(user));
+        if(user?.tags?.length){
+          const tagsCombined = [];
+          const tagIds = user.tags.map((eachTag)=>{
+              return mongoose.Types.ObjectId(eachTag.id);
+          })
+          const tagsQuery = {
+            user:{"$in":tagIds},
+          }
+          let tags = await TagModel.find(tagsQuery);
+          tags = JSON.parse(JSON.stringify(tags));
+          async.each(tagIds,(eachTagId, cb)=>{
+                  let tagsObj = {};
+                  tagsObj.id = eachTagId;
+                  const questionTagQuery = {
+                    "tags": eachTagId
+                  };
+                  QuestionModel.find(questionTagQuery).then((questions)=>{
+                    questions = JSON.parse(JSON.stringify(questions));
+                    tagsObj.posts = questions.length;
+                    let tagDataObj = tags.filter((eachTag)=>{
+                      return eachTag._id===eachTagId.toString();
+                    });
+                    if(tagDataObj && tagDataObj.length){
+                      tagDataObj = tagDataObj[0];
+                      tagsObj.name = tagDataObj.name;
+                    }
+                    let tagUserObj = user.tags.filter((eachTag)=>{
+                      return eachTag.id===eachTagId.toString();
+                    });
+                    if(tagUserObj && tagUserObj.length){
+                      tagUserObj = tagUserObj[0];
+                      tagsObj.score = tagUserObj.score;
+                    }
+                    console.log(tagsObj);
+                    tagsCombined.push(tagsObj);
+                    cb(null);       
+                  });
+          },function(error){
+            if(error){
+              console.log(error);
+              return [];
+            }
+            else{
+              outercb(null,tagsCombined);
+            }
+          });  
+        }else{
+            return [];
+        }
+    }catch(err){
+        console.log(err);
+        throw new Error("Some unexpected error occurred while getting user tags by user id");
+    }
+  }
+
 }
 
 module.exports.User = User;
