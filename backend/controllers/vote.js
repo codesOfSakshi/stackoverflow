@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const {Vote} = require("../services/vote");
+const {Vote} = require("../services/vote");
 
 router.post("/",  async (req, res) => {
     const voteType = req.body.voteType;

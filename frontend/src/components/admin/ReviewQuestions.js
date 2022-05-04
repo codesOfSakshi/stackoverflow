@@ -38,8 +38,12 @@ const ReviewQuestions = () => {
   return (
     <div>
       <div id="questions" class="">
-        {questions &&
+        {questions && questions.length>0 &&
           questions.map((question, idx) => <QuestionSummary idx={idx} question={question} handleButtonClick={handleButtonClick} />)}
+        {(typeof(questions)=="undefined" || questions?.length<=0) &&
+        <div>
+          <h2>No Questions to review</h2>
+          </div>  }
       </div>
     </div>
   );
