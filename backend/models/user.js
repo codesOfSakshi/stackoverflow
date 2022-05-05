@@ -73,10 +73,10 @@ const userSchema = new mongoose.Schema({
       ref: "answer",
     }
   }],
-  questionsAsked: {
+  questionsAsked: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "answer",
-  },
+  }],
   commentCount: {
     type: String,
     // required: true,
@@ -116,5 +116,5 @@ userSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;

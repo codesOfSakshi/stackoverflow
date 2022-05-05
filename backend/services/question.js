@@ -23,6 +23,30 @@ class Question{
         }
     }
 
+    static getAllQuestionsById = async ({questionIds})=>{
+        try{
+            let ids =[];
+            questionIds.map(questions=>{
+                ids.push( questions)
+            })
+            console.log(ids)
+            const query = {
+                "_id": {"$in": questionIds}
+            }
+            console.log("questinoIds")
+            console.log(questionIds)
+            const questions = await QuestionModel.find(query);
+            if(questions?.length){
+                return questions;
+            }else{
+                return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+        }
+    }
+
     static getQuestionsById = async (req)=>{
         try{
             const query = {
