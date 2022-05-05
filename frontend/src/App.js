@@ -15,6 +15,7 @@ import TagsPage from './pages/AllTagsPage/TagsPage'
 import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
+import Upvote from "./Atom/upvote";
 
 
 function App() {

@@ -111,9 +111,9 @@ app.use("/api/user", user);
   app.use("/api/search", search);
 app.use("/api/questions", question);
 app.use("/api/tags", tagRoute);
-app.use("/api/messages", messageRoute);
 app.use("/api/admin", admin);
 app.use('/api/questions',question);
+app.use('/api/messages', messageRoute);
 app.use('/api/s3', s3Route);
 app.use("/api/answer", answer)
 app.use("/api/answer/mark", answer)
