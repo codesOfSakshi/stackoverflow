@@ -8,6 +8,7 @@ class Vote{
         let updateCondition = {};
         let resupvote = null;
         let resdownvote = null;
+        // let res = null;
         if(type === 'question'){
             try
             {
