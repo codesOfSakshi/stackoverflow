@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const user = require("./controllers/user");
 const question = require("./controllers/questions");
+const kafkaController = require("./controllers/kafkaController");
 
 require("./models/tag.js")
 
@@ -98,3 +99,4 @@ app.use("/", testAPI);
 app.use("/api/user", userRoute);
 app.use("/api/user", user);
 app.use('/api/questions',question);
+app.use('/api/kafka-backend',kafkaController);
