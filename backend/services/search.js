@@ -19,11 +19,17 @@ module.exports = class SearchService {
         return null;
       }
       let final_ans = [];
+      // starting search
       for (const question of questions) {
         const index = question.tags.findIndex((tag) => {
           return tag.toString().toLowerCase() === keyword.toLowerCase();
         });
         if (index < 0) {
+          continue;
+        }
+
+        // only approved questions will be shown
+        if (question.status && question.status == "pending") {
           continue;
         }
 
@@ -80,6 +86,11 @@ module.exports = class SearchService {
           continue;
         }
 
+        // only approved questions will be shown
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         if (
           question.title.toLowerCase().includes(searchString.toLowerCase()) ||
           question.description
@@ -127,6 +138,11 @@ module.exports = class SearchService {
       let final_ans = [];
 
       for (const question of questions) {
+        // only approved questions will be shown
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         if (
           question.title.toLowerCase().includes(searchString.toLowerCase()) ||
           question.description
@@ -165,23 +181,45 @@ module.exports = class SearchService {
 
   static async searchQuestion({ searchString }) {
     console.log("here too");
+    // const query = {
+    //   $or: [
+    //     {
+    //       title: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       tags: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       description: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       answers: { $regex: searchString, $options: "i" },
+    //     },
+    //   ],
+    // };
+    const statusNotNeeded = "pending";
     const query = {
-      $or: [
+      $and: [
         {
-          title: { $regex: searchString, $options: "i" },
+          $or: [
+            {
+              title: { $regex: searchString, $options: "i" },
+            },
+            {
+              tags: { $regex: searchString, $options: "i" },
+            },
+            {
+              description: { $regex: searchString, $options: "i" },
+            },
+            {
+              answers: { $regex: searchString, $options: "i" },
+            },
+          ],
         },
-        {
-          tags: { $regex: searchString, $options: "i" },
-        },
-        {
-          description: { $regex: searchString, $options: "i" },
-        },
-        {
-          answers: { $regex: searchString, $options: "i" },
-        },
+        { status: { $ne: "pending" } },
+        // { status: { $regex: statusNotNeeded, $options: "i" } },
       ],
     };
-
     try {
       const questions = await QUESITONMODEL.find(query)
         .populate("answers")
@@ -209,6 +247,10 @@ module.exports = class SearchService {
       }
       let final_ans = [];
       for (const question of questions) {
+        // only approved questions will be shown
+        if (question.status && question.status == "pending") {
+          continue;
+        }
         for (let answer of question.answers) {
           if (
             answer.comment.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -242,6 +284,11 @@ module.exports = class SearchService {
       let final_ans = [];
       for (const question of questions) {
         if (!question.status) {
+          continue;
+        }
+
+        // only approved questions will be shown
+        if (question.status && question.status == "pending") {
           continue;
         }
         if (
