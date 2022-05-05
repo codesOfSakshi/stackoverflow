@@ -310,6 +310,116 @@ class User {
     
   };
 
+
+
+static topPosts = async(rankBy, type)=>{
+
+   if(rankBy=='score'){
+     return this.sortByScore(type, rankBy);
+   }
+   else if(rankBy=='date'){
+     return this.sortByDate(type, rankBy);
+   }
+
+}
+
+static sortByScore = async(type, rankBy) =>{
+// upvotes - downvotes
+    
+     if (type =='answer'){ 
+        return await AnswerModel.aggregate([
+         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}}, 
+         {"$sort":{"sort_order":-1}},
+         {"$project":{"sort_order":0}}
+        ])
+     }
+      else if(type =='question'){
+        return await QuestionModel.aggregate([
+         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}},
+          {"$sort":{"sort_order":-1}}, 
+         {"$project":{"sort_order":0}}
+        ])
+      } 
+
+      console.log(type)
+      return this.sortAll(rankBy)
+ 
+} 
+
+
+static sortByDate = async(type, rankBy, userId) =>{
+
+// latest first
+
+     if (type =='question'){     
+        let res = await QuestionModel.find({}, { sort: '-createdat' });
+        
+        let answer = JSON.parse(JSON.stringify(res));
+        if(answer){
+            return answer;
+        }else{
+            return [];
+        }
+     }
+     else if(type =='answer'){
+        let res =  await AnswerModel.find({}, { sort: '-createdat' });
+        let answer = JSON.parse(JSON.stringify(res));
+        if(answer){
+            return answer;
+        }else{
+            return [];
+        }
+      }
+      else{
+        return this.sortAll(rankBy)
+      }
+    
+}
+
+
+static sortAll = async(rankBy) =>{
+    console.log("here", rankBy)
+
+    if(rankBy=='date'){
+
+        const questions = await QuestionModel.find({}).lean()
+        const answers = await AnswerModel.find({}).lean()
+
+
+        var combined = questions.concat(answers);
+        console.log(questions, answers);
+
+        combined.sort(function(a, b) {
+          var keyA = new Date(a.createdat),
+            keyB = new Date(b.createdat);
+          // Compare the 2 dates
+          if (keyA < keyB) return 1;
+          if (keyA > keyB) return -1;
+          return 0;
+        }); 
+
+        return combined; 
+    } 
+
+    else if(rankBy=='score'){
+         const questions = await QuestionModel.find({}).lean()
+        const answers = await AnswerModel.find({}).lean()
+
+        var combined = questions.concat(answers);
+        combined.sort(function(a, b){
+            console.log("data", a, a.upvotes)
+          var keyA = a.upvotes - a.downvotes,
+            keyB = b.upvotes - b.downvotes;
+          if (keyA < keyB) return 1;
+          if (keyA > keyB) return -1;
+          return 0;
+        }); 
+        return combined;
+    } 
+} 
+
+
+
 }
 
 module.exports.User = User;

@@ -313,4 +313,30 @@ router.get("/searchbyname/:name", async (req, res) => {
     }
 })
 
+router.get("/top-posts/:userId",  async (req, res) => {
+
+    try{
+        const response = {}
+        const type = req.body.type; //question, answer, all
+        const rankBy = req.body.rankby; //score, latest
+        const userId = req.params.userId; 
+        console.log(type, rankBy)
+        const rep = await User.topPosts(rankBy, type, userId)
+        console.log(rep)
+        if(rep){
+            response.success = true;
+            response.data = rep;
+            response.status = 200;
+            res.status(200).send(response);
+        }
+    }catch(e){
+        console.log(e);
+        response.success = false;
+        response.error = "Some error occurred. Please try again later";
+        response.status = 500;
+        res.status(500).send(response);
+    }
+
+});
+
 module.exports = router;

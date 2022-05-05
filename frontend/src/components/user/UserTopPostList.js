@@ -5,11 +5,34 @@ import {useParams} from "react-router-dom";
 function UserTopPostList() {
 
     const [question, setQuestion] = useState([]);
-    const GET_USER_API = "api/user/";
+    const GET_USER_POSTS_API = "api/user/top-posts/";
     const params = useParams();
     console.log(params)
     const { userId: userId } = params;
     console.log(params)
+    const [posts,setPosts] = useState([]);
+    const [gettingPosts,setGettingPosts] = useState(true);
+
+      const getUserPosts = async () => {
+      setGettingPosts(true);
+      try{
+          const response = await axiosService.get(GET_USER_POSTS_API);
+          if(response && response.data && response.data.success){
+              console.log(response.data);
+              setPosts(response.data);
+              setGettingPosts(false);
+          }else{
+              setGettingPosts(false);
+          }
+      }catch(e){
+          console.log(e);
+          setGettingPosts(false);
+      }
+    }
+
+      useEffect(() => {
+        getUserPosts();
+      },[]);
 
 
     return (
@@ -21,9 +44,7 @@ function UserTopPostList() {
                         Top posts
                     </div>
                     <div className="fc-light s-anchors">
-                        View all <a href="/users/6599710/sam?tab=questions"
-                                    data-gps-track="profile_link.click({target:3, type:1 })"
-                                    className="js-gps-track">questions</a>, <a href="/users/6599710/sam?tab=answers"
+                        View all <a href="/users/6599710/sam?tab=questions" data-gps-track="profile_link.click({target:3, type:1 })" className="js-gps-track">questions</a>, <a href="/users/6599710/sam?tab=answers"
                                                                                data-gps-track="profile_link.click({target:3, type:1 })"
                                                                                className="js-gps-track">answers</a>,
                         and <a href="/users/6599710/sam?tab=articles"
@@ -50,10 +71,16 @@ function UserTopPostList() {
                 </div>
             </div>
 
-            <div id="js-post-summaries">
 
-            <UserTopPost />
-            </div>
+            {
+            !gettingPosts && posts && posts.map((eachPost)=>{
+                return (
+                    <div>
+                        <UserTopPost key={eachPost._id} post={eachPost}/>
+                    </div>
+                )
+            })
+        }
 
         </div>
     )
