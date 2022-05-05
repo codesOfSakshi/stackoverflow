@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     enum: ["NEW", "GOLD", "SILVER", "BRONZE"],
     default: "NEW",
   },
+
   admin: {
     type: Boolean,
     // required: true,
@@ -63,7 +64,7 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  questionsAsked: [{
+  questionsAnswered: [{
     questionId:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "question"
@@ -73,7 +74,7 @@ const userSchema = new mongoose.Schema({
       ref: "answer",
     }
   }],
-  questionsAnswered: {
+  questionsAsked: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "answer",
   },
@@ -96,8 +97,7 @@ const userSchema = new mongoose.Schema({
     title: { type: String },
   tagIds: [{
     tagId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "tag"
+      type: String
     },
     score:{
       type: Number
