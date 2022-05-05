@@ -61,7 +61,9 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
-export const QuestionSchema = questionSchema;
+// export const QuestionSchema = questionSchema;
 
 
+
+export const Questions = mongoose.model("Question", questionSchema);
 // module.exports = questionModel;

@@ -1,9 +1,10 @@
-import {QuestionSchema} from "../db/mongoModels/question.js";
+import {Questions} from "../db/mongoModels/question.js";
 
 const questioner = async (req, res) => {
   try{
-    questions = await QuestionSchema.find({})
-    if(questions?.length){
+    var questions = await Questions.find({})
+    console.log(questions)
+    if(questions.length){
         res(questions);
       }else{
         res([]);

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import question from "./services/question.js";
 
 try {
-	mongoose.connect("mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+	mongoose.connect("mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority", {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		maxPoolSize: 500,
