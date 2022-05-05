@@ -3,23 +3,33 @@ import {Form,Row,Card,Button} from 'react-bootstrap';
 import {useEffect,useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+// import question from '../../../../backend/models/question';
+// import EditQuestion from '../../pages/EditQuestion';
 
 
-function AskQuestionEditor(props) {  
+function EditQuestionPage(props) {  
   const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
-  const[selectedTags,setSelectedTags]=useState(["JAVA","PYTHON"])
+  const[selectedTags,setSelectedTags]=useState([])
+  const [questionDisplay,setquestionDisplay] = useState({})
+  const [question,setQuestion] = useState({})
+  const [initialDescription,setDescripition] = useState("")
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)
     }
-  var arr;
 
   useEffect(() => {
-     arr = new window.stacksEditor.StacksEditor(
-    document.querySelector("#editor-container"),
-    "", )
-    console.log(arr)
+    var api="http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
+    axios.get(api).then(response => {
+      console.log(response)
+      setQuestion(response.data.data)
+      setSelectedTags(response.data.data.tags)
+      console.log("************ description :",response.data.data.description)
+      setquestionDisplay(new window.stacksEditor.StacksEditor(
+          document.querySelector("#editor-container-questionDisplay-edit"),response.data.data.description,{} ))
+      })
   },[])
+
 
   const chooseOther = function(e){
       e.preventDefault();
@@ -37,14 +47,15 @@ function AskQuestionEditor(props) {
 
   const submitHandler =(e)=>{
     e.preventDefault();
-    console.log(arr)
+    console.log(questionDisplay.content)
     var payload ={
       userId: "snichat97",
       title: e.target.formBasicTitle.value,
-      description: arr.content,
-      tags:selectedTags
+      description: questionDisplay.content,
+      tags:selectedTags,
+      _id:"627189b4519c18b6b2396bed"
     }
-    var api="http://localhost:3001/api/questions/add"
+    var api="http://localhost:3001/api/questions/edit"
     axios.post(api,payload).then(response => {
       alert(response)
       })
@@ -72,13 +83,13 @@ function AskQuestionEditor(props) {
         Be specific and imagine you’re asking a question to another person
         <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Control type="text" placeholder="Enter title" />
+            <Form.Control type="text" placeholder={question.title} value={question.title} />
         </Form.Group>
 
         <h3>Body</h3>
         Include all the information someone would need to answer your question
         {/* <MyEditor/> */}
-        <div id="editor-container"></div>
+        <div id="editor-container-questionDisplay-edit"></div>
         <div style={{'marginTop':"3rem"}}>
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
@@ -107,4 +118,4 @@ function AskQuestionEditor(props) {
   );
 }
 
-export default AskQuestionEditor;
+export default EditQuestionPage;

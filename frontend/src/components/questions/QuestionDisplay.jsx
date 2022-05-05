@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import {Row, Col, Badge, Button} from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 
@@ -8,6 +9,7 @@ function QuestionsPage(){
     const [question,setQuestion] = useState({})
     const[answersall, setlans] =  useState([])  
     var questionDisplay, answerDisplay;
+    let navigate = useNavigate();
 
     useEffect(() => {
       var api="http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
@@ -21,17 +23,35 @@ function QuestionsPage(){
             response.data.data.description, )
         })
 
-
     answerDisplay = new window.stacksEditor.StacksEditor(
         document.querySelector("#editor-container-answerDisplay"),
         "", )
     },[])
+
+
+    const navigateToEdit = () =>{
+        navigate(`/edit/${question._id}`)
+      }
+
+    const addBookmark = () =>{
+        var api="http://localhost:3001/api/user/addbookmark/"+"snichat"
+        var payload = {
+            questionId:"627189b4519c18b6b2396bed"
+        }
+        axios.post(api,payload).then(response => {alert(response.data)})
+    }
+  
 
     
 
     return(
         <div>
             <div style={{ width: '60rem',textAlign:'justify'}}>
+
+                <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
+                    <svg data-icon="svg-icon-bg Bookmark" class="native"></svg>
+                    <Button onClick={addBookmark} style={{float:"right"}}>Bookmark</Button>
+                </Row>
                 <h2>
                 {question.title}
                 </h2>
@@ -62,6 +82,10 @@ function QuestionsPage(){
                             <div id="editor-container-questionDisplay"></div>
                         </>
                     </p>
+                </Row>
+
+                <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
+                    <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
                 </Row>
            
             <div class="displayFlex" style={{"margin-bottom":"1rem"}}>

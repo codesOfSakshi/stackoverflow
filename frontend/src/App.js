@@ -9,6 +9,7 @@ import ReviewQuestions from "./components/admin/ReviewQuestions";
 import QuestionDisplayPage from './pages/QuestionDisplayPage';
 import Question from './pages/Question';
 import AskQuestion from './pages/AskQuestion';
+import EditQuestion from './pages/EditQuestion';
 import TagsPage from './pages/AllTagsPage/TagsPage'
 import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
@@ -25,6 +26,7 @@ function App() {
       <Route exact path="/signup" element={<SignUp />} />
       <Route path='/question' element={<Question/>}/>
       <Route path='/askquestion' element={<AskQuestion/>}/>
+      <Route path='/edit/:questionId' element={<EditQuestion/>}/>
       <Route path='/tags' element={<TagsPage/>}/>
       <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route path='/question/:id' element = {<QuestionDisplayPage />}/>
