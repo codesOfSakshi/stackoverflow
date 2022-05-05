@@ -17,5 +17,7 @@ router.get('/search/:name', tagController.searchTags);
 // Add Tag (Admin only)
 router.post('/add', tagController.createTag);
 
+router.get('/badges/:userId', tagController.tagToBadge);
+
 
 module.exports = router;

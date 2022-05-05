@@ -107,8 +107,9 @@ exports.createTag = (req, res) => {
 
 //tag to badge
 exports.tagToBadge = (req,res) =>{
-    console.log("Inside Tag ot Badge Calculator")
-    TagService.findBadge(req.body, (err, result) => {
+    console.log("Inside Tag to Badge Calculator")
+
+    TagService.findBadge(req, (err, result) => {
         if(err)
         {
             console.log(err);
@@ -120,7 +121,7 @@ exports.tagToBadge = (req,res) =>{
             res.status(200).send(result);
         }
         else{
-            res.status(404).send("Tag Already exists");
+            res.status(404).send("No tag Found");
         }
     })
 }

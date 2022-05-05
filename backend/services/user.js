@@ -93,6 +93,28 @@ class User {
     }
   };
 
+    static getUserByIdPopulateQuestion = async ({ userId }) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            let user = await UserModel.findOne(query).populate('questionsAsked');
+            console.log(user, "user");
+
+            user = JSON.parse(JSON.stringify(user));
+            if (user) {
+                return user;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
+
   static getBookMarkQuestionIds = async ({ userId }) => {
     try {
       const query = {
