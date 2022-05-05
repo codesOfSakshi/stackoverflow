@@ -63,19 +63,17 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  questionsAsked: [
-    {
-      questionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "question",
-      },
-      answerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "answer",
-      },
+  questionsAnswered: [{
+    questionId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "question"
     },
-  ],
-  questionsAnswered: {
+    answerId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "answer",
+    }
+  }],
+  questionsAsked: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "answer",
   },
@@ -99,18 +97,16 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
-  title: { type: String },
-  tagIds: [
-    {
-      tagId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "tag",
-      },
-      score: {
-        type: Number,
-      },
+    title: { type: String },
+  tagIds: [{
+    tagId:{
+      type: String
     },
-  ],
+    score:{
+      type: Number
+    }
+  }],
+    title: {type:String,required: true},
 });
 
 userSchema.set("toObject", { virtuals: true });

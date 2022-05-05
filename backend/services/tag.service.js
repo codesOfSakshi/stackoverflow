@@ -1,5 +1,8 @@
 const TagModel = require('../models/tag');
 const QuestionModel = require('../models/question')
+const UserModel = require('../models/user')
+const QuestionServices = require('../services/question')
+const {getAllTags} = require("../controllers/tag.controller");
 
 // Get All Tags
 exports.getAllTags = async (result) => {
@@ -14,6 +17,21 @@ exports.getAllTags = async (result) => {
     }
 
 }
+
+//Get User Tags
+exports.getUserTags = async (userId,result) => {
+    try{
+        const tags = await UserModel.findById({_id:userId},{tagIds:1});
+        console.log(tags);
+
+        result(null, tags);
+    }
+    catch(err){
+        result(err);
+    }
+
+}
+
 
 // Get All questions per tag
 exports.getTaggedQuestions = async (reqBody, result) => {
@@ -123,4 +141,92 @@ exports.createTag = async(reqBody, result) => {
     catch(err){
         result(err)
     }
+}
+
+
+// Badge
+exports.findBadge = async(reqBody, result) => {
+    const user = UserModel.findById(reqBody.userId);
+    const tags= user.tagIds;
+    let badge= new Map();
+
+    tags.forEach(tag=>{
+           if(tag.name==="Curious")
+           {
+               const quesAsked= user.questionsAsked.length;
+               if(quesAsked<=2)
+               badge.set(tag.name,"Bronze");
+               else if(quesAsked>2 && quesAsked<5)
+                   badge.set(tag.name,"Silver");
+               else if(quesAsked>=5)
+                   badge.set(tag.name,"Gold");
+           }
+           else if (tag.name==="Helpfulness")
+           {
+               const quesAnswered= user.questionsAnswered.length;
+               if(quesAnswered<=2)
+                   badge.set(tag.name,"Bronze");
+               else if(quesAnswered>2 && quesAnswered<5)
+                   badge.set(tag.name,"Silver");
+               else if(quesAnswered>=5)
+                   badge.set(tag.name,"Gold");
+           }
+           else if (tag.name === "Popular")
+           {
+               const reputation= user.reputation;
+               if(reputation<=10)
+                   badge.set(tag.name,"Bronze");
+               else if(reputation>10 && reputation<15)
+                   badge.set(tag.name,"Silver");
+               else if(reputation>=15)
+                   badge.set(tag.name,"Gold");
+           }
+           else if (tag.name==="Sportsmanship")
+           {
+               const upVotes= user.upVotesCount.length;
+               if(upVotes<=2)
+                   badge.set(tag.name,"Bronze");
+               else if(upVotes>2 && upVotes<5)
+                   badge.set(tag.name,"Silver");
+               else if(upVotes>=5)
+                   badge.set(tag.name,"Gold");
+           }
+           else if(tag.name === "Critic")
+           {
+               const downVotes= user.downVotesCount.length;
+               if(downVotes<=2)
+                   badge.set(tag.name,"Bronze");
+               else if(downVotes>2 && downVotes<5)
+                   badge.set(tag.name,"Silver");
+               else if(downVotes>=5)
+                   badge.set(tag.name,"Gold");
+           }
+           else {
+               let questions= user.questionsAsked
+               questions =  QuestionServices.getQuestions(questions);
+               let views=0;
+               questions.forEach(question=>{
+                   views+=(question.upVotes-question.downVotes);
+               })
+               if(views>5)
+                   badge.set("Notable Question","Gold");
+
+               if(views>15)
+                   badge.set("Famous Question","Gold");
+
+               if(user.commentCount>3)
+                   badge.set("Pundit","Silver");
+
+               if(tag.score<=10)
+                   badge.set(tag.name,"Bronze")
+               if(tag.score<=15)
+                   badge.set(tag.name,"Silver")
+               if(tag.score>20)
+                   badge.set(tag.name,"Gold")
+           }
+
+    })
+
+    return(null,{tags:JSON.stringify(badge)})
+
 }

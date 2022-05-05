@@ -2,6 +2,7 @@ import React,{useState, useEffect} from 'react';
 import UserStats from './UserStats.js';
 import UserBadgeInfo from './UserBadgeInfo.js';
 import UserTagList from './UserTagList.js';
+import UserTopPostList from './UserTopPostList.js';
 import "../../styles/profiletab.css";
 import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
 import axiosService from '../../services/axiosservice';
@@ -53,6 +54,7 @@ const ProfileTab = () => {
         <UserStats reach={reach} reputation={reputation} answerCount={answerCount} questionCount={questionCount}/>
         <UserBadgeInfo/>
         <UserTagList/>
+        <UserTopPostList/>
       </div>
   )
 }
