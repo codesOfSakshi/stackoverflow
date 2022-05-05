@@ -4,13 +4,16 @@ import { ReactComponent as Logo } from "../images/StackoverflowLogo.svg";
 import "../styles/login.css";
 import axios from "axios";
 import Navbar from "./user/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import User from "../pages/user";
 
 function SignIn() {
   /* -------------------------------- variables ------------------------------- */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const signInURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/user/signin`;
+  const signInURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/user/signin`;
+  const navigate = useNavigate();
 
   /* ------------------------------ handle submit ----------------------------- */
   const handleSubmit = (e) => {
@@ -26,12 +29,20 @@ function SignIn() {
         if (response.status == 200) {
           setMessage("");
           const token = response.data.token;
+          const user = response.data;
           window.localStorage.setItem("token", token);
+          window.localStorage.setItem("user", user);
           console.log("signed in"); // will be replaced by navigating to a new page
+          if (user.admin) {
+            navigate("/admin", { replace: true });
+          } else {
+            navigate("/question", { replace: true });
+          }
         }
       })
       .catch((error) => {
         console.log("there was an error in the Signin.js handlesubmit");
+        console.log(error.response.data);
         setMessage(error.response.data.message);
       });
   };
@@ -39,7 +50,7 @@ function SignIn() {
   /* ------------------------------- return jsx ------------------------------- */
   return (
     <div className="body">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flexbox-container">
         <div className="login-container">
           <Logo />
@@ -90,7 +101,7 @@ function SignIn() {
             </button>
           </form>
           <p className="sign-up-link">
-            Don’t have an account? <a>Sign up</a>
+            Don’t have an account? <Link to="/signup">Sign Up</Link>
           </p>
         </div>
       </div>
