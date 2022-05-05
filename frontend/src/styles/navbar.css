@@ -1,0 +1,55 @@
+.s-topbar .s-topbar--container {
+    width: 97.2307692rem;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.s-topbar, .s-topbar * {
+    box-sizing: border-box;
+}
+
+.ps-fixed {
+    position: fixed !important;
+}
+
+.l0 {
+    left: 0 !important;
+}
+
+.t0 {
+    top: 0 !important;
+}
+
+.s-topbar .s-topbar--logo .-img ._glyph {
+    margin-left: 0;
+    width: 150px;
+    height: 30px;
+    margin-top: -4px;
+}
+
+.s-topbar .s-topbar--logo {
+    /* padding: 0 var(--su8); */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+}
+ .glyph{
+     margin-left: 1rem;
+     margin-right: 2rem;
+ }
+
+
+
+
+
+
+
+
+
+
+
+

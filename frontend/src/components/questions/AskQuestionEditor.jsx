@@ -1,6 +1,7 @@
 import {Form,Row,Card,Button} from 'react-bootstrap';
 //import axios from 'axios';
 import {useEffect,useState} from 'react';
+import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -83,8 +84,8 @@ function AskQuestionEditor(props) {
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
         <Form.Group className="mb-3" controlId="formBasicTags" onChange={e=>chooseOther(e)}>
-            <select className="mb-3">
-                {tags && tags.map ( tag =>{
+            <select>
+                {tags.map ( tag =>{
                   return(
                 <option value={tag} >{tag}</option>)})}
             </select>

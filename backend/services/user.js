@@ -290,6 +290,26 @@ class User {
     }
   }
 
+  static getUsersByName = async (query) => {
+    try{
+      let users = await UserModel.find({'name': {'$regex': query, '$options': 'i'}});
+      console.log(users, "users upon search");
+
+      users = JSON.parse(JSON.stringify(users));
+      if (users?.length) {
+        console.log(users);
+        return users;
+      } else {
+        return [];
+      }
+
+    }catch(err){
+      console.log(err);
+      throw new Error("Error while searching for users by name");
+    }
+    
+  };
+
 }
 
 module.exports.User = User;

@@ -29,7 +29,7 @@ const questionSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
-    ref: 'tag',
+    ref: "tag",
   },
   description: {
     type: String,
