@@ -32,7 +32,7 @@ function CompactQuestion(props) {
         <Card class="border-0">
         <div>
             <Row>
-                <Col lg={2} style={{"text-align": "right"}}>
+                <Col lg={2} style={{"textAlign": "right"}}>
                     {question.upVotes && question.upVotes.length} votes
                     <br></br>
                     {question.answers.length} answers
