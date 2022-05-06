@@ -10,14 +10,7 @@ function Messaging() {
     const [users, setUsers] = useState([]);
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
-    // const decodedString = JSON.stringify(decoded);
-    // console.log("Decoded: ",decoded);
-    // console.log("Decoded String: ",decodedString)
-    // let talkjsUser;
-    // if (decodedString) {
-    //     talkjsUser = JSON.parse(decodedString);
-    //     console.log("Talk JS: ",talkjsUser);
-    // }
+
     let talkjsUser;
     if(decoded){
         talkjsUser = decoded
@@ -51,7 +44,6 @@ function Messaging() {
     // Upon Clicking message for a particular user
     const handleMessage = (userId) => {
         /* Retrieve the two users that will participate in the conversation */
-        // const currentUser = talkjsUser;
 
         const currentUser = {
             name: talkjsUser.name,
