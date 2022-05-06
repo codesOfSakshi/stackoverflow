@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  questionsAnswered: [{
+ questionsAsked: [{
     questionId:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "question"
@@ -74,9 +74,12 @@ const userSchema = new mongoose.Schema({
       ref: "answer",
     }
   }],
-  questionsAsked: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "answer",
+
+  questionsAnswered: [{
+    answerId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "answer",
+    }
   }],
   commentCount: {
     type: String,
