@@ -4,15 +4,21 @@ var rpc = new (require('./kafkarpc'))();
 function make_request(queue_name, msg_payload, callback){
     console.log('in make request');
     console.log(msg_payload);
+	try{
 	rpc.makeRequest(queue_name, msg_payload, function(err, response){
-
-		if(err)
+		if(err){
 			console.error(err);
+		}
 		else{
 			console.log("response", response);
 			callback(null, response);
 		}
-	});
-}
+	})}
+	catch(e){
+		console.log("Timeout Error detected")
+
+	}
+
+	};
 
 exports.make_request = make_request;
