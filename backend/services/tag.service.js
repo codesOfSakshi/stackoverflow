@@ -20,7 +20,7 @@ exports.getTaggedQuestions = async (tagId, result) => {
     try{
 
         console.log("HERE", tagId)
-        const questions = await QuestionModel.find({'tags' : tagId});
+        const questions = await QuestionModel.find({'tags' : tagId, 'status': "approved"});
 
         console.log(questions);
 
