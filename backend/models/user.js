@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
     questionsAnswered: [{
     questionId:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "question"
+      ref: "questions"
     },
     answerId:{
       type: mongoose.Schema.Types.ObjectId,
