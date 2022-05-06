@@ -132,64 +132,60 @@ exports.findBadge = async(reqBody, result) => {
     try {
         const userObj = {userId};
         const user =await User.getUserById(userObj);
-        const tags = user.tagIds;
         let questions = user.questionsAsked
+        const questionObj = {};
+        questionObj.questionIds = questions;
+        const views = await Question.getScoreById(questionObj);
+        console.log(views)
+        const tags = user.tagIds;
+
         let badge = new Map();
 
         if (tags?.length) {
             tags.forEach(tag => {
-                if (tag.name === "Curious") {
+                if (tag.tagId === "Curious") {
                     const quesAsked = user.questionsAsked.length;
                     if (quesAsked <= 2)
-                        badge.set(tag.name, "Bronze");
+                        badge.set(tag.tagId, "Bronze");
                     else if (quesAsked > 2 && quesAsked < 5)
-                        badge.set(tag.name, "Silver");
+                        badge.set(tag.tagId, "Silver");
                     else if (quesAsked >= 5)
-                        badge.set(tag.name, "Gold");
-                } else if (tag.name === "Helpfulness") {
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Helpfulness") {
                     const quesAnswered = user.questionsAnswered.length;
                     if (quesAnswered <= 2)
-                        badge.set(tag.name, "Bronze");
+                        badge.set(tag.tagId, "Bronze");
                     else if (quesAnswered > 2 && quesAnswered < 5)
-                        badge.set(tag.name, "Silver");
+                        badge.set(tag.tagId, "Silver");
                     else if (quesAnswered >= 5)
-                        badge.set(tag.name, "Gold");
-                } else if (tag.name === "Popular") {
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Popular") {
                     const reputation = user.reputation;
                     if (reputation <= 10)
-                        badge.set(tag.name, "Bronze");
+                        badge.set(tag.tagId, "Bronze");
                     else if (reputation > 10 && reputation < 15)
-                        badge.set(tag.name, "Silver");
+                        badge.set(tag.tagId, "Silver");
                     else if (reputation >= 15)
-                        badge.set(tag.name, "Gold");
-                } else if (tag.name === "Sportsmanship") {
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Sportsmanship") {
                     const upVotes = user.upVotesCount.length;
                     if (upVotes <= 2)
-                        badge.set(tag.name, "Bronze");
+                        badge.set(tag.tagId, "Bronze");
                     else if (upVotes > 2 && upVotes < 5)
-                        badge.set(tag.name, "Silver");
+                        badge.set(tag.tagId, "Silver");
                     else if (upVotes >= 5)
-                        badge.set(tag.name, "Gold");
-                } else if (tag.name === "Critic") {
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Critic") {
                     const downVotes = user.downVotesCount.length;
                     if (downVotes <= 2)
-                        badge.set(tag.name, "Bronze");
+                        badge.set(tag.tagId, "Bronze");
                     else if (downVotes > 2 && downVotes < 5)
-                        badge.set(tag.name, "Silver");
+                        badge.set(tag.tagId, "Silver");
                     else if (downVotes >= 5)
-                        badge.set(tag.name, "Gold");
+                        badge.set(tag.tagId, "Gold");
                 }
                 else {
-                    if(questions?.length>0) {
-                        const questionObj = {};
-                        questionObj.questionIds = questions;
-                        let result =  Question.getAllQuestionsById(questionObj);
-                        console.log("result -------->>>>>>>>>.")
-                        console.log(result)
-                        let views = 0;
-                        result.forEach(question => {
-                            views += (question.upVotes.length - question.downVotes.length);
-                        })
+                    if(result>0) {
                         if (views > 5)
                             badge.set("Notable Question", "Gold");
 
@@ -201,17 +197,18 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set("Pundit", "Silver");
 
                     if (tag.score <= 10)
-                        badge.set(tag.name, "Bronze")
+                        badge.set(tag.tagId, "Bronze")
                     if (tag.score <= 15)
-                        badge.set(tag.name, "Silver")
+                        badge.set(tag.tagId, "Silver")
                     if (tag.score > 20)
-                        badge.set(tag.name, "Gold")
+                        badge.set(tag.tagId, "Gold")
                 }
 
             })
-            result(null, {status: true, tags: JSON.stringify(badge)});
+            console.log(badge);
+            result(null, {status: true, tags: Array.from(badge)});
         }
-
+       else
         result(null, {status: false});
     }
     catch(err){
