@@ -5,7 +5,7 @@ const questioner = async (req, res) => {
     var questions = await Questions.find({})
     console.log(questions)
     if(questions.length){
-        res(questions);
+        res(null,JSON.stringify(questions));
       }else{
         res([]);
       }

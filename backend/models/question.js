@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const cachegoose = require('cachegoose');
 
 const questionSchema = new mongoose.Schema({
   // _id: {
@@ -60,6 +61,9 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("question", questionSchema);
+const QuestionModel = mongoose.model("question", questionSchema);
+cachegoose(mongoose)
+module.exports = QuestionModel
+
 
 // module.exports = questionModel;
