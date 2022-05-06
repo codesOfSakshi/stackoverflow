@@ -10,7 +10,7 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const signInURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/user/signin`;
+  const signInURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/user/signin`;
 
   /* ------------------------------ handle submit ----------------------------- */
   const handleSubmit = (e) => {

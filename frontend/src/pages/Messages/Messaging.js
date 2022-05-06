@@ -1,5 +1,6 @@
 import React , {useEffect, useState} from 'react'
 import { TextField } from '@mui/material';
+import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Talk from "talkjs";
 import './Messaging.css'
@@ -7,13 +8,13 @@ import './Messaging.css'
 function Messaging() {
 
     const [users, setUsers] = useState([]);
-    // const [talkingUser, setCurrentUser] = useState({});
-    const meUser = localStorage.getItem("currentTalkjsUser");
-    let aybro;
-    if (meUser) {
-        aybro = JSON.parse(meUser);
-    }
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
 
+    let talkjsUser;
+    if(decoded){
+        talkjsUser = decoded
+    }
 
     // Searches the users by the name
     const handleSearch = (e) => {
@@ -43,8 +44,12 @@ function Messaging() {
     // Upon Clicking message for a particular user
     const handleMessage = (userId) => {
         /* Retrieve the two users that will participate in the conversation */
-        const currentUser = aybro;
 
+        const currentUser = {
+            name: talkjsUser.name,
+            email: talkjsUser.email,
+            id: talkjsUser.id
+        }
         console.log("ME: ", currentUser);
 
         const user = users.find(user => user.id === userId)
