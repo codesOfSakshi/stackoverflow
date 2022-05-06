@@ -2,14 +2,11 @@ import React, {useEffect, useState} from 'react'
 import UserTopPost from './UserTopPost'
 import axiosService from "../../services/axiosservice";
 import {useParams} from "react-router-dom";
-function UserTopPostList() {
+function UserTopPostList({userId}) {
 
     const [question, setQuestion] = useState([]);
-    const GET_USER_POSTS_API = "api/user/top-posts/";
+    const GET_USER_POSTS_API = "api/user/top-posts/"+userId;
     const params = useParams();
-    console.log(params)
-    const { userId: userId } = params;
-    console.log(params)
     const [posts,setPosts] = useState([]);
     const [gettingPosts,setGettingPosts] = useState(true);
 
