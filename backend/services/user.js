@@ -335,11 +335,12 @@ class User {
 
 
 static topPosts = async(rankBy, type, userID)=>{
+  // parent function to handle sorting 
 
    const query = {
         user:mongoose.Types.ObjectId(userID),
    }
-   let userDetails = await UserModel.find(query);
+   let userDetails = await UserModel.findOne(query);
 
    if(rankBy=='score'){
      return this.sortByScore(type, rankBy, userDetails);
@@ -352,27 +353,23 @@ static topPosts = async(rankBy, type, userID)=>{
 
 
 static sortByScore = async(type, rankBy, userDetails) =>{
-// upvotes - downvotes
+     // Sorts by score: len(upvotes)-len(downvotes)
     
      if (type =='answer'){
        let questionsAnswered = userDetails.questionsAnswered;
-       var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+       console.log("questionsAnswered", questionsAnswered)
 
-       return await AnswerModel.find({ '_id': { $in: answerIds }}).aggregate([
-         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}}, 
-         {"$sort":{"sort_order":-1}},
-         {"$project":{"sort_order":0}}
-        ])
+       var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+       console.log("answerIds", answerIds)
+       const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
+       console.log("answers", answers)
+       return this.customSortByVotes(answers);
      }
       else if(type =='question'){
-        let questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
-
-        return await QuestionModel.find({ '_id': { $in: questionIds }}).aggregate([
-         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}},
-          {"$sort":{"sort_order":-1}}, 
-         {"$project":{"sort_order":0}}
-        ])
+        let questionsAsked = userDetails.questionsAsked;
+        var questionIds = questionsAsked.map(function(obj) { return obj._id; });
+        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+        return this.customSortByVotes(questions);
       } 
 
       console.log(type)
@@ -382,13 +379,14 @@ static sortByScore = async(type, rankBy, userDetails) =>{
 
 
 static sortByDate = async(type, rankBy, userDetails) =>{
-
-// latest first
+   /**
+   * sorts by latest createdat 
+   * */
 
      if (type =='question'){ 
-        let questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });    
-        let res = await QuestionModel.find({ '_id': { $in: questionIds }}, { sort: '-createdat' });
+        let questionsAsked = userDetails.questionsAsked;
+        var questionIds = questionsAsked.map(function(obj) { return obj._id; });    
+        let res = await QuestionModel.find({ '_id': { $in: questionIds }}).sort({createdat: -1});
         
         let answer = JSON.parse(JSON.stringify(res));
         if(answer){
@@ -400,7 +398,7 @@ static sortByDate = async(type, rankBy, userDetails) =>{
      else if(type =='answer'){
         let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
-        let res =  await AnswerModel.find({ '_id': { $in: answerIds }}, { sort: '-createdat' });
+        let res =  await AnswerModel.find({ '_id': { $in: answerIds }}).sort({createdat: -1});
         let answer = JSON.parse(JSON.stringify(res));
         if(answer){
             return answer;
@@ -416,12 +414,18 @@ static sortByDate = async(type, rankBy, userDetails) =>{
 
 
 static sortAll = async(rankBy, userDetails) =>{
-    console.log("here", rankBy)
+  /**
+   * sorts all the questions and answers combined based on date or score
+   * */
+    console.log("here", rankBy, userDetails)
 
     if(rankBy=='date'){
-        let questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });   
+        let questionsAsked = userDetails.questionsAsked;
+        console.log("questionsAsked", questionsAsked)
+        var questionIds = questionsAsked.map(function(obj) { return obj._id; });   
+        console.log("questionIds", questionIds)
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+        console.log("questions", questions)
         let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
         const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
@@ -443,27 +447,33 @@ static sortAll = async(rankBy, userDetails) =>{
     } 
 
     else if(rankBy=='score'){
-        let questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });   
+        let questionsAsked = userDetails.questionsAsked;
+        var questionIds = questionsAsked.map(function(obj) { return obj._id; });   
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
         let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
         const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
 
         var combined = questions.concat(answers);
-        combined.sort(function(a, b){
-          var keyA = a.upvotes - a.downvotes,
-            keyB = b.upvotes - b.downvotes;
-          if (keyA < keyB) return 1;
-          if (keyA > keyB) return -1;
-          return 0;
-        }); 
-        return combined;
+        return this.customSortByVotes(combined);
     } 
 } 
 
 
-
+static customSortByVotes = async(inputArray) =>{
+  /**
+   * Sorts arrays by larger to smaller difference in upvote and downvote array
+   * length 
+   * */
+     inputArray.sort(function(a, b){
+        var keyA = a.upvotes.length - a.downvotes.length,
+          keyB = b.upvotes.length - b.downvotes.length;
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
+      }); 
+      return inputArray;
+    }
 }
 
 module.exports.User = User;
