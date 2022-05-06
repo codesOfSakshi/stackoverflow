@@ -354,7 +354,7 @@ class User {
 static topPosts = async(rankBy, type, userID)=>{
 
    const query = {
-        user:mongoose.Types.ObjectId(userId),
+        user:mongoose.Types.ObjectId(userID),
    }
    let userDetails = await UserModel.find(query);
 
@@ -372,7 +372,7 @@ static sortByScore = async(type, rankBy, userDetails) =>{
 // upvotes - downvotes
     
      if (type =='answer'){
-       questionsAnswered = userDetails.questionsAnswered;
+       let questionsAnswered = userDetails.questionsAnswered;
        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
 
        return await AnswerModel.find({ '_id': { $in: answerIds }}).aggregate([
@@ -382,7 +382,7 @@ static sortByScore = async(type, rankBy, userDetails) =>{
         ])
      }
       else if(type =='question'){
-        questionAsked = userDetails.questionAsked;
+        let questionAsked = userDetails.questionAsked;
         var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
 
         return await QuestionModel.find({ '_id': { $in: questionIds }}).aggregate([
@@ -402,9 +402,9 @@ static sortByDate = async(type, rankBy, userDetails) =>{
 
 // latest first
 
-     if (type =='question'){
-        questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+     if (type =='question'){ 
+        let questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });    
         let res = await QuestionModel.find({ '_id': { $in: questionIds }}, { sort: '-createdat' });
         
         let answer = JSON.parse(JSON.stringify(res));
@@ -415,7 +415,7 @@ static sortByDate = async(type, rankBy, userDetails) =>{
         }
      }
      else if(type =='answer'){
-        questionsAnswered = userDetails.questionsAnswered;
+        let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
         let res =  await AnswerModel.find({ '_id': { $in: answerIds }}, { sort: '-createdat' });
         let answer = JSON.parse(JSON.stringify(res));
@@ -436,10 +436,10 @@ static sortAll = async(rankBy, userDetails) =>{
     console.log("here", rankBy)
 
     if(rankBy=='date'){
-        questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+        let questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });   
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
-        questionsAnswered = userDetails.questionsAnswered;
+        let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
         const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
 
@@ -460,10 +460,10 @@ static sortAll = async(rankBy, userDetails) =>{
     }
 
     else if(rankBy=='score'){
-        questionAsked = userDetails.questionAsked;
-        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+        let questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });   
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
-        questionsAnswered = userDetails.questionsAnswered;
+        let questionsAnswered = userDetails.questionsAnswered;
         var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
         const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
 
