@@ -15,6 +15,7 @@ import TagsPage from './pages/AllTagsPage/TagsPage'
 import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
+import Messaging from "./pages/Messages/Messaging"
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <Route path='/tags' element={<TagsPage/>}/>
       <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route path='/question/:id' element = {<QuestionDisplayPage />}/>
+      <Route path='/messaging' element = {<Messaging/>}/>
       <Route exact element={Error} />
     </Routes>
   );
