@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-const async = require("async");
+// const async = require("async");
 const UserModel = require("../models/user.js");
 const AnswerModel = require("../models/answer.js");
 const TagModel = require("../models/tag.js");
