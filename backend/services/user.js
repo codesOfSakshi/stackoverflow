@@ -351,48 +351,62 @@ class User {
 
 
 
-static topPosts = async(rankBy, type)=>{
+static topPosts = async(rankBy, type, userID)=>{
+
+   const query = {
+        user:mongoose.Types.ObjectId(userId),
+   }
+   let userDetails = await UserModel.find(query);
 
    if(rankBy=='score'){
-     return this.sortByScore(type, rankBy);
+     return this.sortByScore(type, rankBy, userDetails);
    }
    else if(rankBy=='date'){
-     return this.sortByDate(type, rankBy);
+     return this.sortByDate(type, rankBy, userDetails);
    }
 
 }
 
-static sortByScore = async(type, rankBy) =>{
-// upvotes - downvotes
 
+static sortByScore = async(type, rankBy, userDetails) =>{
+// upvotes - downvotes
+    
      if (type =='answer'){
-        return await AnswerModel.aggregate([
-         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}},
+       questionsAnswered = userDetails.questionsAnswered;
+       var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+
+       return await AnswerModel.find({ '_id': { $in: answerIds }}).aggregate([
+         {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}}, 
          {"$sort":{"sort_order":-1}},
          {"$project":{"sort_order":0}}
         ])
      }
       else if(type =='question'){
-        return await QuestionModel.aggregate([
+        questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+
+        return await QuestionModel.find({ '_id': { $in: questionIds }}).aggregate([
          {"$addFields":{ "sort_order":{"$subtract":["$upvotes", "$downvotes"]}}},
-          {"$sort":{"sort_order":-1}},
+          {"$sort":{"sort_order":-1}}, 
          {"$project":{"sort_order":0}}
         ])
-      }
+      } 
 
       console.log(type)
-      return this.sortAll(rankBy)
+      return this.sortAll(rankBy, userDetails)
+ 
+} 
 
-}
 
-
-static sortByDate = async(type, rankBy, userId) =>{
+static sortByDate = async(type, rankBy, userDetails) =>{
 
 // latest first
 
      if (type =='question'){
-        let res = await QuestionModel.find({}, { sort: '-createdat' });
-
+        questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+        let res = await QuestionModel.find({ '_id': { $in: questionIds }}, { sort: '-createdat' });
+        
         let answer = JSON.parse(JSON.stringify(res));
         if(answer){
             return answer;
@@ -401,7 +415,9 @@ static sortByDate = async(type, rankBy, userId) =>{
         }
      }
      else if(type =='answer'){
-        let res =  await AnswerModel.find({}, { sort: '-createdat' });
+        questionsAnswered = userDetails.questionsAnswered;
+        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+        let res =  await AnswerModel.find({ '_id': { $in: answerIds }}, { sort: '-createdat' });
         let answer = JSON.parse(JSON.stringify(res));
         if(answer){
             return answer;
@@ -410,19 +426,22 @@ static sortByDate = async(type, rankBy, userId) =>{
         }
       }
       else{
-        return this.sortAll(rankBy)
+        return this.sortAll(rankBy, userDetails)
       }
-
+    
 }
 
 
-static sortAll = async(rankBy) =>{
+static sortAll = async(rankBy, userDetails) =>{
     console.log("here", rankBy)
 
     if(rankBy=='date'){
-
-        const questions = await QuestionModel.find({}).lean()
-        const answers = await AnswerModel.find({}).lean()
+        questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+        questionsAnswered = userDetails.questionsAnswered;
+        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+        const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
 
 
         var combined = questions.concat(answers);
@@ -441,12 +460,15 @@ static sortAll = async(rankBy) =>{
     }
 
     else if(rankBy=='score'){
-         const questions = await QuestionModel.find({}).lean()
-        const answers = await AnswerModel.find({}).lean()
+        questionAsked = userDetails.questionAsked;
+        var questionIds = questionAsked.map(function(obj) { return obj.questionId; });
+        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+        questionsAnswered = userDetails.questionsAnswered;
+        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
+        const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
 
         var combined = questions.concat(answers);
         combined.sort(function(a, b){
-            console.log("data", a, a.upvotes)
           var keyA = a.upvotes - a.downvotes,
             keyB = b.upvotes - b.downvotes;
           if (keyA < keyB) return 1;
