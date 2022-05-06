@@ -23,23 +23,28 @@ class Question{
         }
     }
 
-    static getAllQuestionsById = async ({questionIds})=>{
+    static getScoreById = async ({questionIds})=>{
         try{
             let ids =[];
-            questionIds.map(questions=>{
-                ids.push( questions)
-            })
+
             console.log(ids)
             const query = {
                 "_id": {"$in": questionIds}
             }
-            console.log("questinoIds")
+            console.log("questionIds")
             console.log(questionIds)
-            const questions = await QuestionModel.find(query);
+            let questions = await QuestionModel.find(query);
+            questions = JSON.parse(JSON.stringify(questions))
             if(questions?.length){
-                return questions;
+                let score =0;
+                console.log(questions)
+                questions.map(question=>{
+
+                    score+=(question.views);
+                })
+                return score;
             }else{
-                return [];
+                return 0;
             }
         }catch(err){
             console.log(err);
