@@ -11,11 +11,13 @@ import ReviewQuestions from "./components/admin/ReviewQuestions";
 import QuestionDisplayPage from './pages/QuestionDisplayPage';
 import Question from './pages/Question';
 import AskQuestion from './pages/AskQuestion';
+import EditQuestion from './pages/EditQuestion';
 import TagsPage from './pages/AllTagsPage/TagsPage'
 import TagPage from './pages/TagPage/TagPage'
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
 import Messaging from "./pages/Messages/Messaging"
+import Upvote from "./Atom/upvote";
 
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
       <Route path="/users" element={<SearchUser />} />
       <Route path='/question' element={<Question/>}/>
       <Route path='/askquestion' element={<AskQuestion/>}/>
+      <Route path='/edit/:questionId' element={<EditQuestion/>}/>
       <Route path='/tags' element={<TagsPage/>}/>
       <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route path='/question/:id' element = {<QuestionDisplayPage />}/>

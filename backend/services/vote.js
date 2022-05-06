@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-const QuestionModel = require('../models/question.js');
-const AnswerModel = require('../models/answer.js');
+let QuestionModel = require('../models/question.js');
+let AnswerModel = require('../models/answer.js');
 
 
 class Vote{
@@ -8,38 +8,36 @@ class Vote{
         let updateCondition = {};
         let resupvote = null;
         let resdownvote = null;
-        // let query = null;
-        // let insertvote = null;
         // let res = null;
         if(type === 'question'){
             try
             {
                 if(voteType === 'Upvote'){
-                    const findCondition = {
+                    let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
                     };
-                    const getquestion1 = await QuestionModel.findOne(findCondition);
-                    const questionparse1 = JSON.parse(JSON.stringify(getquestion1))
-                    const userUpvote1 = questionparse1.upVotes.filter((user)=>{
+                    let getquestion1 = await QuestionModel.findOne(findCondition);
+                    let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
+                    let userUpvote1 = questionparse1.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const userDownvote1 = questionparse1.downVotes.filter((user)=>{
+                    let userDownvote1 = questionparse1.downVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const removeUserDownvote1 = questionparse1.downVotes.filter((user)=>{
+                    let removeUserDownvote1 = questionparse1.downVotes.filter((user)=>{
                         if(user!=voter){
                             return(user);
                         }
                     })
-                    const allUserUpvote1 = questionparse1.upVotes.filter((user)=>{
+                    let allUserUpvote1 = questionparse1.upVotes.filter((user)=>{
                         return(user);
                     })
 
-                    const allUserDownvote1 = questionparse1.downVotes.filter((user)=>{
+                    let allUserDownvote1 = questionparse1.downVotes.filter((user)=>{
                         return(user);
                     })
                     
@@ -49,6 +47,7 @@ class Vote{
                                 "upVotes":  voter
                             } 
                         }
+                        allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
                         resdownvote = allUserDownvote1;
                     }
@@ -59,8 +58,10 @@ class Vote{
                             },
                             "downVotes" : removeUserDownvote1
                         }
+
+                        allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
-                        resdownvote = allUserDownvote1;
+                        resdownvote = removeUserDownvote1;
                     }
                     else if(userUpvote1.length != 0 && userDownvote1.length === 0){
                         updateCondition = {
@@ -75,10 +76,10 @@ class Vote{
                             "downVotes" : removeUserDownvote1
                         }
                         resupvote = allUserUpvote1;
-                        resdownvote = allUserDownvote1;
+                        resdownvote = removeUserDownvote1;
 
                     }
-                    const result = await QuestionModel.updateOne(findCondition,updateCondition);
+                    let result = await QuestionModel.updateOne(findCondition,updateCondition);
                     if(result){
                         console.log("RESULT FROM QUESTION VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
@@ -87,31 +88,31 @@ class Vote{
                     }
                 }
                 else{
-                    const findCondition = {
+                    let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
                     };
-                    const getquestion2 = await QuestionModel.findOne(findCondition);
-                    const questionparse2 = JSON.parse(JSON.stringify(getquestion2))
-                    const userDownvote2 = questionparse2.downVotes.filter((user)=>{
+                    let getquestion2 = await QuestionModel.findOne(findCondition);
+                    let questionparse2 = JSON.parse(JSON.stringify(getquestion2))
+                    let userDownvote2 = questionparse2.downVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const userUpvote2 = questionparse2.upVotes.filter((user)=>{
+                    let userUpvote2 = questionparse2.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const removeUserUpvote2 = questionparse2.upVotes.filter((user)=>{
+                    let removeUserUpvote2 = questionparse2.upVotes.filter((user)=>{
                         if(user!=voter){
                             return(user);
                         }
                     })
-                    const allUserUpvote2 = questionparse2.upVotes.filter((user)=>{
+                    let allUserUpvote2 = questionparse2.upVotes.filter((user)=>{
                         return(user);
                     })
 
-                    const allUserDownvote2 = questionparse2.downVotes.filter((user)=>{
+                    let allUserDownvote2 = questionparse2.downVotes.filter((user)=>{
                         return(user);
                     })
                     
@@ -121,6 +122,7 @@ class Vote{
                                 "downVotes":  voter
                             }
                         }
+                        allUserDownvote2.push(voter)
                         resupvote = allUserUpvote2;
                         resdownvote = allUserDownvote2;
                     }
@@ -131,7 +133,8 @@ class Vote{
                             },
                             "upVotes" : removeUserUpvote2
                         }
-                        resupvote = allUserUpvote2;
+                        allUserDownvote2.push(voter)
+                        resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
                     }
                     else if(userDownvote2.length != 0 && userUpvote2.length === 0){
@@ -146,10 +149,10 @@ class Vote{
                             "downVotes":  allUserDownvote2,
                             "upVotes" : removeUserUpvote2
                         }
-                        resupvote = allUserUpvote2;
+                        resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
                     }
-                    const result = await QuestionModel.updateOne(findCondition,updateCondition);
+                    let result = await QuestionModel.updateOne(findCondition,updateCondition);
                     if(result){
                         console.log("RESULT FROM QUESTION VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
@@ -167,31 +170,31 @@ class Vote{
             try
             {
                 if(voteType === 'Upvote'){
-                    const findCondition = {
+                    let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
                     };
-                    const getanswer1= await AnswerModel.findOne(findCondition);
-                    const answerparse1 = JSON.parse(JSON.stringify(getanswer1))
-                    const userUpvote3 = answerparse1.upVotes.filter((user)=>{
+                    let getanswer1= await AnswerModel.findOne(findCondition);
+                    let answerparse1 = JSON.parse(JSON.stringify(getanswer1))
+                    let userUpvote3 = answerparse1.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const userDownvote3 = answerparse1.downVotes.filter((user)=>{
+                    let userDownvote3 = answerparse1.downVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const removeUserDownvote3 = answerparse1.downVotes.filter((user)=>{
+                    let removeUserDownvote3 = answerparse1.downVotes.filter((user)=>{
                         if(user!=voter){
                             return(user);
                         }
                     })
-                    const allUserUpvote3 = answerparse1.upVotes.filter((user)=>{
+                    let allUserUpvote3 = answerparse1.upVotes.filter((user)=>{
                         return(user);
                     })
 
-                    const allUserDownvote3 = answerparse1.downVotes.filter((user)=>{
+                    let allUserDownvote3 = answerparse1.downVotes.filter((user)=>{
                         return(user);
                     })
 
@@ -200,6 +203,7 @@ class Vote{
                         updateCondition = {
                             $addToSet:{ "upVotes": voter}
                         }
+                        allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
                         resdownvote = allUserDownvote3;
                     }
@@ -210,9 +214,11 @@ class Vote{
                             },
                             "downVotes" : removeUserDownvote3
                         }
+                        allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
-                        resdownvote = allUserDownvote3;
+                        resdownvote = removeUserDownvote3;
                     }
+
                     else if(userUpvote3.length != 0 && userDownvote3.length === 0){
                         updateCondition = {
                             "upVotes":  allUserUpvote3,
@@ -226,9 +232,9 @@ class Vote{
                             "downVotes" : removeUserDownvote3
                         }
                         resupvote = allUserUpvote3;
-                        resdownvote = allUserDownvote3;
+                        resdownvote = removeUserDownvote3;
                     }
-                    const result = await AnswerModel.updateOne(findCondition,updateCondition);
+                    let result = await AnswerModel.updateOne(findCondition,updateCondition);
                     if(result){
                         console.log("RESULT FROM ANSWER VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
@@ -237,68 +243,70 @@ class Vote{
                     }
                 }
                 else{
-                    const findCondition = {
+                    let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
                     };
-                    const getqanswer2 = await AnswerModel.findOne(findCondition);
-                    const answerparse2 = JSON.parse(JSON.stringify(getanswer2))
-                    const userDownvote4 = answerparse2.downVotes.filter((user)=>{
+                    let getanswer2 = await AnswerModel.findOne(findCondition);
+                    let answerparse2 = JSON.parse(JSON.stringify(getanswer2))
+                    let userDownvote4 = answerparse2.downVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const userUpvote4 = answerparse2.upVotes.filter((user)=>{
+                    let userUpvote4 = answerparse2.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
                         }
                     })
-                    const removeUserUpvote4 = answerparse2.upVotes.filter((user)=>{
+                    let removeUserUpvote4 = answerparse2.upVotes.filter((user)=>{
                         if(user!=voter){
                             return(user);
                         }
                     })
-                    const allUserDownvote4 = answerparse2.downVotes.filter((user)=>{
+                    let allUserDownvote4 = answerparse2.downVotes.filter((user)=>{
                         return(user);
                     })
-                    const allUserUpvote4 = answerparse2.downVotes.filter((user)=>{
+                    let allUserUpvote4 = answerparse2.upVotes.filter((user)=>{
                         return(user);
                     })
                     
                     if(userDownvote4.length === 0 && userUpvote4.length === 0){
-                        const updateCondition = {
+                        updateCondition = {
                             $addToSet:{
                                 "downVotes":  voter
                             }
                         }
+                        allUserDownvote4.push(voter)
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
                     }
                     else if(userDownvote4.length === 0 && userUpvote4.length !== 0){
-                        const updateCondition = {
+                        updateCondition = {
                             $addToSet:{
                                 "downVotes":  voter,
                             },
                             "upVotes" : removeUserUpvote4
                         }
-                        resupvote = allUserUpvote4;
+                        allUserDownvote4.push(voter)
+                        resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
                     }
                     else if(userDownvote4.length != 0 && userUpvote4.length === 0){
-                        const updateCondition = {
+                        updateCondition = {
                             "downVotes":  allUserDownvote4,
                         }
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
                     }
                     else{
-                        const updateCondition = {
+                        updateCondition = {
                             "downVotes":  allUserDownvote4,
                             "upVotes" : removeUserUpvote4
                         }
-                        resupvote = allUserUpvote4;
+                        resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
                     }
-                    const result = await AnswerModel.updateOne(findCondition,updateCondition);
+                    let result = await AnswerModel.updateOne(findCondition,updateCondition);
                     if(result){
                         console.log("RESULT FROM ANSWER VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
