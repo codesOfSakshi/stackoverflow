@@ -4,8 +4,8 @@ import { useNavigate,useParams } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+// import ReactMarkdown from 'react-markdown'
+// import remarkGfm from 'remark-gfm'
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -92,7 +92,7 @@ function QuestionsPage() {
                     <p>
                         <>
                             <div id="editor-container-questionDisplay"></div>
-                            <ReactMarkdown children={question.description} remarkPlugins={[remarkGfm]} />
+                            {/* <ReactMarkdown children={question.description} remarkPlugins={[remarkGfm]} /> */}
                         </>
                     </p>
                 </Row>
