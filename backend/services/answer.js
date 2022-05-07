@@ -5,6 +5,8 @@ const QuestionModel = require('../models/question');
 
 const AnswerModel = require('../models/answer.js');
 
+const UserModel = require('../models/user');
+
 
 class Answer{
    
@@ -66,6 +68,19 @@ class Answer{
                 "bastAns":  answerId
             }
             console.log(findCondition);
+
+            // let userfindCondition = {
+            //     _id:mongoose.Types.ObjectId(voter),
+            // };
+
+            // let user= await UserModel.findOne(userfindCondition);
+            // var reputationIncrement=user.reputation+15
+            // userUpdateCondition = {
+            //     "reputation":  reputationIncrement,
+            // }
+
+            // let represult = await UserModel.updateOne(userfindCondition,userUpdateCondition)
+            
             const result = await QuestionModel.updateOne(findCondition,updateCondition);
             console.log("Question result is", result);
             if(result){

@@ -33,6 +33,7 @@ function SignUp() {
         }
       })
       .catch((error) => {
+        console.log(error.response.data);
         console.log("there was an error in the Signup.js handlesubmit");
         setMessage(error.response.data.message);
       });

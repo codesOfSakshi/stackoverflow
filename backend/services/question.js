@@ -95,14 +95,14 @@ static getQuestionsBasedOnId = async (questionId)=>{
         var questions =await QuestionModel.findById(questionId).populate("answers");
         // console.log(questions)
 
-        var viewIncrement=questions.views+1
-        console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
-        QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
+        // var viewIncrement=questions.views+1
+        // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
+        // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
         
         // var questionsdata=questions._doc
         // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
         // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
-        console.log("tttttttT",questions)
+        // console.log("tttttttT",questions)
         return questions;    
         // return questions
     }catch(err){
