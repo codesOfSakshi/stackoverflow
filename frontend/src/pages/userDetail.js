@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
@@ -8,6 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import ImageUploadCard from '../components/user/ImageUpload';
 import Cookies from 'universal-cookie';
+import {useParams} from "react-router-dom";
+import axiosService from "../services/axiosservice";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -20,32 +22,43 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function ReviewCard({seller}) {
+export default function ReviewCard() {
 
 
-
+    const GET_USER_API = "api/user/";
     const [expanded, setExpanded] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [url, setUrl] = useState("");
-    const [name, setName] = useState("");
-    const [location, setLocation] = useState("");
-    const [title, setTitle] = useState("");
     const [user, setUser] = useState([]);
+    const [name, setName] = useState(user.name);
+    const [location, setLocation] = useState(user.location);
+    const [title, setTitle] = useState(user.title);
+    const [url, setUrl] = useState(user.profilePicture);
     const cookies = new Cookies();
+    const params = useParams();
+    console.log(params)
+    const { userId: userId } = params;
+    console.log(params)
 
-    fetch("http://localhost:5000/api/user/"+user.userId)
-        .then(response => {
-            if(response.status===200)
-            {   console.log("Fetch user successfully")
-                console.log(response.body)
-                setUser(response.body)
+    const getUser = async () => {
 
+        try{
+            const response = await axiosService.get(GET_USER_API+userId);
+            if(response && response.data && response.data.success && response.data.user){
+              console.log(response.data.user)
+              setUser(response.data.user)
+              setLocation(response.data.user.location)
+              setName(response.data.user.name)
+              setTitle(response.data.user.title)
             }
-            else{
-                console.log("Fetch user Failed")
-            }
+        }catch(e){
+            console.log(e);
 
-        })
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    },[]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -56,29 +69,8 @@ export default function ReviewCard({seller}) {
     };
 
     const handleSave = () => {
-        setUrl("")
-
-        const req= {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                shop_image_url: cookies.get('image_url'),
-                user_id:user.user_id,
-
-            })
-        }
-        fetch("http://localhost:5000/api/s3/updateImage",req)
-            .then(response => {
-                if(response.status===200)
-                {   console.log("Image is updated successfully")
-                    console.log(response.body)
-
-                }
-                else{
-                    console.log("Image update Failed")
-                }
-
-            })
+        setUrl(cookies.get('imageUrl'))
+        console.log(cookies.get('imageUrl'))
     };
 
     const updateUser = () => {
@@ -90,16 +82,15 @@ export default function ReviewCard({seller}) {
             body: JSON.stringify({
                 name: name,
                 location: location,
-                title:title
-
+                title:title,
+                profilePic:cookies.get('imageUrl')
             })
         }
-        fetch("http://localhost:5000/api/user/edit-partial"+user.user_id,req)
+        fetch("http://localhost:3001/api/user/edit-partial/"+user._id,req)
             .then(response => {
                 if(response.status===200)
                 {   console.log("User updated successfully")
                     console.log(response.body)
-
                 }
                 else{
                     console.log("User update Failed")
@@ -132,7 +123,7 @@ export default function ReviewCard({seller}) {
             <div className="bg-white d:bg-black-025 bar-md ba bc-black-075 mb48 p24 sm:p12">
                 <div >
                     <div className="gravatar-wrapper-164"><img
-                        src={user.profilePic}
+                        src={url}
                         alt={user.name} width="164" height="164" className="bar-sm main-image"
 
                     /></div>
@@ -144,17 +135,17 @@ export default function ReviewCard({seller}) {
                 <h4>Display Name</h4>
                 <div className="d-flex ps-relative">
                     <input className="s-input wmx4 sm:wmx-initial" id="displayName" name="DisplayName" type="text"
-                           value={user.name} maxLength="30" onChange={(e) => setName(e.target.value)}/>
+                           value={name} maxLength="30" onChange={(e) => setName(e.target.value)}/>
                 </div>
                 <h4>Location</h4>
                 <div className="d-flex ps-relative">
                     <input className="s-input wmx4 sm:wmx-initial" id="displayName" name="DisplayName" type="text"
-                           value={user.location} maxLength="30" onChange={(e) => setLocation(e.target.value)}/>
+                           value={location} maxLength="30" onChange={(e) => setLocation(e.target.value)}/>
                 </div>
                 <h4>Title</h4>
                 <div className="d-flex ps-relative">
                     <input className="s-input wmx4 sm:wmx-initial" id="displayName" name="DisplayName" type="text"
-                           value={user.title}  maxLength="30" onChange={(e) => setTitle(e.target.value)}/>
+                           value={title}  maxLength="30" onChange={(e) => setTitle(e.target.value)}/>
                 </div>
                 <br/>
                 <button className="s-btn s-btn__primary" type="button" onClick={ updateUser}>Save Changes</button>

@@ -16,7 +16,7 @@ export default function UserAnswer({answer}) {
 
                     <div className="s-post-summary--stats-item s-post-summary--stats-item__emphasized"
                          title="Score of 1">
-                        <span className="s-post-summary--stats-item-number">{ans.questionId.upVotesCount.length-ans.questionId.downVotesCount.length}</span>
+                        <span className="s-post-summary--stats-item-number">{ans.score}</span>
                         <span className="s-post-summary--stats-item-unit">vote</span>
                     </div>
 

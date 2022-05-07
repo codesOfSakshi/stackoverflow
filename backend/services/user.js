@@ -64,6 +64,7 @@ class User {
           bookmarks: req.body.questionId,
         },
       });
+      return updatedUser;
     } catch (err) {
       console.log(err);
       throw new Error(
