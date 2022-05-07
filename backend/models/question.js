@@ -48,7 +48,7 @@ const questionSchema = new mongoose.Schema({
   commentId: {
     type: String,
   },
-  bastAns: {
+  bestAns: {
     type:mongoose.Schema.Types.ObjectId,
     ref: 'answer',
   },

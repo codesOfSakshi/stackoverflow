@@ -25,12 +25,12 @@ const answerSchema = new mongoose.Schema({
     },
     user:{
         type:Array,
-        required: true,
+        ref: "user",
     },
     description:{
         type:String,
         required: true,
-    }
+    },
 });
 
 const answerModel = mongoose.model("answer", answerSchema);
