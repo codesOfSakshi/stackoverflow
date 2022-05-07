@@ -103,7 +103,7 @@ const userSchema = new mongoose.Schema({
       type: Number
     }
   }],
-    title: {type:String,required: true},
+    title: {type:String},
 });
 
 userSchema.set("toObject", { virtuals: true });

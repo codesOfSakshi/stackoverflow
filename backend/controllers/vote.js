@@ -3,12 +3,16 @@ const router = express.Router();
 const {Vote} = require("../services/vote");
 
 router.post("/",  async (req, res) => {
+    console.log("in vote")
     const voteType = req.body.voteType;
     const questionId = req.body.questionId;
     const answerId = req.body.answerId;
-    const comment = req.body.comment;
-    const voter = req.body.voter;
+    // const comment = req.body.comment;
+    const voter = req.body.voter._id;
     const type = req.body.type;
+
+
+
     const response = {};
     try{
         const addVote = await Vote.postVote(voteType,questionId,answerId,type,voter);

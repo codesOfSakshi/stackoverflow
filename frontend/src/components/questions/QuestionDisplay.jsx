@@ -4,21 +4,30 @@ import { useNavigate } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
+import jwt_decode from 'jwt-decode';
+import {useParams} from 'react-router-dom';
 
 
-function QuestionsPage() {
+
+function QuestionsPage(props) {
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
 
-    useEffect(() => {
-        var api = "http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
-        axios.get(api).then(response => {
-            console.log(response)
-            setQuestion(response.data.data)
-            setlans(response.data.data.answers)
+    const params = useParams();
 
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
+    console.log("decode", decoded)
+
+
+    useEffect(() => {
+        var api = "http://localhost:3001/api/questions/" + params.id
+        axios.get(api).then(response => {
+            setQuestion(response.data.data)
+            console.log("Response is ", response)
+            setlans(response.data.data.answers)
             questionDisplay = new window.stacksEditor.StacksEditor(
                 document.querySelector("#editor-container-questionDisplay"),
                 response.data.data.description)
@@ -40,14 +49,6 @@ function QuestionsPage() {
             questionId:"627189b4519c18b6b2396bed"
         }
         axios.post(api,payload).then(response => {alert(response.data)})
-    }
-  
-    const onDownVoteClick =()=>{
-        console.log("downvote");
-    }
-
-    const onUpVoteClick =()=>{
-        console.log("upvote");
     }
 
 
@@ -84,11 +85,18 @@ function QuestionsPage() {
 
                 <hr></hr>
                 <Row>
-                    <p>
-                        <>
-                            <div id="editor-container-questionDisplay"></div>
-                        </>
-                    </p>
+                    <Col xs={1}>
+                                    {/* {console.log(ans)}
+                            {ans.upVotes.length} votes */}
+                        <Upvote object={question} decoded = {decoded} type="question" />
+                    </Col>
+                    <Col    >
+                        <p>
+                            <>
+                                <div id="editor-container-questionDisplay"></div>
+                            </>
+                        </p>
+                    </Col>
                 </Row>
 
                 {/* <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
@@ -140,7 +148,7 @@ function QuestionsPage() {
                                 <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx}  downVote={onDownVoteClick} upVote={onUpVoteClick} object={ans} type="answer" />
+                                    <Upvote idx={idx} object={ans} decoded = {decoded} type="answer" />
                                 </Col>
                                 <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
                                     {ans.description}
