@@ -71,7 +71,7 @@ const userSchema = new mongoose.Schema({
     },
     answerId:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "answer",
+      ref: "answers",
     }
   }],
    questionsAsked: [{

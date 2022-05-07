@@ -94,6 +94,30 @@ class User {
     }
   };
 
+
+    static getUserByIdWithQuestion = async ({ userId }) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            let user = await UserModel.findOne(query).populate(["questionsAsked","questionsAnswered.questionId", "questionsAnswered.answerId"])
+
+            console.log(user, "user");
+
+            user = JSON.parse(JSON.stringify(user));
+            if (user) {
+                return user;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
+
     static getUserQuestionById = async ({ userId }) => {
         try {
             const query = {
@@ -414,19 +438,27 @@ class User {
 
 static topPosts = async(rankBy, type, userID)=>{
   // parent function to handle sorting 
-
-   const query = {
-        user:mongoose.Types.ObjectId(userID),
-   }
-   let userDetails = await UserModel.findOne(query).populate(["questionsAnswered.questionId", "questionsAnswered.answerId"]);
-
-   if(rankBy=='score'){
-     return this.sortByScore(type, rankBy, userDetails);
-   }
-   else if(rankBy=='date'){
-     return this.sortByDate(type, rankBy, userDetails);
-   }
-
+    try {
+        const query = {
+            user: mongoose.Types.ObjectId(userID),
+        }
+        const userObj = {userID};
+        //console.log(userId)
+        let userDetails = await User.getUserByIdWithQuestion(userObj);//await UserModel.findOne(query)
+        if (userDetails) {
+            if (rankBy == 'score') {
+                return this.sortByScore(type, rankBy, userDetails);
+            } else if (rankBy == 'date') {
+                return this.sortByDate(type, rankBy, userDetails);
+            }
+        } else {
+            return [];
+        }
+    }
+    catch(err){
+        console.log(err);
+        throw new Error("Error while searching for users by name");
+    }
 }
 
 
@@ -478,8 +510,8 @@ static sortByDate = async(type, rankBy, userDetails) =>{
      else if(type =='answer'){
         let questionsAnswered = userDetails.questionsAnswered;
        questionsAnswered.sort(function(a, b) {
-          var keyA = new Date(a.answerId.toObject().createdat),
-            keyB = new Date(b.answerId.toObject().createdat);
+          var keyA = new Date(a.answerId.createdat),
+            keyB = new Date(b.answerId.createdat);
           // Compare the 2 dates
           if (keyA < keyB) return 1;
           if (keyA > keyB) return -1;
@@ -518,8 +550,8 @@ static sortAll = async(rankBy, userDetails) =>{
         let questionsAnswered = userDetails.questionsAnswered;
         for(let questionAnswered of questionsAnswered) {
 
-              const tmp = questionAnswered.questionId.toObject(); 
-              tmp.sortcreatedat = questionAnswered.answerId.toObject().createdat;
+              const tmp = questionAnswered.questionId;
+              tmp.sortcreatedat = questionAnswered.answerId.createdat;
               questionWithDate.push(tmp)
          }
 
@@ -551,7 +583,7 @@ static sortAll = async(rankBy, userDetails) =>{
         const questionWithScore = []
         for(let questionAnswered of questionsAnswered) {
 
-              const tmp = questionAnswered.questionId.toObject(); 
+              const tmp = questionAnswered.questionId;
               tmp.score = questionAnswered.answerId.upVotes.length - questionAnswered.answerId.downVotes.length;
               questionWithScore.push(tmp)
          }

@@ -13,12 +13,12 @@ const questionSchema = new mongoose.Schema({
     type: Date,
   },
   upVotes: [{
-    type: String,
-    ref: "user",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
   }],
   downVotes: [{
-    type: String,
-    ref: "user",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
   }],
   views: {
     type: Number,
