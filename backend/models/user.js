@@ -76,8 +76,7 @@ const userSchema = new mongoose.Schema({
   }],
    questionsAsked: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "answer",
-
+      ref: "questions",
   }],
   commentCount: {
     type: String,

@@ -4,6 +4,7 @@ const UserModel = require("../models/user.js");
 const AnswerModel = require("../models/answer.js");
 const TagModel = require("../models/tag.js");
 const QuestionModel = require("../models/question.js");
+const { Question } = require("../services/question");
 
 class User {
   /* -------------------------------------------------------------------------- */
@@ -92,6 +93,83 @@ class User {
       );
     }
   };
+
+    static getUserQuestionById = async ({ userId }) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            const userObj = userId;
+            const user =await User.getUserById(userObj);
+            let questionIds = user.questionsAsked
+            const questionObj = {};
+            questionObj.questionIds = questionIds;
+            let response = await Question.getQuestions(questionObj);
+            console.log(user, "user");
+            response.map(responses=>{
+                console.log("responses------------------------>>>>>>>>>>")
+                console.log(responses.upVotes)
+                console.log(responses.downVotes)
+                let up= responses.upVotes===undefined?0:responses.upVotes.length;
+                let down= responses.downVotes===undefined?0:responses.downVotes.length;
+                console.log(up)
+                console.log(down)
+                responses['score']=(up-down);
+            })
+
+            response = JSON.parse(JSON.stringify(response));
+
+            if (response) {
+                return response;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
+
+    static getUserAnswerQuestionById = async ({ userId }) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            const userObj = userId;
+            const user =await User.getUserById(userObj);
+            var questionIds = user.questionsAnswered.map(function(obj) { return obj.questionId; });
+            var answerIds = user.questionsAnswered.map(function(obj) { return obj.answerId; });
+            const questionObj = {};
+            questionObj.questionIds = questionIds;
+            let response = await Question.getQuestionsWithTagsAndAnswers(questionObj);
+            console.log(user, "user");
+            response.map(responses=>{
+                let up= responses.upVotes===undefined?0:responses.upVotes.length;
+                let down= responses.downVotes===undefined?0:responses.downVotes.length;
+                responses['score']=(up-down);
+                console.log("lets check-------->>>>>>>")
+                console.log(answerIds)
+                console.log(responses.bestAns)
+                if(answerIds.includes(responses.bestAns))
+                {
+                    responses['best']="true";
+                }
+                })
+            response = JSON.parse(JSON.stringify(response));
+            if (response) {
+                return response;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
 
     static getUserByIdPopulateQuestion = async ({ userId }) => {
         try {
@@ -385,8 +463,7 @@ static sortByDate = async(type, rankBy, userDetails) =>{
    /**
    * sorts by latest createdat 
    * */
-
-     if (type =='question'){ 
+     if (type ==='question'){
         let questionsAsked = userDetails.questionsAsked;
         var questionIds = questionsAsked.map(function(obj) { return obj._id; });    
         let res = await QuestionModel.find({ '_id': { $in: questionIds }}).sort({createdat: -1});

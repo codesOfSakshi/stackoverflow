@@ -27,18 +27,16 @@ export default function UserAnswer({answer}) {
                     <h3 className="s-post-summary--content-title">
 
 
-                        <a href="/questions/61933462/aerospike-as-cache" className="s-link">ans.questionId.title</a>
+                        <a href="/questions/61933462/aerospike-as-cache" className="s-link">{ans.title}</a>
                     </h3>
                     <div className="s-post-summary--meta">
-                        <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
-                            { (ans.tags).map(tag=>{
-                            <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
-                               title="" rel="tag">{tag.title}</a>
-                        })}
+                        { (ans.tags).map(tag=>{
+                            return <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
 
-
+                                <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
+                                   title="" rel="tag">{tag.name}</a>
                         </div>
-
+                        })}
 
                         <div className="s-user-card s-user-card__minimal">
 
@@ -52,7 +50,7 @@ export default function UserAnswer({answer}) {
                             </div>
 
                             <time className="s-user-card--time">asked <span title="2020-05-21 11:26:53Z"
-                                                                            className="relativetime">{ans.question.createdAt}</span>
+                                                                            className="relativetime">{ans.createdAt}</span>
                             </time>
                         </div>
 
