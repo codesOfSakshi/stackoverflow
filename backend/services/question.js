@@ -68,7 +68,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers");
+        var questions =await QuestionModel.findById(questionId).populate("answers","user");
         // console.log(questions)
 
         var viewIncrement=questions.views+1
@@ -92,7 +92,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers");
+        var questions =await QuestionModel.findById(questionId).populate("answers","user");
         // console.log(questions)
 
         var viewIncrement=questions.views+1
@@ -113,6 +113,9 @@ static getQuestionsBasedOnId = async (questionId)=>{
 
 static getQuestionsByType = async (type,sortType)=>{
     try{
+        const query = {
+            status:"APPROVED",
+        }
         console.log(type,sortType)
         var sorting=1;
         var questions;
@@ -123,16 +126,16 @@ static getQuestionsByType = async (type,sortType)=>{
         if(type=="Interesting" || type==1){
             console.log("here")
             // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-            questions = await QuestionModel.find({})
+            questions = await QuestionModel.find(query)
         }
         else if(type=="Hot" || type==2){
-            questions = await QuestionModel.find({}).sort({views: sorting})
+            questions = await QuestionModel.find(query).sort({views: sorting})
         }
         else if(type=="Score" || type==3){
-             questions = await QuestionModel.find({}).sort({answers: sorting})
+             questions = await QuestionModel.find(query).sort({answers: sorting})
         }
         else if(type=="Unanswered" || type==4){
-            questions = await QuestionModel.find({ answers: { $size: 0 } }).sort({score:1})
+            questions = await QuestionModel.find(query,{ answers: { $size: 0 } }).sort({score:1})
         }
         console.log(questions)
 
@@ -164,7 +167,8 @@ static addQuestion = async (question)=>{
             commentId:"",
             bestAns:"",
             badges:[],
-            activity:""
+            activity:"",
+            status:question.images.length==0?"APPROVED":"PENDING"
         });
         //ToDO - Append the tag in user tag list
         await questionNew.save();
@@ -184,7 +188,8 @@ static editQuestion = async (question)=>{
             images:question.images,
             title:question.title,
             tags:question.tags,
-            description:question.description
+            description:question.description,
+            status:question.images.length==0?"APPROVED":"PENDING"
         })
         if (result=={}) {
           return res.status(400).send(result.error.details[0].message);
