@@ -1,19 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col, Badge, Button} from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
+// import ReactMarkdown from 'react-markdown'
+// import remarkGfm from 'remark-gfm'
+
+const markdown = `Just a link: https://reactjs.com.`
 
 
 function QuestionsPage() {
+    let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
 
     useEffect(() => {
-        var api = "http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
+        var api = "http://localhost:3001/api/questions/"+params.id
         axios.get(api).then(response => {
             console.log(response)
             setQuestion(response.data.data)
@@ -87,6 +92,7 @@ function QuestionsPage() {
                     <p>
                         <>
                             <div id="editor-container-questionDisplay"></div>
+                            {/* <ReactMarkdown children={question.description} remarkPlugins={[remarkGfm]} /> */}
                         </>
                     </p>
                 </Row>

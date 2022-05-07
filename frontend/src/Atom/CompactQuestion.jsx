@@ -43,10 +43,10 @@ function CompactQuestion(props) {
                 <Col class="alignLeft">
                     <a href={questionLink}><div class="alignLeft" style={{"margin-bottom":"-0.5rem"}}>{question.title} </div></a>
                     <br></br>
-                    <div class="s-post-summary--content-excerpt limitDescription">
+                    {/* <div class="s-post-summary--content-excerpt limitDescription">
                     {question.description} 
                     </div>
-                    <br></br>
+                    <br></br> */}
                     <div class="displayFlex" style={{"margin-bottom":"1rem"}}>
                     {question.tags.map( tag =>{
                         return(<>

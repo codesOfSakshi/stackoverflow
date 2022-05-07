@@ -1,11 +1,12 @@
 import { Row,Col } from 'react-bootstrap';
 import EditQuestionPage from '../components/questions/EditQuestionPage';
+import Navbar from "../components/user/Navbar";
 
 function EditQuestion() {
 return (
     <>
-    <div><h1>Headers</h1></div>
-    <Row>
+    <Navbar></Navbar>
+    <Row style={{marginTop:"5rem"}}>
       <Col lg={2}></Col>
       <Col>
     <img src="https://cdn.sstatic.net/Img/ask/background.svg?v=2e9a8205b368" 
