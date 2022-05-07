@@ -73,9 +73,17 @@ router.post("/addbookmark/:userId",  async (req, res) => {
     const response = {};
     try{
         const questionIds = await User.addToBookMark(req);
+        if(questionIds){
         response.success = true;
         response.status = 200;
-        res.status(200).send(response);
+        response.
+        res.status(200).send(response);}
+        else {
+            response.success = true;
+            response.bookMarkQuestions = [];
+            response.status = 200;
+            res.status(200).send(response);
+        }
       
     }catch(e){
         console.log(e);

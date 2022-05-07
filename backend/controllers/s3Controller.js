@@ -2,8 +2,8 @@ const s3service = require('../services/s3service');
 
 // Get All Tags
 exports.uploadImage = (req, res) => {
-    console.log("Inside Tags Controller: Get All Tags");
-
+    console.log("Inside s3 Controller:");
+    const response = {}
     s3service.imageUpload((err, result) => {
         if(err)
         {
@@ -13,7 +13,11 @@ exports.uploadImage = (req, res) => {
         else{
             console.log("Image uploaded:");
             console.log(result);
-            res.status(200).send(result);
+            if(result){
+
+                response.data = result;
+                res.status(200).send(response);
+            }
         }
     })
 }
