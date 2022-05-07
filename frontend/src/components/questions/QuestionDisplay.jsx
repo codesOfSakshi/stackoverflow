@@ -51,15 +51,6 @@ function QuestionsPage(props) {
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
-  
-    const onDownVoteClick =()=>{
-        console.log("downvote");
-    }
-
-    const onUpVoteClick =()=>{
-        console.log("upvote");
-    }
-
 
     return (
         <div>
@@ -160,7 +151,7 @@ function QuestionsPage(props) {
                                 <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx} object={ans} decoded = {decoded} type="answer" />
+                                    <Upvote idx={idx} object={ans} decoded = {decoded} question = {question} type="answer" />
                                 </Col>
                                 <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
                                     {ans.description}

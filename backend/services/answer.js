@@ -65,13 +65,12 @@ class Answer{
             };
             console.log("==========="+questionId)
             const updateCondition = {
-                "bastAns":  answerId
+                "bestAns":  answerId
             }
-            console.log(findCondition);
-
-            // let userfindCondition = {
-            //     _id:mongoose.Types.ObjectId(voter),
+            // let ansfindCondition = {
+            //     _id:mongoose.Types.ObjectId(answerId),
             // };
+            // console.log("answerfindcondition",ansfindCondition)
 
             // let user= await UserModel.findOne(userfindCondition);
             // var reputationIncrement=user.reputation+15
