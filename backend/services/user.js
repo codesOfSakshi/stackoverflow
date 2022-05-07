@@ -340,7 +340,7 @@ static topPosts = async(rankBy, type, userID)=>{
    const query = {
         user:mongoose.Types.ObjectId(userID),
    }
-   let userDetails = await UserModel.findOne(query);
+   let userDetails = await UserModel.findOne(query).populate(["questionsAnswered.questionId", "questionsAnswered.answerId"]);
 
    if(rankBy=='score'){
      return this.sortByScore(type, rankBy, userDetails);
@@ -356,14 +356,18 @@ static sortByScore = async(type, rankBy, userDetails) =>{
      // Sorts by score: len(upvotes)-len(downvotes)
     
      if (type =='answer'){
-       let questionsAnswered = userDetails.questionsAnswered;
-       console.log("questionsAnswered", questionsAnswered)
+         let questionsAnswered = userDetails.questionsAnswered;
+         console.log("questionsAnswered", questionsAnswered)
+         questionsAnswered.sort(function(a, b){
+          var keyA = a.answerId.upVotes.length - a.answerId.downVotes.length,
+            keyB = b.answerId.upVotes.length - b.answerId.downVotes.length;
+          if (keyA < keyB) return 1;
+          if (keyA > keyB) return -1;
+          return 0;
+        }); 
 
-       var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
-       console.log("answerIds", answerIds)
-       const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
-       console.log("answers", answers)
-       return this.customSortByVotes(answers);
+         var questions = questionsAnswered.map(function(obj) { return obj.questionId; });
+         return questions;
      }
       else if(type =='question'){
         let questionsAsked = userDetails.questionsAsked;
@@ -372,7 +376,6 @@ static sortByScore = async(type, rankBy, userDetails) =>{
         return this.customSortByVotes(questions);
       } 
 
-      console.log(type)
       return this.sortAll(rankBy, userDetails)
  
 } 
@@ -397,14 +400,19 @@ static sortByDate = async(type, rankBy, userDetails) =>{
      }
      else if(type =='answer'){
         let questionsAnswered = userDetails.questionsAnswered;
-        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
-        let res =  await AnswerModel.find({ '_id': { $in: answerIds }}).sort({createdat: -1});
-        let answer = JSON.parse(JSON.stringify(res));
-        if(answer){
-            return answer;
-        }else{
-            return [];
-        }
+       questionsAnswered.sort(function(a, b) {
+          var keyA = new Date(a.answerId.toObject().createdat),
+            keyB = new Date(b.answerId.toObject().createdat);
+          // Compare the 2 dates
+          if (keyA < keyB) return 1;
+          if (keyA > keyB) return -1;
+          return 0;
+        }); 
+
+
+       var questions = questionsAnswered.map(function(obj) { return obj.questionId; });
+       return questions;
+
       }
       else{
         return this.sortAll(rankBy, userDetails)
@@ -425,19 +433,26 @@ static sortAll = async(rankBy, userDetails) =>{
         var questionIds = questionsAsked.map(function(obj) { return obj._id; });   
         console.log("questionIds", questionIds)
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
-        console.log("questions", questions)
+        for(const question of questions) {
+              question.sortcreatedat = question.createdat;
+         }
+
+        const questionWithDate = []
         let questionsAnswered = userDetails.questionsAnswered;
-        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
-        const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
+        for(let questionAnswered of questionsAnswered) {
 
+              const tmp = questionAnswered.questionId.toObject(); 
+              tmp.sortcreatedat = questionAnswered.answerId.toObject().createdat;
+              questionWithDate.push(tmp)
+         }
 
-        var combined = questions.concat(answers);
-        console.log(questions, answers);
+        var combined = questions.concat(questionWithDate);
 
         combined.sort(function(a, b) {
-          var keyA = new Date(a.createdat),
-            keyB = new Date(b.createdat);
+          var keyA = new Date(a.sortcreatedat),
+            keyB = new Date(b.sortcreatedat);
           // Compare the 2 dates
+          console.log(keyB, keyA)
           if (keyA < keyB) return 1;
           if (keyA > keyB) return -1;
           return 0;
@@ -450,12 +465,26 @@ static sortAll = async(rankBy, userDetails) =>{
         let questionsAsked = userDetails.questionsAsked;
         var questionIds = questionsAsked.map(function(obj) { return obj._id; });   
         const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+        
+        for(const question of questions) {
+              question.score = question.upVotes.length - question.downVotes.length;
+         }
+         
         let questionsAnswered = userDetails.questionsAnswered;
-        var answerIds = questionsAnswered.map(function(obj) { return obj.answerId; });
-        const answers = await AnswerModel.find({ '_id': { $in: answerIds }}).lean()
+        const questionWithScore = []
+        for(let questionAnswered of questionsAnswered) {
 
-        var combined = questions.concat(answers);
-        return this.customSortByVotes(combined);
+              const tmp = questionAnswered.questionId.toObject(); 
+              tmp.score = questionAnswered.answerId.upVotes.length - questionAnswered.answerId.downVotes.length;
+              questionWithScore.push(tmp)
+         }
+
+
+        var combined = questions.concat(questionWithScore);
+        combined.sort(function(a, b){
+          return b.score - a.score;
+        }); 
+        return combined;
     } 
 } 
 
@@ -466,8 +495,8 @@ static customSortByVotes = async(inputArray) =>{
    * length 
    * */
      inputArray.sort(function(a, b){
-        var keyA = a.upvotes.length - a.downvotes.length,
-          keyB = b.upvotes.length - b.downvotes.length;
+        var keyA = a.upVotes.length - a.downVotes.length,
+          keyB = b.upVotes.length - b.downVotes.length;
         if (keyA < keyB) return 1;
         if (keyA > keyB) return -1;
         return 0;
