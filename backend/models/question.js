@@ -45,8 +45,8 @@ const questionSchema = new mongoose.Schema({
   userId: {
     type: String,
   },
-  commentId: {
-    type: String,
+  comment: {
+    type: Array,
   },
   bestAns: {
     type:mongoose.Schema.Types.ObjectId,
