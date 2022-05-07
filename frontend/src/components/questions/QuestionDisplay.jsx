@@ -1,21 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col, Badge, Button} from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
 import jwt_decode from 'jwt-decode';
 import {useParams} from 'react-router-dom';
 
+const markdown = `Just a link: https://reactjs.com.`
 
 
 function QuestionsPage(props) {
+    let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
-
-    const params = useParams();
 
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
@@ -23,11 +23,12 @@ function QuestionsPage(props) {
 
 
     useEffect(() => {
-        var api = "http://localhost:3001/api/questions/" + params.id
+        var api = "http://localhost:3001/api/questions/"+params.id
         axios.get(api).then(response => {
+            console.log(response)
             setQuestion(response.data.data)
-            console.log("Response is ", response)
             setlans(response.data.data.answers)
+
             questionDisplay = new window.stacksEditor.StacksEditor(
                 document.querySelector("#editor-container-questionDisplay"),
                 response.data.data.description)
@@ -49,6 +50,14 @@ function QuestionsPage(props) {
             questionId:"627189b4519c18b6b2396bed"
         }
         axios.post(api,payload).then(response => {alert(response.data)})
+    }
+  
+    const onDownVoteClick =()=>{
+        console.log("downvote");
+    }
+
+    const onUpVoteClick =()=>{
+        console.log("upvote");
     }
 
 
@@ -84,6 +93,7 @@ function QuestionsPage(props) {
                 <br/>
 
                 <hr></hr>
+                
                 <Row>
                     <Col xs={1}>
                                     {/* {console.log(ans)}
@@ -98,12 +108,14 @@ function QuestionsPage(props) {
                         </p>
                     </Col>
                 </Row>
+                
 
                 {/* <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
                     <div style={{float:"right"}} >
                     <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
                     </div>
                 </Row> */}
+
            
             <div class="displayFlex" style={{"margin-bottom":"3rem"}}>
                 {question.tags && question.tags.map( tag =>{
