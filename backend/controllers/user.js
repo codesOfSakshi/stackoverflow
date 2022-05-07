@@ -76,7 +76,7 @@ router.post("/addbookmark/:userId",  async (req, res) => {
         if(questionIds){
         response.success = true;
         response.status = 200;
-        response.
+        response.result=questionIds
         res.status(200).send(response);}
         else {
             response.success = true;
