@@ -41,11 +41,24 @@ class Answer{
             };
             const insertanswer = new AnswerModel(query);
             const result = await insertanswer.save();
+
+
             if(result){
                 console.log("RESULT FROM ANSWER IS", result);
                 const id = result._id;
                 console.log("==="+questionId);
                 const updateAnswer = await Question.updateAnswerId(id,questionId);
+                const finduserCondition = {
+                    _id:mongoose.Types.ObjectId(user),
+                };
+                const ansupdateCondition = {
+                    $addToSet:{
+                        "questionsAnswered":  result._id
+                    } 
+                }
+                let userresult = await UserModel.updateOne(finduserCondition, ansupdateCondition)
+                console.log("userresult", userresult)
+
                 return {result:result, updateAns:updateAnswer};
             }else{
                 return {};
