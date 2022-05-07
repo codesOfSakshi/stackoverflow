@@ -9,7 +9,6 @@ const UserModel = require('../models/user');
 
 
 class Answer{
-   
 
     static answerActivityDetailForUser = async (req)=>{
         try{
@@ -59,26 +58,47 @@ class Answer{
     }
 
     static postBestAnswer = async(answerId, questionId) =>{
+        var reputationIncrement = null;
+        var userUpdateCondition = null;
+        var userUpdateConditionnew = null;
         try{
             const findCondition = {
                 _id:mongoose.Types.ObjectId(questionId),
             };
-            console.log("==========="+questionId)
+            
             const updateCondition = {
                 "bestAns":  answerId
             }
-            // let ansfindCondition = {
-            //     _id:mongoose.Types.ObjectId(answerId),
-            // };
-            // console.log("answerfindcondition",ansfindCondition)
 
-            // let user= await UserModel.findOne(userfindCondition);
-            // var reputationIncrement=user.reputation+15
-            // userUpdateCondition = {
-            //     "reputation":  reputationIncrement,
-            // }
+            var questions =await QuestionModel.findById(questionId).populate("answers");
+            if(questions.bestAns){
+                console.log("inside")
+                var answers =await AnswerModel.findById(questions.bestAns)
+                var user = await UserModel.findById(answers.user)
+                const userfindCondition = {
+                    _id:mongoose.Types.ObjectId(user),
+                };
+                reputationIncrement=user.reputation-15
+                userUpdateCondition = {
+                    "reputation":  reputationIncrement,
+                }
+                let represult = await UserModel.updateOne(userfindCondition,userUpdateCondition)
+            }
 
-            // let represult = await UserModel.updateOne(userfindCondition,userUpdateCondition)
+            let ansfindCondition = {
+                _id:mongoose.Types.ObjectId(answerId),
+            };
+            var answersnew =await AnswerModel.findById(ansfindCondition)
+            let usernew= await UserModel.findById(answersnew.user)
+            const userfindConditionnew = {
+                _id:mongoose.Types.ObjectId(usernew),
+            };
+            reputationIncrement=usernew.reputation+15
+            userUpdateConditionnew = {
+                "reputation":  reputationIncrement,
+            }
+            let represultnew = await UserModel.updateOne(userfindConditionnew,userUpdateConditionnew)
+
             
             const result = await QuestionModel.updateOne(findCondition,updateCondition);
             console.log("Question result is", result);
