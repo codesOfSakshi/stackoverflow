@@ -23,7 +23,7 @@ exports.getAllTags = (req, res) => {
 exports.getTaggedQuestions = (req, res) => {
     console.log("Inside Tags Controller: Get Questions for: ", req.params.tagId);
 
-    TagService.getTaggedQuestions(req.params.tagId, (err, result) => {
+    TagService.getTaggedQuestions(req.params.tagId, req.body.filterType, (err, result) => {
         if(err)
         {
             console.log(err);

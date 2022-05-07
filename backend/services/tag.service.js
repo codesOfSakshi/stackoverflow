@@ -16,13 +16,33 @@ exports.getAllTags = async (result) => {
 }
 
 // Get All questions per tag
-exports.getTaggedQuestions = async (tagId, result) => {
+exports.getTaggedQuestions = async (tagId, filterType, result) => {
     try{
 
-        console.log("HERE", tagId)
-        const questions = await QuestionModel.find({'tags' : tagId, 'status': "approved"});
+        console.log("Sorting as: ", filterType)
 
-        console.log(questions);
+        let questions;
+        
+        // Interesting (latest)
+        if(filterType == 1){
+            questions = await QuestionModel.find({'tags' : tagId, 'status': "approved"}).sort({_id: -1});
+            console.log("By Interesting:", questions);
+        }
+        // Hot (Views)
+        else if(filterType == 2){
+            questions = await QuestionModel.find({'tags' : tagId, 'status': "approved"}).sort({views: -1});
+            console.log("By Hot:", questions);
+        }
+        // Score (Upvotes)
+        else if(filterType == 3){
+            questions = await QuestionModel.find({'tags' : tagId, 'status': "approved"}).sort({'upVotes': -1});
+            console.log("By Score:", questions);
+        }
+        // Unanswered
+        else if(filterType == 4){
+            questions = await QuestionModel.find({'tags' : tagId, 'status': "approved" , answers: { $size: 0 } }).sort({score:1});
+            console.log("By Unanswered:", questions);
+        }
 
         if(questions.length > 0){
             result(null, questions);
