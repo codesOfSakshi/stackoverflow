@@ -1,11 +1,12 @@
 import { Row,Col } from 'react-bootstrap';
 import QuestionsPage from '../components/questions/QuestionDisplay';
+import Navbar from "../components/user/Navbar";
 
 function QuestionDisplay() {
   return (
     <>
-    <div>
-            <div><h1>Headers</h1></div>
+    <Navbar></Navbar>
+    <div style={{marginTop:"5rem"}}>
         <Row>
         <Col style={{"text-align": "-webkit-center"}}>
             <QuestionsPage></QuestionsPage>
