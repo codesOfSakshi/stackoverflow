@@ -63,16 +63,18 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  questionsAsked: [{
-    questionId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "question"
+  questionsAsked: [
+    {
+      questionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "question",
+      },
+      answerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "answer",
+      },
     },
-    answerId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "answer",
-    }
-  }],
+  ],
   questionsAnswered: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "answer",
@@ -81,29 +83,34 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  upVotesCount: [{
-    type: String,
-    // required: true,
-  }],
-  downVotesCount: [{
-    type: String,
-    // required: true,
-  }],
+  upVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
+  downVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
   badges: {
     type: Array,
     // required: true,
   },
-    title: { type: String },
-  tagIds: [{
-    tagId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "tag"
+  title: { type: String },
+  tagIds: [
+    {
+      tagId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tag",
+      },
+      score: {
+        type: Number,
+      },
     },
-    score:{
-      type: Number
-    }
-  }],
-    title: {type:String},
+  ],
 });
 
 userSchema.set("toObject", { virtuals: true });
