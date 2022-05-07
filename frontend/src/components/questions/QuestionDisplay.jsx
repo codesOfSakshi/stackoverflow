@@ -14,8 +14,11 @@ function QuestionsPage(props) {
     let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
+    const[qcomment, setqComment] = useState([])
+    const[acomment, setaComment] = useState([])
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
+    var type = 'question'
 
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
@@ -51,6 +54,23 @@ function QuestionsPage(props) {
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
+
+    const saveQuesComment = () =>{
+        type = 'question'
+        axios.post("http://localhost:3001/api/comment", {type:type, questionId : question._id, comment : qcomment})
+                .then(response => {
+                    console.log(response);
+                })
+    }
+    // const saveAnsComment = () =>{
+    //     type = 'answer'
+    //     axios.post("http://localhost:3001/api/comment", {type:type, answerId:ans._id, comment : acomment})
+    //             .then(response => {
+    //                 console.log(response);
+    //             })
+
+
+    // }
 
     return (
         <div>
@@ -122,9 +142,11 @@ function QuestionsPage(props) {
             <hr></hr>
             <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
                 <form style={{height:"20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none"}}>
-                    <textarea style={{border:"none", outline:"none", height:"20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment"></textarea>
+                    <textarea style={{border:"none", outline:"none", height:"20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment" onChange={(e)=>{setqComment(e.target.value);}}></textarea>
                 </form>
+                <Button onClick={saveQuesComment} style={{float:"right", height:"25px", width: "100%", marginTop: "70px", marginLeft: "-50px", backgroundColor: "#f5f6f6", color: "blue", border: "none"}}>save</Button>
             </div>
+            
             <br/>
             <div>
                 <Row>
@@ -157,8 +179,15 @@ function QuestionsPage(props) {
                                     {ans.description}
                                     <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
                                         <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
-                                            <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment"></textarea>
+                                            <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e)=>{setaComment(e.target.value);}}></textarea>
                                         </form>
+                                        <Button onClick={() =>{
+                                            type = "answer";
+                                            axios.post("http://localhost:3001/api/comment", {type:type, answerId:ans._id, comment : acomment})
+                                                .then(response => {
+                                                    console.log(response);
+                                                })
+                                        }} style={{float:"right", height:"25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none"}}>save</Button>
                                     </div>
                                 </Col>
                             </Row></>);
