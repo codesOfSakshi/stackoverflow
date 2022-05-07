@@ -21,20 +21,20 @@ exports.getAllTags = (req, res) => {
 
 // Get All Tags
 exports.getTaggedQuestions = (req, res) => {
-    console.log("Inside Tags Controller: Get Questions for: ", req.params.tagId);
+    console.log("Inside Tags Controller: Get Questions for: ", req.body.tagId);
 
-    TagService.getTaggedQuestions(req.params.tagId, req.body.filterType, (err, result) => {
+    TagService.getTaggedQuestions(req.body, (err, result) => {
         if(err)
         {
             console.log(err);
             res.status(400).send(err);
         }
         else if(result.status == false){
-            console.log("No questions tagged with: ", req.params.tagId)
+            console.log("No questions tagged with: ", req.body.tagId)
             res.status(404).send(result);
         }
         else{
-            console.log("Tagged Questions for: ", req.params.tagId);
+            console.log("Tagged Questions for: ", req.body.tagId);
             console.log(result);
             res.status(200).send(result);
         }
