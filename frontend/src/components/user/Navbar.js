@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/navbar.css";
 import { ReactComponent as Logo } from "../../images/logo-stackoverflow.svg";
 import { Link } from "react-router-dom";
@@ -20,6 +20,8 @@ function Navbar() {
   const SEARCHURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/search`;
   const [searchString, setsearchString] = useState("");
 
+  /* ----------------------- use-effect to get user data ---------------------- */
+  // useEffect(() => {}, []);
   /* ------------------------ search related functions ------------------------ */
   let handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -106,6 +108,14 @@ function Navbar() {
             "the items recieved from sending the api are are.......",
             temp_items
           );
+          navigate("/question", {
+            replace: true,
+            state: {
+              searchResult: true,
+              questions: temp_items.questions,
+              count: temp_items.count,
+            },
+          });
         } else if (response.data.code === 500) {
           console.log(response.data.message);
         }

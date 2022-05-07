@@ -7,7 +7,7 @@ function QuestionDisplay() {
     <div>
             <div><h1>Headers</h1></div>
         <Row>
-        <Col style={{"text-align": "-webkit-center"}}>
+        <Col style={{"textAlign": "-webkit-center"}}>
             <QuestionsPage></QuestionsPage>
         </Col>
         </Row>

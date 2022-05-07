@@ -50,7 +50,7 @@ function SignIn() {
   /* ------------------------------- return jsx ------------------------------- */
   return (
     <div className="body">
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="flexbox-container">
         <div className="login-container">
           <Logo />

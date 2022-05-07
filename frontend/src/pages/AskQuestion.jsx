@@ -17,7 +17,7 @@ function AskQuestion() {
     </Row>
     <Row>
     
-    <div style={{"text-align":"left",
+    <div style={{"textAlign":"left",
     "margin-left": "20rem",
     "margin-right":"30rem"}}>
     <br></br>

@@ -3,7 +3,13 @@ import {useEffect,useState} from 'react';
 import './atom.css';
 import { useNavigate } from "react-router-dom";
 
-function CompactQuestion(props) {  
+function CompactQuestion(props) { 
+    
+    console.log("PROPS IN COMPACT QUES: ", props);
+    
+    console.log("props.questions: ", props.questions);
+
+    
     const question = props.questions
     const questionLink = "/question/"+props.questions._id
     const userLink = "/user/"+"abhsjdahj"
@@ -13,50 +19,43 @@ function CompactQuestion(props) {
       navigate(`/question/${props.questions._id}`)
     }
 
-  useEffect(() => {
-    // var api="http://localhost:3900/api"+'/orders/user/'+props.user._id
-    // var ordersfresh=[]
-    // axios.get(api)
-    // .then(response => {
-    //   setorders(response.data) 
-    //   var l=[];
-    //   var orderId=0;
-    //   var l_main=[]
-    //   setlmain(response.data)
-    //   console.log(lmain)
- // })
-  },[])
 
   return (
+    
+    
+    
+    
+    
+    
     <div>
-        <Card class="border-0">
+        <Card className="border-0">
         <div>
             <Row>
                 <Col lg={2} style={{"textAlign": "right"}}>
                     {question.upVotes && question.upVotes.length} votes
                     <br></br>
-                    {question.answers.length} answers
+                    {question.answers && question.answers.length} answers
                     <br></br>
                     {question.views} views
                 </Col>
 
-                <Col class="alignLeft">
-                    <a href={questionLink}><div class="alignLeft" style={{"margin-bottom":"-0.5rem"}}>{question.title} </div></a>
+                <Col className="alignLeft">
+                    <a href={questionLink}><div className="alignLeft" style={{"marginBottom":"-0.5rem"}}>{question.title} </div></a>
                     <br></br>
-                    <div class="s-post-summary--content-excerpt limitDescription">
+                    <div className="s-post-summary--content-excerpt limitDescription">
                     {question.description} 
                     </div>
                     <br></br>
-                    <div class="displayFlex" style={{"margin-bottom":"1rem"}}>
-                    {question.tags.map( tag =>{
+                    <div className="displayFlex" style={{"marginBottom":"1rem"}}>
+                    {question.tags.map( (tag, index) =>{
                         return(<>
                         <Badge 
                         className = 's-tag-badge'
-                        style={{"margin-left":"3px"}}>
+                        style={{"marginLeft":"3px"}}>
                             {tag}
                         </Badge>
                         </>)})}
-                        <div class="userId">
+                        <div className="userId">
                             <a href={userLink}> {question.userId} </a>
                             | 
                             {question.createdAt}
