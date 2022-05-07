@@ -236,12 +236,12 @@ router.post("/edit-partial/:userId",  async (req, res) => {
 });
 
 
-router.get("/answer/activity/:userId/:answerId",  async (req, res) => {
+router.get("/answer/activity/:userId",  async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
-        
-        const successData = await Answer.answerActivityDetailForUser(req);
+        const userObj = {userId};
+        const successData = await User.getUserAnswerQuestionById(userObj);
         if(successData){
             response.success = true;
             response.data = successData;
@@ -261,12 +261,15 @@ router.get("/answer/activity/:userId/:answerId",  async (req, res) => {
     }
 });
 
-router.get("/question/activity/:questionId",  async (req, res) => {
-   
+router.get("/question/activity/:userId",  async (req, res) => {
+    const userId= req.params.userId;
     const response = {};
     try{
-        
-        const successData = await Question.getQuestionsById(req);
+
+        const userObj = {userId};
+        const successData = await User.getUserQuestionById(userObj);
+        console.log("response-->>")
+        console.log(successData)
         if(successData){
             response.success = true;
             response.data = successData;

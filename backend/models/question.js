@@ -12,14 +12,14 @@ const questionSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
   },
-  upVotes: {
-    type: Array,
+  upVotes: [{
+    type: String,
     ref: "user",
-  },
-  downVotes: {
-    type: Array,
+  }],
+  downVotes: [{
+    type: String,
     ref: "user",
-  },
+  }],
   views: {
     type: Number,
   },
@@ -27,21 +27,21 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  tags: {
-    type: Array,
-    ref: "tag",
-  },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "tags",
+  }],
   description: {
     type: String,
     required: false,
   },
-  answers: {
-    type: Array,
-    ref: "answer",
-  },
-  images: {
-    type: Array,
-  },
+  answers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "answers",
+  }],
+  images: [{
+    type: String,
+  }],
   userId: {
     type: String,
   },
@@ -60,6 +60,10 @@ const questionSchema = new mongoose.Schema({
   },
   activity: {
     type: String,
+  },
+  score:{
+    type: Number,
+    default:-1
   },
   user:{
     type:mongoose.Schema.Types.ObjectId,
