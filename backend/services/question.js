@@ -68,7 +68,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers","user");
+        var questions =await QuestionModel.findById(questionId).populate("answers");
         // console.log(questions)
 
         var viewIncrement=questions.views+1
@@ -92,7 +92,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers","user");
+        var questions =await QuestionModel.findById(questionId).populate("answers");
         // console.log(questions)
 
         var viewIncrement=questions.views+1
@@ -168,7 +168,7 @@ static addQuestion = async (question)=>{
             bestAns:"",
             badges:[],
             activity:"",
-            status:question.images.length==0?"APPROVED":"PENDING"
+            status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         });
         //ToDO - Append the tag in user tag list
         await questionNew.save();
@@ -189,7 +189,7 @@ static editQuestion = async (question)=>{
             title:question.title,
             tags:question.tags,
             description:question.description,
-            status:question.images.length==0?"APPROVED":"PENDING"
+            status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         })
         if (result=={}) {
           return res.status(400).send(result.error.details[0].message);
