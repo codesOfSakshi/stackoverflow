@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useEffect,useState} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
+import Navbar from "../user/Navbar";
 
 function CompactQuestionListing(props) {  
     let navigate = useNavigate();
@@ -59,6 +60,7 @@ function CompactQuestionListing(props) {
 
   return (
     <div>
+      <Navbar></Navbar>
         <div style={{ width: '60rem',textAlign:'left' }}>
             <h2>
             All Questions <Button onClick={routeQuestion} style={{float: 'right'}}>Ask Question</Button>
