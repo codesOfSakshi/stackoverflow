@@ -3,6 +3,8 @@ import TaggedQuestions from '../../components/Tags/TaggedQuestions';
 import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { toggleButtonClasses } from '@mui/material';
+import CompactQuestion from '../../Atom/CompactQuestion';
+
 
 const TagPage = () => {
 
@@ -110,6 +112,7 @@ const TagPage = () => {
 
                         {taggedQuestions.map((question, index) => ( 
                             <TaggedQuestions key={index} question={question}/>
+                            // <CompactQuestion questions={question}/>
                         ))}
 
                     </div>
