@@ -170,6 +170,7 @@ class User {
             const questionObj = {};
             questionObj.questionIds = questionIds;
             let response = await Question.getQuestions(questionObj);
+            response = response.filter(responses => responses.status==='APPROVED')
             console.log(user, "user");
             response.map(responses=>{
                 console.log("responses------------------------>>>>>>>>>>")
@@ -209,6 +210,7 @@ class User {
             const questionObj = {};
             questionObj.questionIds = questionIds;
             let response = await Question.getQuestionsWithTagsAndAnswers(questionObj);
+            response = response.filter(responses => responses.status==='APPROVED')
             console.log(user, "user");
             response.map(responses=>{
                 let up= responses.upVotes===undefined?0:responses.upVotes.length;
