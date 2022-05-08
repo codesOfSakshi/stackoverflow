@@ -5,6 +5,7 @@ import { useNavigate,useParams } from "react-router-dom";
 import axios from 'axios';
 // import question from '../../../../backend/models/question';
 // import EditQuestion from '../../pages/EditQuestion';
+import jwt_decode from 'jwt-decode';
 
 
 function EditQuestionPage(props) {  
@@ -13,6 +14,8 @@ function EditQuestionPage(props) {
   const[selectedTags,setSelectedTags]=useState([])
   const [questionDisplay,setquestionDisplay] = useState({})
   const [question,setQuestion] = useState({})
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
   const [initialDescription,setDescripition] = useState("")
     let navigate = useNavigate();
     const routeQuestion = () =>{
@@ -50,7 +53,7 @@ function EditQuestionPage(props) {
     e.preventDefault();
     console.log(questionDisplay.content)
     var payload ={
-      userId: "snichat97",
+      userId: decoded._id,
       title: e.target.formBasicTitle.value,
       description: questionDisplay.content,
       tags:selectedTags,
