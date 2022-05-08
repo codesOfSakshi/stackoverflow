@@ -59,26 +59,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  bookmark: {
-    type: Array,
-    default: [],
-  },
-  questionsAsked: [
-    {
-      questionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "question",
-      },
-      answerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "answer",
-      },
-    },
-  ],
-  questionsAnswered: {
+  bookmark: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "answer",
-  },
+    ref: "questions",
+  }],
+    questionsAnswered: [{
+    questionId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "questions"
+    },
+    answerId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "answers",
+    }
+  }],
+   questionsAsked: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "questions",
+  }],
   commentCount: {
     type: String,
     // required: true,
@@ -99,7 +97,7 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
-  title: { type: String },
+title: { type: String },
   tagIds: [
     {
       tagId: {
@@ -121,5 +119,5 @@ userSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;

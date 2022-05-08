@@ -2,6 +2,9 @@ var mongoose = require('mongoose');
 const QuestionModel = require('../models/question.js');
 const TagModel = require('../models/tag.js');
 const AnswerModel = require('../models/answer.js');
+const {User} = require('../services/user.js');
+
+
 
 class Question{
 
@@ -16,6 +19,53 @@ class Question{
                 return questions;
             }else{
                 return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+        }
+    }
+
+    static getQuestionsWithTagsAndAnswers = async ({questionIds})=>{
+        try{
+            const query = {
+                "_id": {"$in": questionIds}
+            }
+            //TODO rushabh populate comment, tagIds, answerIds for every question
+            const questions = await QuestionModel.find(query).populate("tags");
+            if(questions?.length){
+                return JSON.parse(JSON.stringify(questions));
+            }else{
+                return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+        }
+    }
+
+    static getScoreById = async ({questionIds})=>{
+        try{
+            let ids =[];
+
+            console.log(ids)
+            const query = {
+                "_id": {"$in": questionIds}
+            }
+            console.log("questionIds")
+            console.log(questionIds)
+            let questions = await QuestionModel.find(query);
+            questions = JSON.parse(JSON.stringify(questions))
+            if(questions?.length){
+                let score =0;
+                console.log(questions)
+                questions.map(question=>{
+
+                    score+=(question.views);
+                })
+                return score;
+            }else{
+                return 0;
             }
         }catch(err){
             console.log(err);
@@ -165,12 +215,18 @@ static addQuestion = async (question)=>{
             tags:question.tags,
             description:question.description,
             commentId:"",
-            bestAns:"",
+            bestAns:null,
             badges:[],
             activity:"",
             status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         });
         //ToDO - Append the tag in user tag list
+        const insertedQuestion = await questionNew.save();
+        const updateUserData = {};
+        updateUserData.userId = question.userId;
+        updateUserData.questionId = insertedQuestion._id.toString();
+        updateUserData.tags = question.tags;
+        const updatedUser = await User.updateUserOnQuestionAdd(updateUserData);
         await questionNew.save();
         return("Question Added")
     }catch(err){
@@ -184,6 +240,8 @@ static addQuestion = async (question)=>{
 static editQuestion = async (question)=>{
     try{
         console.log("EDIT",question)
+        const oldQuestion = await QuestionModel.findById(question._id);
+        console.log("EDIT",oldQuestion)
         const result = await QuestionModel.findByIdAndUpdate(question._id,{
             images:question.images,
             title:question.title,
@@ -191,6 +249,13 @@ static editQuestion = async (question)=>{
             description:question.description,
             status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         })
+        const updateUserData = {};
+        updateUserData.userId = question.userId;
+        updateUserData.questionId = question._id.toString();
+        updateUserData.oldTags = oldQuestion.tags;
+        updateUserData.newTags = question.tags;
+        updateUserData.score = oldQuestion?.upVotes?.length-oldQuestion?.downVotes?.length;
+        const updatedUser = await User.updateUserOnQuestionEdit(updateUserData);
         if (result=={}) {
           return res.status(400).send(result.error.details[0].message);
         }
@@ -225,6 +290,8 @@ static updateAnswerId = async (answerId,questionId)=>{
         throw new Error("Some unexpected error occurred while updating answer Id");
     }
 }
+
+
 
 }
 module.exports.Question = Question;

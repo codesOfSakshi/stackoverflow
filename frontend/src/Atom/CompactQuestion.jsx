@@ -34,7 +34,7 @@ function CompactQuestion(props) {
                     </div>
                     <br></br> */}
                     <div class="displayFlex" style={{"margin-bottom":"1rem"}}>
-                    {question.tags.map( tag =>{
+                    {question.tags && question.tags.map( tag =>{
                         return(<>
                         <Badge 
                         className = 's-tag-badge'

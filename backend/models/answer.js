@@ -21,17 +21,17 @@ const answerSchema = new mongoose.Schema({
     },
     comment:{
         type:Array,
-        required: true,
+        // required: true,
     },
     user:{
-        type:Array,
-        ref: "user",
+        type:mongoose.Schema.Types.ObjectId,
+        required: true,
     },
     description:{
         type:String,
         required: true,
-    },
+    }
 });
 
-const answerModel = mongoose.model("answer", answerSchema);
+const answerModel = mongoose.model("answers", answerSchema);
 module.exports = answerModel;

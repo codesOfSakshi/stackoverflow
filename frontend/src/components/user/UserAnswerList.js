@@ -7,7 +7,7 @@ function UserAnswerList() {
 
     const [answer, setAnswer] = useState([]);
 
-    const GET_USER_API = "api/user/";
+    const GET_USER_API = "api/user/answer/activity/";
     const params = useParams();
     console.log(params)
     const { userId: userId } = params;
@@ -17,10 +17,9 @@ function UserAnswerList() {
 
         try{
             const response = await axiosService.get(GET_USER_API+userId);
-            if(response && response.data && response.data.success && response.data.user.answers){
-                if(response.data.user.answers) {
-                    setAnswer(response.data.user.answers);
-                }
+            if(response && response.data){
+                    console.log(response.data.data)
+                    setAnswer(response.data.data);
             }
         }catch(e){
             console.log(e);
