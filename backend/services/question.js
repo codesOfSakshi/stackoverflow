@@ -116,7 +116,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers");
+        var questions =await QuestionModel.findById(questionId).populate("answers").populate('user');
         // console.log(questions)
 
         var viewIncrement=questions.views+1
@@ -140,7 +140,7 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        var questions =await QuestionModel.findById(questionId).populate("answers");
+        var questions =await QuestionModel.findById(questionId).populate("answers").populate('user');
         // console.log(questions)
 
         // var viewIncrement=questions.views+1
@@ -174,7 +174,7 @@ static getQuestionsByType = async (type,sortType)=>{
         if(type=="Interesting" || type==1){
             console.log("here")
             // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-            questions = await QuestionModel.find(query)
+            questions = await QuestionModel.find(query).sort({createdAt:sorting})
         }
         else if(type=="Hot" || type==2){
             questions = await QuestionModel.find(query).sort({views: sorting})
@@ -202,6 +202,7 @@ static addQuestion = async (question)=>{
     try{
         console.log("Pop",question)
         var questionNew = new QuestionModel({
+            createdAt: new Date().toISOString(),
             upvotes:[],
             downvotes:[],
             views:0,
@@ -242,7 +243,8 @@ static editQuestion = async (question)=>{
             title:question.title,
             tags:question.tags,
             description:question.description,
-            status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
+            status:(question.images && question.images.length==0)?"APPROVED":"PENDING",
+            updatedAt: new Date().toISOString(),
         })
         const updateUserData = {};
         updateUserData.userId = question.userId;

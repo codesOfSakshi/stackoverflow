@@ -1,11 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {Row, Col, Badge, Button} from 'react-bootstrap';
-import { useNavigate} from "react-router-dom";
+import {Row, Col, Badge, Button,Card} from 'react-bootstrap';
+import { useNavigate,useParams } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
+import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
+import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'
+import EditorCustom from '../../Atom/EditorCustom'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
-import {useParams} from 'react-router-dom';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -14,16 +19,21 @@ function QuestionsPage(props) {
     let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
+    const[answer,setAnswer] = useState("")
+    const[owner,setOwner] = useState(false)
+    var questionDisplay, answerDisplay;
+    let navigate = useNavigate();
+    var arr
+
+  const mdParser = new MarkdownIt(/* Markdown-it options */);
     const[qcomment, setqComment] = useState([])
     const[acomment, setaComment] = useState([])
     var questionDisplay, answerDisplay;
-    let navigate = useNavigate();
     var type = 'question'
 
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
     console.log("decode", decoded)
-
 
     useEffect(() => {
         var api = "http://localhost:3001/api/questions/"+params.id
@@ -31,15 +41,8 @@ function QuestionsPage(props) {
             console.log(response)
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
-
-            questionDisplay = new window.stacksEditor.StacksEditor(
-                document.querySelector("#editor-container-questionDisplay"),
-                response.data.data.description)
+            setOwner(response.data.data.user._id == decoded)
         })
-
-    answerDisplay = new window.stacksEditor.StacksEditor(
-        document.querySelector("#editor-container-answerDisplay"),
-        "", )
     },[])
 
 
@@ -48,9 +51,9 @@ function QuestionsPage(props) {
       }
 
     const addBookmark = () =>{
-        var api="http://localhost:3001/api/user/addbookmark/"+"snichat"
+        var api="http://localhost:3001/api/user/addbookmark/"+"627072e35ae4148135c41c39"
         var payload = {
-            questionId:"627189b4519c18b6b2396bed"
+            questionId:question.user._id
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
@@ -68,6 +71,17 @@ function QuestionsPage(props) {
     //             .then(response => {
     //                 console.log(response);
     //             })
+
+    const recordAnswer =()=>{
+        console.log("upvote");
+        var api="http://localhost:3001/api/answer"
+        var payload = {
+            questionId:question._id,
+            answer:answer,
+            user:"627072e35ae4148135c41c39",
+        }
+        axios.post(api,payload).then(response => {alert(response.data)})
+    }
 
 
     // }
@@ -111,12 +125,8 @@ function QuestionsPage(props) {
                             {ans.upVotes.length} votes */}
                         <Upvote object={question} decoded = {decoded} type="question" />
                     </Col>
-                    <Col    >
-                        <p>
-                            <>
-                                <div id="editor-container-questionDisplay"></div>
-                            </>
-                        </p>
+                    <Col>
+                        <EditorCustomReadOnly description={question.description}></EditorCustomReadOnly>
                     </Col>
                 </Row>
                 
@@ -126,7 +136,6 @@ function QuestionsPage(props) {
                     <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
                     </div>
                 </Row> */}
-
            
             <div class="displayFlex" style={{"margin-bottom":"3rem"}}>
                 {question.tags && question.tags.map( tag =>{
@@ -135,9 +144,9 @@ function QuestionsPage(props) {
                         {tag}
                     </div>
                     )})} 
-                    <Col style={{float:"right"}} >
+                    {owner && <Col style={{float:"right"}} >
                     <Button onClick={navigateToEdit} style={{float:"right",margin:"0.5rem"}}>Edit Question</Button>
-                    </Col>
+                    </Col>}
             </div>
             <hr></hr>
             <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
@@ -202,9 +211,10 @@ function QuestionsPage(props) {
                     {/* <Row style={{}}>
                     <Editor></Editor>
                 </Row> */}
-                    <div id="editor-container-answerDisplay"></div>
+                    
+                    <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
                     <Row style={{ width: "200px", marginTop: "30px", marginLeft: "0.5px" }}>
-                        <Button>Post Your Answer</Button>
+                        <Button onClick={recordAnswer}>Post Your Answer</Button>
                     </Row>
                 </div>
             </div>

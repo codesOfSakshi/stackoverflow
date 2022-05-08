@@ -3,6 +3,7 @@ import {Form,Row,Card,Button} from 'react-bootstrap';
 import {useEffect,useState} from 'react';
 import { useNavigate,useParams } from "react-router-dom";
 import axios from 'axios';
+import EditorCustom from '../../Atom/EditorCustom';
 // import question from '../../../../backend/models/question';
 // import EditQuestion from '../../pages/EditQuestion';
 import jwt_decode from 'jwt-decode';
@@ -14,6 +15,9 @@ function EditQuestionPage(props) {
   const[selectedTags,setSelectedTags]=useState([])
   const [questionDisplay,setquestionDisplay] = useState({})
   const [question,setQuestion] = useState({})
+
+  const[descripiton,setDescription]=useState("")
+  const[images,setImages]=useState([])
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
   const [initialDescription,setDescripition] = useState("")
@@ -55,9 +59,11 @@ function EditQuestionPage(props) {
     var payload ={
       userId: decoded._id,
       title: e.target.formBasicTitle.value,
-      description: questionDisplay.content,
+      description: descripiton,
+      images:images,
       tags:selectedTags,
-      _id:params.questionId
+      _id:params.questionId,
+      user: question.user
     }
     var api="http://localhost:3001/api/questions/edit"
     axios.post(api,payload).then(response => {
@@ -93,7 +99,8 @@ function EditQuestionPage(props) {
         <h3>Body</h3>
         Include all the information someone would need to answer your question
         {/* <MyEditor/> */}
-        <div id="editor-container-questionDisplay-edit"></div>
+        {/* <div id="editor-container-questionDisplay-edit"></div> */}
+        {question && <EditorCustom setImages={setImages}  setDescription={setDescription} preDefault={question.description} images={question.images}></EditorCustom>}
         <div style={{'marginTop':"3rem"}}>
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
