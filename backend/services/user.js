@@ -267,9 +267,9 @@ class User {
       console.log(user, "user");
 
       user = JSON.parse(JSON.stringify(user));
-      if (user?.bookmarks?.length) {
-        console.log(user.bookmarks);
-        return user.bookmarks;
+      if (user?.bookmark?.length) {
+        console.log(user.bookmark);
+        return user.bookmark;
       } else {
         return [];
       }
