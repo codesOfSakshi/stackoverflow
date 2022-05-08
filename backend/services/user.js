@@ -438,7 +438,8 @@ class User {
 
 
 static topPosts = async(rankBy, type, userID)=>{
-  // parent function to handle sorting 
+  // parent function to handle sorting
+    console.log("rankkkkkkkkkkkkkkkkkkk", rankBy, type)
     try {
         const query = {
             user: mongoose.Types.ObjectId(userID),
@@ -535,7 +536,7 @@ static sortAll = async(rankBy, userDetails) =>{
   /**
    * sorts all the questions and answers combined based on date or score
    * */
-    console.log("here", rankBy, userDetails)
+    console.log("here############", rankBy, userDetails)
 
     if(rankBy=='date'){
         let questionsAsked = userDetails.questionsAsked;
