@@ -240,7 +240,7 @@ class User {
       user = JSON.parse(JSON.stringify(user));
       if (user?.tags?.length) {
         const tagsCombined = [];
-        const tagIds = user.tags.map((eachTag) => {
+        const tagIds = user.tagIds.map((eachTag) => {
           return mongoose.Types.ObjectId(eachTag.id);
         });
         const tagsQuery = {
@@ -266,7 +266,7 @@ class User {
                 tagDataObj = tagDataObj[0];
                 tagsObj.name = tagDataObj.name;
               }
-              let tagUserObj = user.tags.filter((eachTag) => {
+              let tagUserObj = user.tagIds.filter((eachTag) => {
                 return eachTag.id === eachTagId.toString();
               });
               if (tagUserObj && tagUserObj.length) {
@@ -326,6 +326,108 @@ class User {
       throw new Error("Error while searching for users by name");
     }
   };
+
+  static updateUserOnQuestionAdd = async ({userId,questionId,tags})=>{
+    console.log(questionId);
+        try{
+            const query = {
+                "_id": mongoose.Types.ObjectId(userId)
+            }
+            let user = await UserModel.findOne(query);
+            user =  JSON.parse(JSON.stringify(user));
+            if(user){
+                if(user.questionsAsked && user.questionsAsked.length){
+                  user.questionsAsked.push(mongoose.Types.ObjectId(questionId));
+                }else{
+                  user.questionsAsked = [mongoose.Types.ObjectId(questionId)];
+                }
+                if(user.tagIds && user.tagIds.length){
+                  user.tagIds.forEach((eachUserTag)=>{
+                    if(eachUserTag && eachUserTag.tagId){
+                      let tagsContainsIndex = tags.indexOf(eachUserTag.tagId);
+                      if(tagsContainsIndex >=0){
+                        tags.splice(tagsContainsIndex, 1);
+                      }
+                    }
+                  })
+                }
+                tags.forEach((eachTag)=>{
+                    user.tagIds.push({tagId:eachTag,score:0});
+                });
+                let findCondition = {
+                   "_id": mongoose.Types.ObjectId(userId)
+                };
+                let updateCondition = {
+                    tagIds:user.tagIds,
+                    questionsAsked:user.questionsAsked
+                }
+                console.log(updateCondition);
+                let updatedUser = await UserModel.updateOne(findCondition,updateCondition);
+                return updatedUser;
+            }else{
+                return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while updating user data on question add");
+        }
+  }
+
+  static updateUserOnQuestionEdit = async ({userId,questionId,oldTags,newTags,score})=>{
+     try{
+            const query = {
+                "_id": mongoose.Types.ObjectId(userId)
+            }
+            let user = await UserModel.findOne(query);
+            user =  JSON.parse(JSON.stringify(user));
+            if(user){
+                if(user.tagIds && user.tagIds.length){
+                  user.tagIds.forEach((eachUserTag)=>{
+                    console.log(eachUserTag);
+                    if(eachUserTag && eachUserTag.tagId){
+                      let oldTagsContainsIndex = oldTags.indexOf(eachUserTag.tagId);
+                      if(oldTagsContainsIndex >=0){
+                        eachUserTag.score-=score;
+                      }
+
+                      let newTagsContainsIndex = newTags.indexOf(eachUserTag.tagId);
+                      if(newTagsContainsIndex >=0){
+                        eachUserTag.score+=score;
+                      }
+                    }
+                  });
+                  if(user.tagIds && user.tagIds.length){
+                      user.tagIds.forEach((eachUserTag)=>{
+                        if(eachUserTag && eachUserTag.name){
+                          let tagsContainsIndex = newTags.indexOf(eachUserTag.tagId);
+                          if(tagsContainsIndex >=0){
+                            newTags.splice(tagsContainsIndex, 1);
+                          }
+                        }
+                      })
+                    }
+                    newTags.forEach((eachTag)=>{
+                        user.tagIds.push({tagId:eachTag,score:score});
+                    });
+                  let findCondition = {
+                   "_id": mongoose.Types.ObjectId(userId)
+                  };
+                  let updateCondition = {
+                      tagIds:user.tagIds,
+                  }
+                  console.log(updateCondition);
+                  let updatedUser = await UserModel.updateOne(findCondition,updateCondition);
+                  return updatedUser;
+                }
+                
+            }else{
+                return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while updating data on question edit");
+        }
+  }
 }
 
 module.exports.User = User;
