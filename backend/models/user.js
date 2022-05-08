@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     enum: ["NEW", "GOLD", "SILVER", "BRONZE"],
     default: "NEW",
   },
+
   admin: {
     type: Boolean,
     // required: true,
