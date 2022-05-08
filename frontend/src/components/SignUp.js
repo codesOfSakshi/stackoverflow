@@ -3,6 +3,7 @@ import { constants } from "../config/config";
 import { ReactComponent as Logo } from "../images/StackoverflowLogo.svg";
 import "../styles/login.css";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   /* -------------------------------- variables ------------------------------- */
@@ -11,6 +12,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const signUpURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/user/signup`;
+  const navigate = useNavigate();
 
   /* ------------------------------ handle submit ----------------------------- */
   const handleSubmit = (e) => {
@@ -29,12 +31,15 @@ function SignUp() {
           setMessage("");
           console.log("done");
           const token = response.data.token;
+          const user = response.data;
           window.localStorage.setItem("token", token);
+          window.localStorage.setItem("user", user);
+          navigate("/question", { replace: true });
         }
       })
       .catch((error) => {
-        console.log(error.response.data);
         console.log("there was an error in the Signup.js handlesubmit");
+        console.log(error.response.data);
         setMessage(error.response.data.message);
       });
   };
@@ -110,7 +115,7 @@ function SignUp() {
             </button>
           </form>
           <p className="sign-up-link">
-            Don’t have an account? <a>Sign in</a>
+            Don’t have an account? <Link to="/signin">Sign In</Link>
           </p>
         </div>
       </div>
