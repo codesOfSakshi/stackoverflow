@@ -343,6 +343,7 @@ class User {
             location: req.body.location,
             name: req.body.name,
             title: req.body.title,
+            profilePicture  : req.body.profilePicture
           },
         }, // replacement
         { new: true }, // options

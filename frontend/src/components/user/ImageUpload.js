@@ -49,9 +49,10 @@ const handleUploadClick = async event => {
         body: file
     })
 
-    const imageUrl = this.state.uploadUrl.split('?')[0]
+    const imageUrl = cookies.get('imageUrl').split('?')[0]
     console.log(imageUrl)
     cookies.set('imageUrl', imageUrl, { path: '/' });
+    console.log(cookies.get('imageUrl'))
 };
 
 export default function ImageUpload(){
@@ -84,7 +85,8 @@ export default function ImageUpload(){
                    type="file"
                    class="s-uploader--input"
                    data-s-uploader-target="input"
-                   data-action="input->s-uploader#handleInput" />
+                   data-action="input->s-uploader#handleInput"
+                   onChange={handleUploadClick}/>
             <div class="s-uploader--previews d-none"
                  data-target="s-uploader.previews"
                  data-s-uploader-show-on-input>
@@ -93,23 +95,7 @@ export default function ImageUpload(){
                     data-s-uploader-show-on-input >
                 @Svg.ClearSm
             </button>
-            <div data-s-uploader-hide-on-input onChange={(e) => handleUploadClick(e.target.value)}>
-                @Svg.Spot.Image.With("fc-medium mb8")
-                <div class="fs-body2">Drag an image to upload</div>
-                <div class="fs-caption">
-                    Or <span class="s-link">choose your image</span>
-                </div>
-            </div>
-        </div>
-        <div>
-            <button class="s-btn s-btn__primary" data-s-uploader-enable-on-input disabled >
-                Upload
-            </button>
-            <button class="s-btn d-none"
-                    data-action="click->s-uploader#reset"
-                    data-s-uploader-show-on-input>
-                Cancel
-            </button>
+
         </div>
     </div>
     Upload a profile picture

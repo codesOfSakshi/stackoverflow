@@ -46,6 +46,7 @@ export default function ReviewCard() {
             if(response && response.data && response.data.success && response.data.user){
               console.log(response.data.user)
               setUser(response.data.user)
+              setUrl(response.data.user.profilePicture)
               setLocation(response.data.user.location)
               setName(response.data.user.name)
               setTitle(response.data.user.title)
@@ -74,8 +75,6 @@ export default function ReviewCard() {
     };
 
     const updateUser = () => {
-        setUrl("")
-
         const req= {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -83,7 +82,7 @@ export default function ReviewCard() {
                 name: name,
                 location: location,
                 title:title,
-                profilePic:cookies.get('imageUrl')
+                profilePicture:cookies.get('imageUrl')
             })
         }
         fetch("http://localhost:3001/api/user/edit-partial/"+user._id,req)
