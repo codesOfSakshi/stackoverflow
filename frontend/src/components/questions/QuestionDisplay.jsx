@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {Row, Col, Badge, Button} from 'react-bootstrap';
+import {Row, Col, Badge, Button,Card} from 'react-bootstrap';
 import { useNavigate,useParams } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
+import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
-// import ReactMarkdown from 'react-markdown'
-// import remarkGfm from 'remark-gfm'
+import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'
+import EditorCustom from '../../Atom/EditorCustom'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import MarkdownIt from 'markdown-it';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -14,8 +18,12 @@ function QuestionsPage() {
     let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
+    const[answer,setAnswer] = useState("")
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
+    var arr
+
+  const mdParser = new MarkdownIt(/* Markdown-it options */);
 
     useEffect(() => {
         var api = "http://localhost:3001/api/questions/"+params.id
@@ -24,14 +32,18 @@ function QuestionsPage() {
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
 
-            questionDisplay = new window.stacksEditor.StacksEditor(
-                document.querySelector("#editor-container-questionDisplay"),
-                response.data.data.description)
+            arr = mdParser.render(response.data.data.description)
+            document.querySelector("#editor-container").innerHTML = arr
+            console.log(arr)
+
+            // questionDisplay = new window.stacksEditor.StacksEditor(
+            //     document.querySelector("#editor-container-questionDisplay"),
+            //     response.data.data.description)
         })
 
-    answerDisplay = new window.stacksEditor.StacksEditor(
-        document.querySelector("#editor-container-answerDisplay"),
-        "", )
+    // answerDisplay = new window.stacksEditor.StacksEditor(
+    //     document.querySelector("#editor-container-answerDisplay"),
+    //     "", )
     },[])
 
 
@@ -40,9 +52,9 @@ function QuestionsPage() {
       }
 
     const addBookmark = () =>{
-        var api="http://localhost:3001/api/user/addbookmark/"+"snichat"
+        var api="http://localhost:3001/api/user/addbookmark/"+"627072e35ae4148135c41c39"
         var payload = {
-            questionId:"627189b4519c18b6b2396bed"
+            questionId:question.user._id
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
@@ -53,6 +65,17 @@ function QuestionsPage() {
 
     const onUpVoteClick =()=>{
         console.log("upvote");
+    }
+
+    const recordAnswer =()=>{
+        console.log("upvote");
+        var api="http://localhost:3001/api/answer"
+        var payload = {
+            questionId:question._id,
+            answer:answer,
+            user:"627072e35ae4148135c41c39",
+        }
+        axios.post(api,payload).then(response => {alert(response.data)})
     }
 
 
@@ -91,17 +114,15 @@ function QuestionsPage() {
                 <Row>
                     <p>
                         <>
-                            <div id="editor-container-questionDisplay"></div>
-                            {/* <ReactMarkdown children={question.description} remarkPlugins={[remarkGfm]} /> */}
+                            <div className="App">
+                            <Card style={{margin:"1rem",height:"300px"}}>
+                            <div id="editor-container">
+                            </div>
+                            </Card>
+                            </div>
                         </>
                     </p>
                 </Row>
-
-                {/* <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
-                    <div style={{float:"right"}} >
-                    <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
-                    </div>
-                </Row> */}
            
             <div class="displayFlex" style={{"margin-bottom":"3rem"}}>
                 {question.tags && question.tags.map( tag =>{
@@ -168,9 +189,11 @@ function QuestionsPage() {
                     {/* <Row style={{}}>
                     <Editor></Editor>
                 </Row> */}
+                    
+                    <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
                     <div id="editor-container-answerDisplay"></div>
                     <Row style={{ width: "200px", marginTop: "30px", marginLeft: "0.5px" }}>
-                        <Button>Post Your Answer</Button>
+                        <Button onClick={recordAnswer}>Post Your Answer</Button>
                     </Row>
                 </div>
             </div>
