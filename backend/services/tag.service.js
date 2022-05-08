@@ -77,10 +77,10 @@ exports.getTaggedQuestions = async (reqBody, result) => {
 
 
 // Update Number of Questions for Tag
-exports.updateNumQuestions = async(tagId, result) => {
+exports.updateNumQuestions = async(tagName, result) => {
 
     try{
-        await TagModel.findOneAndUpdate({tagId: tagId} , 
+        await TagModel.findOneAndUpdate({name: tagName} , 
             {
                 $inc: { 'numQuestions': 1, 
                         'numQuestionsToday': 1,
@@ -92,7 +92,7 @@ exports.updateNumQuestions = async(tagId, result) => {
             },  
             {returnOriginal:false});
 
-        result(null, {status: true, message: "Num of Questions updated for: "+tagId});
+        result(null, {status: true, message: "Num of Questions updated for: "+tagName});
     }
     catch(err){
         result(err);
