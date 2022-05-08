@@ -328,8 +328,9 @@ router.get("/top-posts/:userId",  async (req, res) => {
 
     try{
         const response = {}
-        const type = req.body.type; //question, answer, all
-        const rankBy = req.body.rankby; //score, latest
+        console.log(req);
+        const type = req.query.type; //question, answer, all
+        const rankBy = req.query.rankby; //score, latest
         const userId = req.params.userId; 
         console.log(type, rankBy)
         const rep = await User.topPosts(rankBy, type, userId)

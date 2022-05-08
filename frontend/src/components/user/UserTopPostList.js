@@ -4,19 +4,23 @@ import axiosService from "../../services/axiosservice";
 import {useParams} from "react-router-dom";
 function UserTopPostList({userId}) {
 
-    const [question, setQuestion] = useState([]);
-    const GET_USER_POSTS_API = "api/user/top-posts/"+userId;
-    const params = useParams();
-    const [posts,setPosts] = useState([]);
-    const [gettingPosts,setGettingPosts] = useState(true);
+     const [question, setQuestion] = useState([]);
+     const GET_USER_POSTS_API = "api/user/top-posts/"+userId;
+     const params = useParams();
+     const [topPosts,setTopPosts] = useState([]);
+     const [gettingPosts,setGettingPosts] = useState(true);
+     const [rankby,setRankBy] = useState("score");
+     const [type, setType] = useState("all");
 
       const getUserPosts = async () => {
       setGettingPosts(true);
+      setGettingPosts(true);
       try{
-          const response = await axiosService.get(GET_USER_POSTS_API);
+
+          const response = await axiosService.get(GET_USER_POSTS_API, {params:{rankby: rankby, type: type}});
           if(response && response.data && response.data.success){
-              console.log(response.data);
-              setPosts(response.data);
+              setTopPosts(response.data.data);
+              console.log(topPosts,'a')
               setGettingPosts(false);
           }else{
               setGettingPosts(false);
@@ -31,8 +35,24 @@ function UserTopPostList({userId}) {
         getUserPosts();
       },[]);
 
+        const updateRankBy = (rankBy)=>{
+            setRankBy(rankBy)
+            setRankBy(rankBy)
+            console.log(rankby)
+            getUserPosts();
+        }
+        const updateType = (type)=>{
+            setType(type)
+            setType(type)
+            console.log(type)
+            getUserPosts();
+        }
+
 
     return (
+        <div className="profiletab-item-userpostlist-container userpostlist-container">
+            <div className="usertaglist-title">
+
 
         <div id="js-top-posts" className="grid--item">
             <div className="d-flex ai-end jc-space-between fw-wrap">
@@ -51,26 +71,28 @@ function UserTopPostList({userId}) {
 
                 <div className="d-flex jc-end mb8">
                     <div className="s-btn-group js-post-filters">
-                        <a className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-selected is-selected js-post-filter-btn">All</a>
+                        <a className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-selected is-selected js-post-filter-btn" onClick={() => updateType("all")}>All</a>
                         <a data-type="1"
-                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn">Questions</a>
+                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn" onClick={() => updateType("question")}>Questions</a>
                         <a data-type="2"
-                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn">Answers</a>
+                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn" onClick={() => updateType("answer")}>Answers</a>
                         <a data-type="9"
-                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn">Articles</a>
+                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-filter-btn" onClick={() => updateType("all")}>Articles</a>
                     </div>
                     <div className="s-btn-group ml8 js-post-sorts">
                         <a data-sort="Votes"
-                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-selected is-selected js-post-sort-btn">Score</a>
+                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-selected is-selected js-post-sort-btn" onClick={() => updateRankBy("score")}>Score</a>
                         <a data-sort="Newest"
-                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-sort-btn">Newest</a>
+                           className="s-btn s-btn__muted s-btn__outlined s-btn__xs js-post-sort-btn" onClick={() => updateRankBy("date")}>Newest</a>
                     </div>
                 </div>
             </div>
 
 
             {
-            !gettingPosts && posts && posts.map((eachPost)=>{
+
+            !gettingPosts && topPosts && topPosts.map((eachPost)=>{
+
                 return (
                     <div>
                         <UserTopPost key={eachPost._id} post={eachPost}/>
@@ -79,6 +101,9 @@ function UserTopPostList({userId}) {
             })
         }
 
+        </div>
+
+            </div>
         </div>
     )
 }
