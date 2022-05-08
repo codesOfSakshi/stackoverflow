@@ -12,14 +12,8 @@ const questionSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
   },
-  upVotes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
-  }],
-  downVotes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
-  }],
+  upVotes: {type:Array},
+  downVotes: {type:Array},
   views: {
     type: Number,
   },

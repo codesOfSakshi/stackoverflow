@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 const QuestionModel = require('../models/question.js');
 const TagModel = require('../models/tag.js');
 const AnswerModel = require('../models/answer.js');
+const UserModel = require('../models/user.js');
 
 class Question{
 
@@ -235,7 +236,7 @@ static editQuestion = async (question)=>{
     try{
         console.log("EDIT",question)
         const oldQuestion = await QuestionModel.findById(question._id);
-        console.log("EDIT",oldQuestion)
+        console.log("EDIT old question",oldQuestion)
         const result = await QuestionModel.findByIdAndUpdate(question._id,{
             images:question.images,
             title:question.title,
@@ -338,10 +339,10 @@ static updateUserOnQuestionAdd = async ({userId,questionId,tags})=>{
             }
             let user = await UserModel.findOne(query);
             user =  JSON.parse(JSON.stringify(user));
+            console.log(user.tagIds);
             if(user){
                 if(user.tagIds && user.tagIds.length){
                   user.tagIds.forEach((eachUserTag)=>{
-                    console.log(eachUserTag);
                     if(eachUserTag && eachUserTag.tagId){
                       let oldTagsContainsIndex = oldTags.indexOf(eachUserTag.tagId);
                       if(oldTagsContainsIndex >=0){
@@ -356,7 +357,7 @@ static updateUserOnQuestionAdd = async ({userId,questionId,tags})=>{
                   });
                   if(user.tagIds && user.tagIds.length){
                       user.tagIds.forEach((eachUserTag)=>{
-                        if(eachUserTag && eachUserTag.name){
+                        if(eachUserTag && eachUserTag.tagId){
                           let tagsContainsIndex = newTags.indexOf(eachUserTag.tagId);
                           if(tagsContainsIndex >=0){
                             newTags.splice(tagsContainsIndex, 1);
