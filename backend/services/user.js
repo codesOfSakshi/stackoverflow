@@ -35,10 +35,24 @@ class User {
   /*                          method to create an user                          */
   /* -------------------------------------------------------------------------- */
   static async createUser({ name, email, password }) {
+    const tagIds = [
+      { tagId: "Curious", score: 0 },
+      { tagId: "Helpfulness", score: 0 },
+      { tagId: "Popular", score: 0 },
+      { tagId: "Sportsmanship", score: 0 },
+      { tagId: "Critic", score: 0 },
+    ];
+    const admin = "false";
+    const reputation = 0;
+    const createdAt = new Date().toISOString().slice(0, 10);
     const query = {
       name,
       email,
       password,
+      tagIds,
+      admin,
+      reputation,
+      createdAt,
     };
     let savedUser;
     try {
@@ -55,16 +69,22 @@ class User {
 
   static addToBookMark = async (req) => {
     try {
-      const query = {
-        user: mongoose.Types.ObjectId(req.params.userId),
-      };
-      let user = await UserModel.findOne(query);
-      const updatedUser = await UserModel.update(query, {
-        $push: {
-          bookmarks: req.body.questionId,
-        },
-      });
-      return updatedUser;
+        const userId = req.params.userId;
+        const userObj = {userId};
+        console.log(userId)
+        const questionId =req.body.questionId
+        const quesObj = {questionId};
+        const query = {
+            user: mongoose.Types.ObjectId(userId)
+        };
+        let updatedUser = this.updateUserById(userObj,quesObj)
+
+        if(updatedUser)
+        {
+            return updatedUser;
+        }
+        else
+            return [];
     } catch (err) {
       console.log(err);
       throw new Error(
@@ -72,6 +92,34 @@ class User {
       );
     }
   };
+
+
+    static updateUserById = async ({ userId} ,{questionId}) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            let res = await UserModel.findOne(query);
+            console.log(mongoose.Types.ObjectId(questionId))
+            console.log(req.body.questionId)
+            var question= mongoose.Types.ObjectId(questionId);
+
+            let user = await res.bookmark.push(question)
+            console.log(user, "user");
+
+            user = JSON.parse(JSON.stringify(user));
+            if (user) {
+                return user;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
 
   static getUserById = async ({ userId }) => {
     try {
@@ -94,6 +142,30 @@ class User {
       );
     }
   };
+
+    static updateUserById = async ({ userId },{questionId}) => {
+        try {
+            const query = {
+                user: mongoose.Types.ObjectId(userId),
+            };
+            let question = mongoose.Types.ObjectId(questionId)
+            var user = await UserModel.findOne(query);
+            user= user.bookmark.push(question)
+            console.log(user, "user");
+
+            user = JSON.parse(JSON.stringify(user));
+            if (user) {
+                return user;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error(
+                "Some unexpected error occurred while getting bookmark question ids"
+            );
+        }
+    };
 
 
     static getUserByIdWithQuestion = async ({ userId }) => {
@@ -294,34 +366,32 @@ class User {
     }
   };
 
-    static editUserPartially =  (req)=>{
-        try{
-            UserModel.findOneAndUpdate(
-                mongoose.Types.ObjectId(req.params.userId), // query
-                {
-                    $set: {
-                        "location": req.body.location,
-                        "name": req.body.name,
-                        "title": req.body.title
-                    }
-                }, // replacement
-                {new:true}, // options
-                function (err, object) {
-                    if (err) {
-                        console.warn(err.message);  // returns error if no matching object found
-                    } else {
-                        console.dir("data", object);
-                        return object;
-                    }
-                }
-                );
-
-        }catch(err){
-            console.log(err);
-            throw new Error("Error while updating user details");
+  static editUserPartially = (req) => {
+    try {
+      UserModel.findOneAndUpdate(
+        mongoose.Types.ObjectId(req.params.userId), // query
+        {
+          $set: {
+            location: req.body.location,
+            name: req.body.name,
+            title: req.body.title,
+          },
+        }, // replacement
+        { new: true }, // options
+        function (err, object) {
+          if (err) {
+            console.warn(err.message); // returns error if no matching object found
+          } else {
+            console.dir("data", object);
+            return object;
+          }
         }
+      );
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error while updating user details");
     }
-
+  };
 
   static answerActivityDetailForUser = async (req) => {
     try {
@@ -344,80 +414,87 @@ class User {
     }
   };
 
-  static getUserTags = async ({userId},outercb)=>{
-     try{
-        const query = {
-            user:mongoose.Types.ObjectId(userId),
-        }
-        let user = await UserModel.findOne(query);
-        user = JSON.parse(JSON.stringify(user));
-        if(user?.tags?.length){
-          const tagsCombined = [];
-          const tagIds = user.tags.map((eachTag)=>{
-              return mongoose.Types.ObjectId(eachTag.id);
-          })
-          const tagsQuery = {
-            user:{"$in":tagIds},
-          }
-          let tags = await TagModel.find(tagsQuery);
-          tags = JSON.parse(JSON.stringify(tags));
-          async.each(tagIds,(eachTagId, cb)=>{
-                  let tagsObj = {};
-                  tagsObj.id = eachTagId;
-                  const questionTagQuery = {
-                    "tags": eachTagId
-                  };
-                  QuestionModel.find(questionTagQuery).then((questions)=>{
-                    questions = JSON.parse(JSON.stringify(questions));
-                    tagsObj.posts = questions.length;
-                    let tagDataObj = tags.filter((eachTag)=>{
-                      return eachTag._id===eachTagId.toString();
-                    });
-                    if(tagDataObj && tagDataObj.length){
-                      tagDataObj = tagDataObj[0];
-                      tagsObj.name = tagDataObj.name;
-                    }
-                    let tagUserObj = user.tags.filter((eachTag)=>{
-                      return eachTag.id===eachTagId.toString();
-                    });
-                    if(tagUserObj && tagUserObj.length){
-                      tagUserObj = tagUserObj[0];
-                      tagsObj.score = tagUserObj.score;
-                      if(tagsObj.score>=20){
-                        tagsObj.color="gold";
-                      }else if(tagsObj.score>=15){
-                        tagsObj.color="silver";
-                      }else if(tagsObj.score>=10){
-                        tagsObj.color="bronze";
-                      }else{
-                        tagsObj.color="";
-                      }
-                    }
-                    console.log(tagsObj);
-                    tagsCombined.push(tagsObj);
-                    cb(null);       
-                  });
-          },function(error){
-            if(error){
+  static getUserTags = async ({ userId }, outercb) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      let user = await UserModel.findOne(query);
+      user = JSON.parse(JSON.stringify(user));
+      if (user?.tags?.length) {
+        const tagsCombined = [];
+        const tagIds = user.tags.map((eachTag) => {
+          return mongoose.Types.ObjectId(eachTag.id);
+        });
+        const tagsQuery = {
+          user: { $in: tagIds },
+        };
+        let tags = await TagModel.find(tagsQuery);
+        tags = JSON.parse(JSON.stringify(tags));
+        async.each(
+          tagIds,
+          (eachTagId, cb) => {
+            let tagsObj = {};
+            tagsObj.id = eachTagId;
+            const questionTagQuery = {
+              tags: eachTagId,
+            };
+            QuestionModel.find(questionTagQuery).then((questions) => {
+              questions = JSON.parse(JSON.stringify(questions));
+              tagsObj.posts = questions.length;
+              let tagDataObj = tags.filter((eachTag) => {
+                return eachTag._id === eachTagId.toString();
+              });
+              if (tagDataObj && tagDataObj.length) {
+                tagDataObj = tagDataObj[0];
+                tagsObj.name = tagDataObj.name;
+              }
+              let tagUserObj = user.tags.filter((eachTag) => {
+                return eachTag.id === eachTagId.toString();
+              });
+              if (tagUserObj && tagUserObj.length) {
+                tagUserObj = tagUserObj[0];
+                tagsObj.score = tagUserObj.score;
+                if (tagsObj.score >= 20) {
+                  tagsObj.color = "gold";
+                } else if (tagsObj.score >= 15) {
+                  tagsObj.color = "silver";
+                } else if (tagsObj.score >= 10) {
+                  tagsObj.color = "bronze";
+                } else {
+                  tagsObj.color = "";
+                }
+              }
+              console.log(tagsObj);
+              tagsCombined.push(tagsObj);
+              cb(null);
+            });
+          },
+          function (error) {
+            if (error) {
               console.log(error);
               return [];
+            } else {
+              outercb(null, tagsCombined);
             }
-            else{
-              outercb(null,tagsCombined);
-            }
-          });  
-        }else{
-            return [];
-        }
-    }catch(err){
-        console.log(err);
-        throw new Error("Some unexpected error occurred while getting user tags by user id");
+          }
+        );
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting user tags by user id"
+      );
     }
-  }
+  };
 
   static getUsersByName = async (query) => {
-    try{
-      let users = await UserModel.find({'name': {'$regex': query, '$options': 'i'}});
+    try {
+      let users = await UserModel.find({
+        name: { $regex: query, $options: "i" },
+      });
       console.log(users, "users upon search");
 
       users = JSON.parse(JSON.stringify(users));
@@ -427,19 +504,16 @@ class User {
       } else {
         return [];
       }
-
-    }catch(err){
+    } catch (err) {
       console.log(err);
       throw new Error("Error while searching for users by name");
     }
-    
   };
 
 
 
 static topPosts = async(rankBy, type, userID)=>{
-  // parent function to handle sorting
-    console.log("rankkkkkkkkkkkkkkkkkkk", rankBy, type)
+  // parent function to handle sorting 
     try {
         const query = {
             user: mongoose.Types.ObjectId(userID),
@@ -476,7 +550,7 @@ static sortByScore = async(type, rankBy, userDetails) =>{
           if (keyA < keyB) return 1;
           if (keyA > keyB) return -1;
           return 0;
-        }); 
+        });
 
          var questions = questionsAnswered.map(function(obj) { return obj.questionId; });
          return questions;
@@ -536,7 +610,7 @@ static sortAll = async(rankBy, userDetails) =>{
   /**
    * sorts all the questions and answers combined based on date or score
    * */
-    console.log("here############", rankBy, userDetails)
+    console.log("here", rankBy, userDetails)
 
     if(rankBy=='date'){
         let questionsAsked = userDetails.questionsAsked;

@@ -6,7 +6,7 @@ const tagController = require('../controllers/tag.controller');
 router.get('/', tagController.getAllTags);
 
 // Get all questions per tag
-router.get('/questionbytag/:tagId', tagController.getTaggedQuestions);
+router.post('/questionbytag', tagController.getTaggedQuestions);
 
 // Update NumQuestions of tag
 router.put('/updateNumQuestions/:tagId', tagController.updateNumQuestions);

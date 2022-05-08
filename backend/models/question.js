@@ -45,8 +45,8 @@ const questionSchema = new mongoose.Schema({
   userId: {
     type: String,
   },
-  commentId: {
-    type: String,
+  comment: {
+    type: Array,
   },
   bestAns: {
     type:mongoose.Schema.Types.ObjectId,
@@ -64,6 +64,10 @@ const questionSchema = new mongoose.Schema({
   score:{
     type: Number,
     default:-1
+  },
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'user',
   }
 
 });

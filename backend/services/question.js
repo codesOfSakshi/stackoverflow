@@ -75,7 +75,10 @@ class Question{
             const query = {
                 question:mongoose.Types.ObjectId(req.params.questionId),
             }
+            //ToDO - Increasing User Reach 
+
             const questions = await QuestionModel.find(query).then().catch();
+
             if(questions?.length){
                 return questions;
             }else{
@@ -112,8 +115,13 @@ static getQuestionsBasedOnId = async (questionId)=>{
         const query = {
             question:mongoose.Types.ObjectId(questionId),
         }
-        // var questions =await QuestionModel.find(query).populated("tags");
         var questions =await QuestionModel.findById(questionId).populate("answers");
+        // console.log(questions)
+
+        var viewIncrement=questions.views+1
+        console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
+        QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
+        
         // var questionsdata=questions._doc
         // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
         // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
@@ -124,10 +132,37 @@ static getQuestionsBasedOnId = async (questionId)=>{
         console.log(err);
         throw new Error("No question found with this Id");
     }
-}      
+} 
+
+static getQuestionsBasedOnId = async (questionId)=>{
+    try{
+        const query = {
+            question:mongoose.Types.ObjectId(questionId),
+        }
+        var questions =await QuestionModel.findById(questionId).populate("answers");
+        // console.log(questions)
+
+        // var viewIncrement=questions.views+1
+        // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
+        // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
+        
+        // var questionsdata=questions._doc
+        // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
+        // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
+        // console.log("tttttttT",questions)
+        return questions;    
+        // return questions
+    }catch(err){
+        console.log(err);
+        throw new Error("No question found with this Id");
+    }
+} 
 
 static getQuestionsByType = async (type,sortType)=>{
     try{
+        const query = {
+            status:"APPROVED",
+        }
         console.log(type,sortType)
         var sorting=1;
         var questions;
@@ -138,16 +173,16 @@ static getQuestionsByType = async (type,sortType)=>{
         if(type=="Interesting" || type==1){
             console.log("here")
             // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-            questions = await QuestionModel.find({})
+            questions = await QuestionModel.find(query)
         }
         else if(type=="Hot" || type==2){
-            questions = await QuestionModel.find({}).sort({views: sorting})
+            questions = await QuestionModel.find(query).sort({views: sorting})
         }
         else if(type=="Score" || type==3){
-             questions = await QuestionModel.find({}).sort({answers: sorting})
+             questions = await QuestionModel.find(query).sort({answers: sorting})
         }
         else if(type=="Unanswered" || type==4){
-            questions = await QuestionModel.find({ answers: { $size: 0 } }).sort({score:1})
+            questions = await QuestionModel.find(query,{ answers: { $size: 0 } }).sort({score:1})
         }
         console.log(questions)
 
@@ -179,8 +214,10 @@ static addQuestion = async (question)=>{
             commentId:"",
             bestAns:"",
             badges:[],
-            activity:""
+            activity:"",
+            status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         });
+        //ToDO - Append the tag in user tag list
         await questionNew.save();
         return("Question Added")
     }catch(err){
@@ -189,28 +226,21 @@ static addQuestion = async (question)=>{
     }
 }
 
+
+
 static editQuestion = async (question)=>{
     try{
         console.log("EDIT",question)
         const result = await QuestionModel.findByIdAndUpdate(question._id,{
-            upvotes:[],
-            downvotes:[],
-            views:0,
-            answers:[],
             images:question.images,
-            userId:question.userId,
             title:question.title,
             tags:question.tags,
             description:question.description,
-            commentId:"",
-            bestAns:"",
-            badges:[],
-            activity:""
+            status:(question.images && question.images.length==0)?"APPROVED":"PENDING"
         })
         if (result=={}) {
           return res.status(400).send(result.error.details[0].message);
         }
-        await result.save();
         return("Question Updated")
     }catch(err){
         console.log(err);

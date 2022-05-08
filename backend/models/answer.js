@@ -21,7 +21,7 @@ const answerSchema = new mongoose.Schema({
     },
     comment:{
         type:Array,
-        required: true,
+        // required: true,
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,

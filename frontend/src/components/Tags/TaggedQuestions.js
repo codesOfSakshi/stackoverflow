@@ -3,13 +3,13 @@ import {useNavigate} from 'react-router-dom';
 
 const TaggedQuestions = (props) => {
     
-    
     const navigate = useNavigate();
 
     // Navigates to the question page for question clicked
     const navigateToQuestion = () => {
 
         console.log("Navigating to Question: ", props.question._id);
+        navigate('/question/' + props.question._id);
         // navigate('/question/' + props.question._id ,{state:{question:props.question._id}});
     }
 
@@ -20,12 +20,12 @@ const TaggedQuestions = (props) => {
     }
 
     return (
-        <div>
+
             
             <div id="question-summary-72023260" class="s-post-summary js-post-summary" data-post-id="72023260" data-post-type-id="1">
                 <div class="s-post-summary--stats js-post-summary-stats">
                     <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized" title="Score of 0">
-                        <span class="s-post-summary--stats-item-number">{props.question.upVotes.length}</span>
+                        <span class="s-post-summary--stats-item-number">{props.question.upVotes.length - props.question.downVotes.length}</span>
                         <span class="s-post-summary--stats-item-unit">votes</span>
                     </div>
                     <div class="s-post-summary--stats-item  " title="0 answers">
@@ -84,7 +84,6 @@ const TaggedQuestions = (props) => {
                 </div>
             </div>
 
-        </div>
     )
 }
 

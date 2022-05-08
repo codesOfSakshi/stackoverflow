@@ -60,10 +60,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  bookmark: {
-    type: Array,
-    default: [],
-  },
+  bookmark: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "questions",
+  }],
     questionsAnswered: [{
     questionId:{
       type: mongoose.Schema.Types.ObjectId,
@@ -82,14 +82,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  upVotesCount: [{
-    type: String,
-    // required: true,
-  }],
-  downVotesCount: [{
-    type: String,
-    // required: true,
-  }],
+  upVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
+  downVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
   badges: {
     type: Array,
     // required: true,

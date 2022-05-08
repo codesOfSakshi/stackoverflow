@@ -25,10 +25,10 @@ router.post("/add",  async (req, res) => {
 });
 
 router.post("/edit",  async (req, res) => {
-    console.log(req.query)
+    console.log(req.body)
     const response = {};
     try{
-        const questionModelResponse = await Question.editQuestion(req.query);
+        const questionModelResponse = await Question.editQuestion(req.body);
         if(questionModelResponse){
             response.success = true;
             response.message = questionModelResponse;
@@ -45,11 +45,11 @@ router.post("/edit",  async (req, res) => {
 });
 
 router.get("/:questionId",  async (req, res) => {
+    const response = {};
     try{
         const question = req.params.questionId;
         console.log(question)
         const questionModelResponse = await Question.getQuestionsBasedOnId(question);
-        const response = {};
         response.success = true;
         response.data = questionModelResponse;
         response.status = 200;

@@ -1,9 +1,9 @@
 import { Row,Col } from 'react-bootstrap';
-import AskQuestionEditor from '../components/questions/AskQuestionEditor';
+import EditQuestionPage from '../components/questions/EditQuestionPage';
 import Navbar from "../components/user/Navbar";
 
-function AskQuestion() {
-  return (
+function EditQuestion() {
+return (
     <>
     <Navbar></Navbar>
     <Row style={{marginTop:"5rem"}}>
@@ -13,7 +13,7 @@ function AskQuestion() {
         style={{"float": "right",
         "height": "130px"}}>
         </img>
-    <h1 className="fs-headline1" style={{"paddingTop":"3rem"}}>Ask a public question</h1>
+    <h1 className="fs-headline1" style={{"paddingTop":"3rem"}}>Edit Question</h1>
     </Col>
     </Row>
     <Row>
@@ -23,11 +23,11 @@ function AskQuestion() {
     "margin-right":"30rem"}}>
     <br></br>
     <br></br>
-    <AskQuestionEditor></AskQuestionEditor>
+    <EditQuestionPage></EditQuestionPage>
     </div>
     </Row>
     </>
   );
 }
 
-export default AskQuestion;
+export default EditQuestion;
