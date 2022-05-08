@@ -3,7 +3,6 @@ const QuestionModel = require('../models/question.js');
 const UserModel = require('../models/user.js');
 const TagModel = require('../models/tag.js');
 const AnswerModel = require('../models/answer.js');
-const UserModel = require('../models/user.js');
 
 class Question{
 
