@@ -27,10 +27,9 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  tags: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "tags",
-  }],
+  tags: {
+    type: Array
+  },
   description: {
     type: String,
     required: false,
