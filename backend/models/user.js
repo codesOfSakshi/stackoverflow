@@ -103,8 +103,9 @@ const userSchema = new mongoose.Schema({
   tagIds: [
     {
       tagId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "tag",
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        // ref: "tag",
       },
       score: {
         type: Number,
