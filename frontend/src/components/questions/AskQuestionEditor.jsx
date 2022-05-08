@@ -37,8 +37,8 @@ function AskQuestionEditor(props) {
   }
 
   const submitHandler =(e)=>{
+    console.log(arr);
     e.preventDefault();
-    console.log(arr)
     var payload ={
       userId: "snichat97",
       title: e.target.formBasicTitle.value,
