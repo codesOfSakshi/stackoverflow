@@ -9,7 +9,7 @@ export default function UserAnswer({answer}) {
         answer.map(ans=> {
 
 
-            <div id="question-summary-61933462" className="s-post-summary s-post-summary__minimal js-post-summary"
+          return  <div id="question-summary-61933462" className="s-post-summary s-post-summary__minimal js-post-summary"
                  data-post-id="61933462" data-post-type-id="1">
                 <div className="s-post-summary--stats js-post-summary-stats">
 

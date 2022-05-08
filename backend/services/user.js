@@ -69,16 +69,7 @@ class User {
 
   static addToBookMark = async (req) => {
     try {
-        const userId = req.params.userId;
-        const userObj = {userId};
-        console.log(userId)
-        const questionId =req.body.questionId
-        const quesObj = {questionId};
-        const query = {
-            user: mongoose.Types.ObjectId(userId)
-        };
-        let updatedUser = this.updateUserById(userObj,quesObj)
-
+        let updatedUser =  UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.userId), { $push: { bookmark: mongoose.Types.ObjectId(req.body.questionId) } }).exec();
         if(updatedUser)
         {
             return updatedUser;
@@ -94,32 +85,6 @@ class User {
   };
 
 
-    static updateUserById = async ({ userId} ,{questionId}) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            let res = await UserModel.findOne(query);
-            console.log(mongoose.Types.ObjectId(questionId))
-            console.log(req.body.questionId)
-            var question= mongoose.Types.ObjectId(questionId);
-
-            let user = await res.bookmark.push(question)
-            console.log(user, "user");
-
-            user = JSON.parse(JSON.stringify(user));
-            if (user) {
-                return user;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
-        }
-    };
 
   static getUserById = async ({ userId }) => {
     try {
@@ -149,8 +114,11 @@ class User {
                 user: mongoose.Types.ObjectId(userId),
             };
             let question = mongoose.Types.ObjectId(questionId)
-            var user = await UserModel.findOne(query);
-            user= user.bookmark.push(question)
+            var user = await UserModel.findOneAndUpdate(
+                { query },
+                { $push: { bookmark: mongoose.Types.ObjectId(questionId) } },
+                done);
+
             console.log(user, "user");
 
             user = JSON.parse(JSON.stringify(user));
