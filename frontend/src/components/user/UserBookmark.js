@@ -23,7 +23,7 @@ function UserBookmark({bookMarkQuestion}) {
             <div className="s-post-summary--content">
                 <span>
                     <a href="/questions/63110429/jaspersoft-template-type-change-from-xml-to-html"
-                       className="s-post-summary--content-title s-link">{bookMarkQuestion.description}</a>
+                       className="s-post-summary--content-title s-link">{bookMarkQuestion.title}</a>
                 </span>
 
                 <div className="s-popover px0 py4 w-auto" id="post-menu-63110429" role="menu">

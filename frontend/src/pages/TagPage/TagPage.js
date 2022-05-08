@@ -2,18 +2,29 @@ import React, {useEffect, useState, Fragment} from 'react';
 import TaggedQuestions from '../../components/Tags/TaggedQuestions';
 import {useLocation} from 'react-router-dom';
 import axios from 'axios';
+import { toggleButtonClasses } from '@mui/material';
+import CompactQuestion from '../../Atom/CompactQuestion';
+
 
 const TagPage = () => {
 
     const [taggedQuestions , setTaggedQuestions] = useState();
     const [count, setCount] = useState(0);
     const location = useLocation();
+    const [tag, setTag] = useState();
+    const [description, setDescription] = useState();
 
     useEffect(() => {
 
         async function getQuestions(){
-     
-            let response = axios.get("http://localhost:3001/api/tags/questionbytag/" + location.state.tagId );
+
+            // Get interesting questions by default
+            const payload = {
+                tagId: location.state.tagId,
+                filterType: 1
+            }
+
+            let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
             response = await response;
     
             if(response.status === 200){
@@ -25,21 +36,45 @@ const TagPage = () => {
             }
 
             console.log(response.data);
+            setTag(location.state.tagId);
+            setDescription(location.state.description);
 
         }
         getQuestions();
-    },[setTaggedQuestions, setCount, location.state.tagId]);
+    },[setTaggedQuestions, setCount, setDescription, setTag, location.state.tagId, location.state.description]);
+
+
+    const handleFilterQuestions = async (filterType) => {
+
+        console.log("SORTING BY: ", filterType)
+        // TODO: Sort Questions based on the sortType button clicked
+        const payload = {
+            tagId: location.state.tagId,
+            filterType: filterType
+        }
+        let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+        response = await response;
+
+        if(response.status === 200){
+            setTaggedQuestions(response.data)
+            setCount(response.data.length);
+        }
+        else{
+            setCount(0);
+        }
+    }
+
 
     return (
         <div>
-            <div id='mainbar' class='questions-page fc-black-800 ' style={{marginLeft:250, marginRight:250}} >
+            <div id='mainbar' class='questions-page fc-black-800 ' style={{marginLeft:270, marginRight:270}} >
 
                 <div class="s-page-title">
                     <div class="s-page-title--text">
-                        <h1 class="s-page-title--header">Questions tagged [{location.state.tagId}]</h1>
+                        <h1 class="s-page-title--header">Questions tagged [{tag}]</h1>
                         <br/>
                         <p class="s-page-title--description">
-                            {location.state.description}
+                            {description}
                         </p>
                     </div>
                     <div class="s-page-title--actions">
@@ -51,27 +86,41 @@ const TagPage = () => {
                     <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
                         {count} Questions
                     </div>
-                    <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
-                        {/* //////Buttons here////// */}
-                    </div>
+
+                    <div class="uql-nav flex--item" data-action="se-uql-list:edit-current-requested@document->se-uql#toggleEditor">
+                        <div class="d-flex ai-center jc-space-between">
+                            <div class="js-uql-navigation s-btn-group flex--item mr16 ff-row-nowrap">
+                                    <a onClick={() => handleFilterQuestions(1)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Newest" data-shortcut="N">
+                                        <div class="flex--item">Interesting</div>
+                                    </a>
+                                    <a  onClick={() => handleFilterQuestions(2)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Active" data-shortcut="A">
+                                        <div class="flex--item">Hot</div>
+                                    </a>
+                                    <a  onClick={() => handleFilterQuestions(3)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Bounties" data-shortcut="E">
+                                        <div class="flex--item">Score</div>
+                                    </a>
+                                    <a onClick={() => handleFilterQuestions(4)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Unanswered" data-shortcut="U">
+                                        <div  class="flex--item">Unanswered</div>
+                                    </a>
+                            </div>
+                        </div>
+                     </div>
                 </div>
 
                 {count > 0 ? 
                     <div id="questions" class=" flush-left">
 
-                        {/* {tags.map((tag, index) => (
-                            <TagPanel key={index} tag={tag} />
-                        ))} */}
-
                         {taggedQuestions.map((question, index) => ( 
                             <TaggedQuestions key={index} question={question}/>
+                            // <CompactQuestion questions={question}/>
                         ))}
 
                     </div>
             
                 :
                 
-                "No Tagged questions"}
+                "No Tagged questions"
+                }
                 
             </div>
     </div>

@@ -4,6 +4,7 @@ import {useEffect,useState,useRef} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
 import Cookies from 'universal-cookie';
 import MarkdownIt from 'markdown-it';
 import Editor from 'react-markdown-editor-lite';
@@ -13,7 +14,7 @@ import ReactMarkdown from "react-markdown";
 import EditorCustom from '../../Atom/EditorCustom';
 import S3FileUpload from 'react-s3';
 import { Buffer } from 'buffer';
-
+import jwt_decode from 'jwt-decode';
 
 
 function AskQuestionEditor(props) {  
@@ -24,6 +25,8 @@ function AskQuestionEditor(props) {
   const [uploadUrl,setUploadUrl] = useState([]);
 
   const cookies = new Cookies();
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)
@@ -40,13 +43,10 @@ function AskQuestionEditor(props) {
   },[])
 
   const submitHandler =(e)=>{
+    console.log(arr);
     e.preventDefault();
-    // console.log(arr)
-    // if (mdEditor.current) {
-    //   var tempDesc = mdEditor.current.getMdValue();
-    // }
     var payload ={
-      userId: "snichat97",
+      userId: decoded._id,
       title: e.target.formBasicTitle.value,
       description: descripiton,
       tags:selectedTags,

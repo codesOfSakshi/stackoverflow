@@ -21,9 +21,9 @@ const s3Controller = new aws.S3({
     signatureVersion: 'v4'
 })
 
-exports.imageUpload =  (req, res) => {
-    const server_url =  generateUploadURL()
-    res.send({server_url})
+exports.imageUpload = async ( result) => {
+    const server_url = await generateUploadURL()
+    result(null,server_url)
 }
 
 async function generateUploadURL() {
@@ -37,6 +37,5 @@ async function generateUploadURL() {
     })
 
     const uploadURL = await s3Controller.getSignedUrlPromise('putObject', params)
-    return uploadURL
+    return uploadURL;
 }
-module.exports = router;

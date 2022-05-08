@@ -12,7 +12,7 @@ class Comment{
                         _id:mongoose.Types.ObjectId(questionId),
                     };
                     const updateCondition = {
-                        $push: { "commentId": comment }
+                        $push: { "comment": comment }
                     }
                     const result = await QuestionModel.updateOne(findCondition,updateCondition);
                     if(result){
@@ -33,9 +33,11 @@ class Comment{
                 const findCondition = {
                     _id:mongoose.Types.ObjectId(answerId),
                 };
+                console.log("answer", answerId)
                 const updateCondition = {
-                    commentId,
+                    $push: { "comment": comment }
                 }
+                console.log("comment", comment)
                 const result = await AnswerModel.updateOne(findCondition,updateCondition);
                 if(result){
                     console.log("RESULT FROM ANSWER COMMENT IS", result);

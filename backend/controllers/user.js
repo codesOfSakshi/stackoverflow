@@ -73,9 +73,17 @@ router.post("/addbookmark/:userId",  async (req, res) => {
     const response = {};
     try{
         const questionIds = await User.addToBookMark(req);
+        if(questionIds){
         response.success = true;
         response.status = 200;
-        res.status(200).send(response);
+        response.result=questionIds
+        res.status(200).send(response);}
+        else {
+            response.success = true;
+            response.bookMarkQuestions = [];
+            response.status = 200;
+            res.status(200).send(response);
+        }
       
     }catch(e){
         console.log(e);
@@ -91,6 +99,7 @@ router.get("/tags/:userId",  async (req, res) => {
     const response = {};
     const userObj = {userId};
     const tags = User.getUserTags(userObj,function(error,tags){
+        console.log("tags"+tags);
         if(error){
                 console.log(error);
                 response.success = false;
@@ -98,7 +107,6 @@ router.get("/tags/:userId",  async (req, res) => {
                 response.status = 500;
                 res.status(500).send(response);
         }else{
-            console.log("tags");
             if(tags?.length){
                 response.success = true;
                 response.tags = tags;
@@ -236,12 +244,12 @@ router.post("/edit-partial/:userId",  async (req, res) => {
 });
 
 
-router.get("/answer/activity/:userId/:answerId",  async (req, res) => {
+router.get("/answer/activity/:userId",  async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
-        
-        const successData = await Answer.answerActivityDetailForUser(req);
+        const userObj = {userId};
+        const successData = await User.getUserAnswerQuestionById(userObj);
         if(successData){
             response.success = true;
             response.data = successData;
@@ -261,12 +269,15 @@ router.get("/answer/activity/:userId/:answerId",  async (req, res) => {
     }
 });
 
-router.get("/question/activity/:questionId",  async (req, res) => {
-   
+router.get("/question/activity/:userId",  async (req, res) => {
+    const userId= req.params.userId;
     const response = {};
     try{
-        
-        const successData = await Question.getQuestionsById(req);
+
+        const userObj = {userId};
+        const successData = await User.getUserQuestionById(userObj);
+        console.log("response-->>")
+        console.log(successData)
         if(successData){
             response.success = true;
             response.data = successData;
@@ -312,5 +323,31 @@ router.get("/searchbyname/:name", async (req, res) => {
         res.status(500).send(response);
     }
 })
+
+router.get("/top-posts/:userId",  async (req, res) => {
+    const response = {};
+    try{
+        console.log(req);
+        const type = req.query.type; //question, answer, all
+        const rankBy = req.query.rankby; //score, latest
+        const userId = req.params.userId; 
+        console.log(type, rankBy)
+        const rep = await User.topPosts(rankBy, type, userId)
+        console.log(rep)
+        if(rep){
+            response.success = true;
+            response.data = rep;
+            response.status = 200;
+            res.status(200).send(response);
+        }
+    }catch(e){
+        console.log(e);
+        response.success = false;
+        response.error = "Some error occurred. Please try again later";
+        response.status = 500;
+        res.status(500).send(response);
+    }
+
+});
 
 module.exports = router;
