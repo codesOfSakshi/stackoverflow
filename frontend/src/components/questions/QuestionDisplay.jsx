@@ -11,7 +11,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
-import {useParams} from 'react-router-dom';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -21,6 +20,7 @@ function QuestionsPage(props) {
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
     const[answer,setAnswer] = useState("")
+    const[owner,setOwner] = useState(false)
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
     var arr
@@ -29,7 +29,6 @@ function QuestionsPage(props) {
     const[qcomment, setqComment] = useState([])
     const[acomment, setaComment] = useState([])
     var questionDisplay, answerDisplay;
-    let navigate = useNavigate();
     var type = 'question'
 
     const token = localStorage.getItem("token");
@@ -42,19 +41,8 @@ function QuestionsPage(props) {
             console.log(response)
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
-
-            arr = mdParser.render(response.data.data.description)
-            document.querySelector("#editor-container").innerHTML = arr
-            console.log(arr)
-
-            // questionDisplay = new window.stacksEditor.StacksEditor(
-            //     document.querySelector("#editor-container-questionDisplay"),
-            //     response.data.data.description)
+            setOwner(response.data.data.user._id == decoded)
         })
-
-    // answerDisplay = new window.stacksEditor.StacksEditor(
-    //     document.querySelector("#editor-container-answerDisplay"),
-    //     "", )
     },[])
 
 
@@ -132,29 +120,13 @@ function QuestionsPage(props) {
                 <hr></hr>
                 
                 <Row>
-                    <p>
-                        <>
-                            <div className="App">
-                            <Card style={{margin:"1rem",height:"300px"}}>
-                            <div id="editor-container">
-                            </div>
-                            </Card>
-                            </div>
-                        </>
-                    </p>
-                </Row>
-
                     <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
                         <Upvote object={question} decoded = {decoded} type="question" />
                     </Col>
-                    <Col    >
-                        <p>
-                            <>
-                                <div id="editor-container-questionDisplay"></div>
-                            </>
-                        </p>
+                    <Col>
+                        <EditorCustomReadOnly description={question.description}></EditorCustomReadOnly>
                     </Col>
                 </Row>
                 
@@ -172,9 +144,9 @@ function QuestionsPage(props) {
                         {tag}
                     </div>
                     )})} 
-                    <Col style={{float:"right"}} >
+                    {owner && <Col style={{float:"right"}} >
                     <Button onClick={navigateToEdit} style={{float:"right",margin:"0.5rem"}}>Edit Question</Button>
-                    </Col>
+                    </Col>}
             </div>
             <hr></hr>
             <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
@@ -241,7 +213,6 @@ function QuestionsPage(props) {
                 </Row> */}
                     
                     <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
-                    <div id="editor-container-answerDisplay"></div>
                     <Row style={{ width: "200px", marginTop: "30px", marginLeft: "0.5px" }}>
                         <Button onClick={recordAnswer}>Post Your Answer</Button>
                     </Row>

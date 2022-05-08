@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function CompactQuestionListing({searchResult, questions}) {  
       const question = {
-        _id : "123456789",
+        _id : "6275e5c24d1b0cef02da29fa",
         createdAt:"12 Feburary 2020",
         upvotes:[1,2,3,4],
         downvotes:[1,2,3,4],

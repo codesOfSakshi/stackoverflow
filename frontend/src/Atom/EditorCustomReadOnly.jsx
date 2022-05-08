@@ -6,20 +6,25 @@ import MarkdownIt from 'markdown-it';
 
 
 export default function EditorCustom(props) {
-
+  const[description,setDescription]=React.useState("")
   const mdParser = new MarkdownIt(/* Markdown-it options */);
+  var arr ;
+
+
   useEffect(() => {
-    var arr = mdParser.render(props.description)
+    if(props && props.description && document.querySelector("#editor-container")){
+    arr = mdParser.render(props.description)
     document.querySelector("#editor-container").innerHTML = arr
     console.log(arr)
-  },[])
+  }},[props.description])
 
   return (
     <div className="App">
+      {props && props.description &&
       <Card style={{margin:"1rem",height:"300px"}}>
       <div id="editor-container">
       </div>
-      </Card>
+      </Card>}
     </div>
   );
 }
