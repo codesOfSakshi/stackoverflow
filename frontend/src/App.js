@@ -19,6 +19,7 @@ import Admin from "./pages/admin/admin";
 import Messaging from "./pages/Messages/Messaging"
 import Upvote from "./Atom/upvote";
 import QuestionActivity from "./components/questionActivity/questionActivities";
+import AllMessages from "./pages/Messages/AllMessages";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
       <Route path='/tag/:tagId' element={<TagPage/>}/>
       <Route path='/question/:id' element = {<QuestionDisplayPage />}/>
       <Route path='/messaging' element = {<Messaging/>}/>
+      <Route path='/allmessages' element = {<AllMessages/>}/>      
       <Route exact element={Error} />
     </Routes>
   );

@@ -20,7 +20,7 @@ const TagPanel = (props) => {
             </div>
 
             <div className="flex--item fc-medium mb12 v-truncate4">
-                {props.tag.description} (The FULL Description of the tag from the database will appear here)
+                {props.tag.description}
             </div>
 
             <div className="mt-auto d-flex jc-space-between fs-caption fc-black-400">

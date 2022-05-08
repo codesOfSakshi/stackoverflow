@@ -27,6 +27,10 @@ module.exports = class SearchService {
           continue;
         }
 
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         if (
           question.title.toLowerCase().includes(searchString.toLowerCase()) ||
           question.description
@@ -80,6 +84,10 @@ module.exports = class SearchService {
           continue;
         }
 
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         if (
           question.title.toLowerCase().includes(searchString.toLowerCase()) ||
           question.description
@@ -127,6 +135,10 @@ module.exports = class SearchService {
       let final_ans = [];
 
       for (const question of questions) {
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         if (
           question.title.toLowerCase().includes(searchString.toLowerCase()) ||
           question.description
@@ -165,20 +177,42 @@ module.exports = class SearchService {
 
   static async searchQuestion({ searchString }) {
     console.log("here too");
+    // const query = {
+    //   $or: [
+    //     {
+    //       title: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       tags: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       description: { $regex: searchString, $options: "i" },
+    //     },
+    //     {
+    //       answers: { $regex: searchString, $options: "i" },
+    //     },
+    //   ],
+    // };
+
     const query = {
-      $or: [
+      $and: [
         {
-          title: { $regex: searchString, $options: "i" },
+          $or: [
+            {
+              title: { $regex: searchString, $options: "i" },
+            },
+            {
+              tags: { $regex: searchString, $options: "i" },
+            },
+            {
+              description: { $regex: searchString, $options: "i" },
+            },
+            {
+              answers: { $regex: searchString, $options: "i" },
+            },
+          ],
         },
-        {
-          tags: { $regex: searchString, $options: "i" },
-        },
-        {
-          description: { $regex: searchString, $options: "i" },
-        },
-        {
-          answers: { $regex: searchString, $options: "i" },
-        },
+        { status: { $ne: "pending" } },
       ],
     };
 
@@ -209,6 +243,10 @@ module.exports = class SearchService {
       }
       let final_ans = [];
       for (const question of questions) {
+        if (question.status && question.status == "pending") {
+          continue;
+        }
+
         for (let answer of question.answers) {
           if (
             answer.comment.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -241,7 +279,7 @@ module.exports = class SearchService {
       }
       let final_ans = [];
       for (const question of questions) {
-        if (!question.status) {
+        if (question.status && question.status == "pending") {
           continue;
         }
         if (

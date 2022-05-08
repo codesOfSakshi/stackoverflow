@@ -14,14 +14,8 @@ const questionSchema = new mongoose.Schema({
     type: Date,
     default: new Date()
   },
-  upVotes: {
-    type: Array,
-    ref: "user",
-  },
-  downVotes: {
-    type: Array,
-    ref: "user",
-  },
+  upVotes: {type:Array},
+  downVotes: {type:Array},
   views: {
     type: Number,
   },
@@ -30,29 +24,28 @@ const questionSchema = new mongoose.Schema({
     required: false,
   },
   tags: {
-    type: Array,
-    ref: "tag",
+    type: Array
   },
   description: {
     type: String,
     required: false,
   },
-  answers: {
-    type: Array,
-    ref: "answer",
-  },
-  images: {
-    type: Array,
-  },
+  answers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "answers",
+  }],
+  images: [{
+    type: String,
+  }],
   userId: {
     type: String,
   },
-  commentId: {
-    type: String,
+  comment: {
+    type: Array,
   },
-  bastAns: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "answer",
+  bestAns: {
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'answer',
   },
   status: {
     type: String,
@@ -64,6 +57,15 @@ const questionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "activity",
   },
+  score:{
+    type: Number,
+    default:-1
+  },
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  }
+
 });
 
 module.exports = mongoose.model("questions", questionSchema);

@@ -1,5 +1,9 @@
 const TagModel = require('../models/tag');
 const QuestionModel = require('../models/question')
+const UserModel = require('../models/user')
+const { Question } = require("../services/question");
+const { User } = require("../services/user");
+const {getAllTags} = require("../controllers/tag.controller");
 
 // Get All Tags
 exports.getAllTags = async (result) => {
@@ -15,14 +19,49 @@ exports.getAllTags = async (result) => {
 
 }
 
+//Get User Tags
+exports.getUserTags = async (userId,result) => {
+    try{
+        const tags = await UserModel.findById({_id:userId},{tagIds:1});
+        console.log(tags);
+
+        result(null, tags);
+    }
+    catch(err){
+        result(err);
+    }
+
+}
+
+
 // Get All questions per tag
-exports.getTaggedQuestions = async (tagId, result) => {
+exports.getTaggedQuestions = async (reqBody, result) => {
     try{
 
-        console.log("HERE", tagId)
-        const questions = await QuestionModel.find({'tags' : tagId});
+        console.log("Sorting as: ", reqBody.filterType)
 
-        console.log(questions);
+        let questions;
+        
+        // Interesting (latest)
+        if(reqBody.filterType == 1){
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "approved"}).sort({_id: -1});
+            console.log("By Interesting:", questions);
+        }
+        // Hot (Views)
+        else if(reqBody.filterType == 2){
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "approved"}).sort({views: -1});
+            console.log("By Hot:", questions);
+        }
+        // Score (Upvotes)
+        else if(reqBody.filterType == 3){
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "approved"}).sort({'upVotes': -1});
+            console.log("By Score:", questions);
+        }
+        // Unanswered
+        else if(reqBody.filterType == 4){
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "approved" , answers: { $size: 0 } }).sort({score:1});
+            console.log("By Unanswered:", questions);
+        }
 
         if(questions.length > 0){
             result(null, questions);
@@ -38,10 +77,10 @@ exports.getTaggedQuestions = async (tagId, result) => {
 
 
 // Update Number of Questions for Tag
-exports.updateNumQuestions = async(tagId, result) => {
+exports.updateNumQuestions = async(tagName, result) => {
 
     try{
-        await TagModel.findOneAndUpdate({tagId: tagId} , 
+        await TagModel.findOneAndUpdate({name: tagName} , 
             {
                 $inc: { 'numQuestions': 1, 
                         'numQuestionsToday': 1,
@@ -53,7 +92,7 @@ exports.updateNumQuestions = async(tagId, result) => {
             },  
             {returnOriginal:false});
 
-        result(null, {status: true, message: "Num of Questions updated for: "+tagId});
+        result(null, {status: true, message: "Num of Questions updated for: "+tagName});
     }
     catch(err){
         result(err);
@@ -99,6 +138,99 @@ exports.createTag = async(reqBody, result) => {
         await TagModel.create({tagId, description, name, numQuestions, numQuestionsToday, numQuestionsThisWeek});
 
         result(null, {status: true, message:"Tag created: ", name});
+    }
+    catch(err){
+        result(err)
+    }
+}
+
+
+// Badge
+exports.findBadge = async(reqBody, result) => {
+
+    const userId = reqBody.params.userId;
+    try {
+        const userObj = {userId};
+        console.log(userId)
+        const user =await User.getUserById(userObj);
+        let questions = user.questionsAsked
+        const questionObj = {};
+        questionObj.questionIds = questions;
+        const views = await Question.getScoreById(questionObj);
+        console.log(views)
+        const tags = user.tagIds;
+
+        let badge = new Map();
+
+        if (tags?.length) {
+            tags.forEach(tag => {
+                if (tag.tagId === "Curious") {
+                    const quesAsked = user.questionsAsked.length;
+                    if (quesAsked <= 2)
+                        badge.set(tag.tagId, "Bronze");
+                    else if (quesAsked > 2 && quesAsked < 5)
+                        badge.set(tag.tagId, "Silver");
+                    else if (quesAsked >= 5)
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Helpfulness") {
+                    const quesAnswered = user.questionsAnswered.length;
+                    if (quesAnswered <= 2)
+                        badge.set(tag.tagId, "Bronze");
+                    else if (quesAnswered > 2 && quesAnswered < 5)
+                        badge.set(tag.tagId, "Silver");
+                    else if (quesAnswered >= 5)
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Popular") {
+                    const reputation = user.reputation;
+                    if (reputation <= 10)
+                        badge.set(tag.tagId, "Bronze");
+                    else if (reputation > 10 && reputation < 15)
+                        badge.set(tag.tagId, "Silver");
+                    else if (reputation >= 15)
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Sportsmanship") {
+                    const upVotes = user.upVotesCount.length;
+                    if (upVotes <= 2)
+                        badge.set(tag.tagId, "Bronze");
+                    else if (upVotes > 2 && upVotes < 5)
+                        badge.set(tag.tagId, "Silver");
+                    else if (upVotes >= 5)
+                        badge.set(tag.tagId, "Gold");
+                } else if (tag.tagId === "Critic") {
+                    const downVotes = user.downVotesCount.length;
+                    if (downVotes <= 2)
+                        badge.set(tag.tagId, "Bronze");
+                    else if (downVotes > 2 && downVotes < 5)
+                        badge.set(tag.tagId, "Silver");
+                    else if (downVotes >= 5)
+                        badge.set(tag.tagId, "Gold");
+                }
+                else {
+                    if(result>0) {
+                        if (views > 5)
+                            badge.set("Notable Question", "Gold");
+
+                        if (views > 15)
+                            badge.set("Famous Question", "Gold");
+                    }
+
+                    if (user.commentCount > 3)
+                        badge.set("Pundit", "Silver");
+
+                    if (tag.score <= 10)
+                        badge.set(tag.tagId, "Bronze")
+                    if (tag.score <= 15)
+                        badge.set(tag.tagId, "Silver")
+                    if (tag.score > 20)
+                        badge.set(tag.tagId, "Gold")
+                }
+
+            })
+            console.log(badge);
+            result(null, {status: true, tags: Array.from(badge)});
+        }
+       else
+        result(null, {status: false});
     }
     catch(err){
         result(err)

@@ -106,6 +106,14 @@ function Navbar() {
             "the items recieved from sending the api are are.......",
             temp_items
           );
+          navigate("/question", {
+            replace: true,
+            state: {
+              searchResult: true,
+              questions: temp_items.questions,
+              count: temp_items.count,
+            },
+          });
         } else if (response.data.code === 500) {
           console.log(response.data.message);
         }

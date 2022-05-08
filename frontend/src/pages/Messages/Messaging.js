@@ -1,5 +1,7 @@
 import React , {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom';
 import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Talk from "talkjs";
@@ -7,6 +9,7 @@ import './Messaging.css'
 
 function Messaging() {
 
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
@@ -39,6 +42,12 @@ function Messaging() {
         else if (search.length == 0){
             setUsers([]);
         }
+    }
+
+
+    // Navigates to all user's messages window
+    const navigateToAllMessages = () => {
+        navigate('/allmessages');
     }
 
     // Upon Clicking message for a particular user
@@ -96,10 +105,12 @@ function Messaging() {
 
 
         <div className="users">
-        
             <div className="users-container">
             <ul>
-                <h1>Searc users to Message</h1>
+
+                <Button variant="outlined" style={{position:'absolute', top:80, right:300}} onClick={() => navigateToAllMessages()}>View All Messages</Button>
+                <br/>
+                <h1>Search Users to Message</h1>
                 <br/>
                 <TextField id="standard-basic" style={{marginLeft:170, width:150}} label="User's Name" variant="standard" onChange={handleSearch} placeholder="Enter User's Name" />
                 <br/>

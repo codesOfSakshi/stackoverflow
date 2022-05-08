@@ -4,11 +4,13 @@ import {useEffect,useState} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
+import jwt_decode from 'jwt-decode';
 
 function AskQuestionEditor(props) {  
   const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
   const[selectedTags,setSelectedTags]=useState(["JAVA","PYTHON"])
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)
@@ -37,10 +39,10 @@ function AskQuestionEditor(props) {
   }
 
   const submitHandler =(e)=>{
+    console.log(arr);
     e.preventDefault();
-    console.log(arr)
     var payload ={
-      userId: "snichat97",
+      userId: decoded._id,
       title: e.target.formBasicTitle.value,
       description: arr.content,
       tags:selectedTags

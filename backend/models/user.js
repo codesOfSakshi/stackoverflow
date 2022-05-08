@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     enum: ["NEW", "GOLD", "SILVER", "BRONZE"],
     default: "NEW",
   },
+
   admin: {
     type: Boolean,
     // required: true,
@@ -43,7 +44,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  profilePic: {
+  profilePicture: {
     type: String,
     // required: true,
   },
@@ -59,51 +60,57 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  bookmark: {
-    type: Array,
-    default: [],
-  },
-  questionsAsked: [{
+  bookmark: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "questions",
+  }],
+    questionsAnswered: [{
     questionId:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "question"
+      ref: "questions"
     },
     answerId:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "answer",
+      ref: "answers",
     }
   }],
-  questionsAnswered: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "answer",
-  },
+   questionsAsked: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "questions",
+  }],
   commentCount: {
     type: String,
     // required: true,
   },
-  upVotesCount: [{
-    type: String,
-    // required: true,
-  }],
-  downVotesCount: [{
-    type: String,
-    // required: true,
-  }],
+  upVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
+  downVotesCount: [
+    {
+      type: String,
+      // required: true,
+    },
+  ],
   badges: {
     type: Array,
     // required: true,
   },
-    title: { type: String },
-  tagIds: [{
-    tagId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "tag"
+title: { type: String },
+  tagIds: [
+    {
+      tagId: {
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        // ref: "tag",
+      },
+      score: {
+        type: Number,
+      },
     },
-    score:{
-      type: Number
-    }
-  }],
-    title: {type:String,required: true},
+  ],
 });
 
 userSchema.set("toObject", { virtuals: true });
@@ -113,5 +120,5 @@ userSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;

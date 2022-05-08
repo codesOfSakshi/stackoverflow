@@ -1,17 +1,21 @@
 import {Form,Row,Card,Button} from 'react-bootstrap';
 //import axios from 'axios';
 import {useEffect,useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import axios from 'axios';
 // import question from '../../../../backend/models/question';
 // import EditQuestion from '../../pages/EditQuestion';
+import jwt_decode from 'jwt-decode';
 
 
 function EditQuestionPage(props) {  
+  let params = useParams();
   const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
   const[selectedTags,setSelectedTags]=useState([])
   const [questionDisplay,setquestionDisplay] = useState({})
   const [question,setQuestion] = useState({})
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
   const [initialDescription,setDescripition] = useState("")
     let navigate = useNavigate();
     const routeQuestion = () =>{
@@ -19,7 +23,7 @@ function EditQuestionPage(props) {
     }
 
   useEffect(() => {
-    var api="http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
+    var api="http://localhost:3001/api/questions/"+params.questionId
     axios.get(api).then(response => {
       console.log(response)
       setQuestion(response.data.data)
@@ -49,11 +53,11 @@ function EditQuestionPage(props) {
     e.preventDefault();
     console.log(questionDisplay.content)
     var payload ={
-      userId: "snichat97",
+      userId: decoded._id,
       title: e.target.formBasicTitle.value,
       description: questionDisplay.content,
       tags:selectedTags,
-      _id:"627189b4519c18b6b2396bed"
+      _id:params.questionId
     }
     var api="http://localhost:3001/api/questions/edit"
     axios.post(api,payload).then(response => {

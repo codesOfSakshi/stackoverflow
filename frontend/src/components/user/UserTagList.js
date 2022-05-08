@@ -60,7 +60,7 @@ const UserTagList = () => {
             !gettingTags && tags && tags.map((eachTag)=>{
                 return (
                     <div>
-                        <UserTag key={eachTag._id} name={eachTag.name} score={eachTag.score} color={eachTag.color} posts={eachTag.posts}></UserTag>
+                        <UserTag key={eachTag._id} name={eachTag.tagId} score={eachTag.score} color={eachTag.color} posts={eachTag.posts}></UserTag>
                     </div>
                 )
             })

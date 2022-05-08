@@ -45,11 +45,11 @@ router.post("/edit",  async (req, res) => {
 });
 
 router.get("/:questionId",  async (req, res) => {
+    const response = {};
     try{
         const question = req.params.questionId;
         console.log(question)
         const questionModelResponse = await Question.getQuestionsBasedOnId(question);
-        const response = {};
         response.success = true;
         response.data = questionModelResponse;
         response.status = 200;
