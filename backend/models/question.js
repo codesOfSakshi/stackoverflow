@@ -8,9 +8,11 @@ const questionSchema = new mongoose.Schema({
   // },
   createdAt: {
     type: Date,
+    default: new Date()
   },
   updatedAt: {
     type: Date,
+    default: new Date()
   },
   upVotes: {
     type: Array,
@@ -49,8 +51,8 @@ const questionSchema = new mongoose.Schema({
     type: String,
   },
   bastAns: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref: 'answer',
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "answer",
   },
   status: {
     type: String,
@@ -59,9 +61,9 @@ const questionSchema = new mongoose.Schema({
     type: Array,
   },
   activity: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "activity",
   },
-
 });
 
 module.exports = mongoose.model("questions", questionSchema);

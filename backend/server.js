@@ -26,6 +26,7 @@ const s3Route = require('./routes/s3Route');
 const answer = require("./controllers/answer")
 const comment = require("./controllers/comment")
 const vote = require("./controllers/vote")
+const activity = require("./routes/activity");
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -112,10 +113,10 @@ app.use("/api/user", user);
 app.use("/api/questions", question);
 app.use("/api/tags", tagRoute);
 app.use("/api/admin", admin);
-app.use('/api/questions',question);
 app.use('/api/messages', messageRoute);
 app.use('/api/s3', s3Route);
 app.use("/api/answer", answer)
 app.use("/api/answer/mark", answer)
 app.use("/api/comment", comment)
 app.use("/api/vote", vote)
+app.use("/api/activity", activity)

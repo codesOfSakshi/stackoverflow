@@ -1,31 +1,22 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const activitySchema = new mongoose.Schema({
-    // _id:{
-    //     type: mongoose.ObjectId,
-    //     required: true,
-    // },
-    createdAt:{
-        type:String,
-        required: true,
+  activities: [
+    {
+      createdAt: {
+        type: Date,
+        default: new Date()
+      },
+      type: {
+        type: String,
+      },
+      comment: {
+        type: String,
+      },
+      by: { type: Schema.Types.ObjectId, ref: "user" },
     },
-    updatedAt:{
-        type:String,
-        required: true,
-    },
-    activity:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'activityHistory',
-    },
-    type:{
-        type:String,
-        required: true,
-    },
-    comment:{
-        type:String,
-        required: true,
-    },
-    by: { type: Schema.Types.ObjectId, ref: 'user' },
+  ],
 });
 
 module.exports = mongoose.model("activity", activitySchema);

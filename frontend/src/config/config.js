@@ -13,6 +13,9 @@ exports.constants = {
       getUnreviewed : "/api/admin/unreviewed",
       getAnalytics : "/api/admin/analytics",
       approval : "/api/admin/approval",
+    },
+    ACTIVITY: {
+      getActivity: "/api/activity/:activityID"
     }
   },
   PAGES: {

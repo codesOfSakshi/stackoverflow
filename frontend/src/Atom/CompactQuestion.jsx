@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function CompactQuestion(props) {  
     const question = props.questions
+    console.log("QUESTION ID:", question._id);
     const questionLink = "/question/"+props.questions._id
     const userLink = "/user/"+"abhsjdahj"
 

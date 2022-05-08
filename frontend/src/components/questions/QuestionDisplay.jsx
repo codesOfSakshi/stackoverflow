@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Row, Col, Badge, Button} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Badge, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
 import axios from 'axios';
@@ -13,7 +13,7 @@ function QuestionsPage() {
     let navigate = useNavigate();
 
     useEffect(() => {
-        var api = "http://localhost:3001/api/questions/627189b4519c18b6b2396bed"
+        var api = "http://localhost:3001/api/questions/6277a2a19e1e064e32c3d519"
         axios.get(api).then(response => {
             console.log(response)
             setQuestion(response.data.data)
@@ -24,63 +24,69 @@ function QuestionsPage() {
                 response.data.data.description)
         })
 
-    answerDisplay = new window.stacksEditor.StacksEditor(
-        document.querySelector("#editor-container-answerDisplay"),
-        "", )
-    },[])
+        answerDisplay = new window.stacksEditor.StacksEditor(
+            document.querySelector("#editor-container-answerDisplay"),
+            "")
+    }, [])
 
 
-    const navigateToEdit = () =>{
+    const navigateToEdit = () => {
         navigate(`/edit/${question._id}`)
-      }
-
-    const addBookmark = () =>{
-        var api="http://localhost:3001/api/user/addbookmark/"+"snichat"
-        var payload = {
-            questionId:"627189b4519c18b6b2396bed"
-        }
-        axios.post(api,payload).then(response => {alert(response.data)})
     }
-  
-    const onDownVoteClick =()=>{
+
+    const addBookmark = () => {
+        console.log("addBookmark")
+        var api = "http://localhost:3001/api/user/addbookmark/" + "snichat"
+        var payload = {
+            questionId: "627189b4519c18b6b2396bed"
+        }
+        axios.post(api, payload).then(response => { alert(response.data) })
+    }
+
+
+    const onDownVoteClick = () => {
         console.log("downvote");
     }
 
-    const onUpVoteClick =()=>{
+    const onUpVoteClick = () => {
         console.log("upvote");
     }
 
 
     return (
         <div>
-            <div style={{ width: '60rem',textAlign:'justify'}}>
+            <div style={{ width: '60rem', textAlign: 'justify' }}>
 
-                <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px",float:"right"}}>
-                    <Button onClick={addBookmark} style={{float:"right"}}>Bookmark</Button>
+                <Row>
+                    <Col xs={1}>
+                        <Upvote type="question" object={question} addBookmark={addBookmark} />
+                    </Col>
+                    <Col>
+                        <h2>
+                            {question.title}
+                        </h2>
+                        <div>
+                            <Row>
+                                <Col>
+
+                                    Asked : <b>{question.asked}</b>
+
+                                </Col>
+                                <Col>
+
+                                    Modified : <b>{question.modified}</b>
+
+                                </Col>
+                                <Col>
+
+                                    Viewed : <b>{question.views}</b>
+
+                                </Col>
+                            </Row>
+                        </div>
+                    </Col>
                 </Row>
-                <h2>
-                {question.title}
-                </h2>
-                <div>
-                    <Row>
-                        <Col>
-                            
-                                Asked : <b>{question.asked}</b>
-                            
-                        </Col>
-                        <Col>
-                            
-                                Modified : <b>{question.modified}</b>
-                            
-                        </Col>
-                        <Col>
-                            
-                                Viewed : <b>{question.views}</b>
-                            
-                        </Col>
-                    </Row>
-                </div>
-                <br/>
+                <br />
 
                 <hr></hr>
                 <Row>
@@ -96,33 +102,34 @@ function QuestionsPage() {
                     <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
                     </div>
                 </Row> */}
-           
-            <div class="displayFlex" style={{"margin-bottom":"3rem"}}>
-                {question.tags && question.tags.map( tag =>{
-                    return(
-                    <div class="s-badge s-badge__moderator" style={{margin:"0.5rem"}}>
-                        {tag}
-                    </div>
-                    )})} 
-                    <Col style={{float:"right"}} >
-                    <Button onClick={navigateToEdit} style={{float:"right",margin:"0.5rem"}}>Edit Question</Button>
+
+                <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
+                    {question.tags && question.tags.map(tag => {
+                        return (
+                            <div class="s-badge s-badge__moderator" style={{ margin: "0.5rem" }}>
+                                {tag}
+                            </div>
+                        )
+                    })}
+                    <Col style={{ float: "right" }} >
+                        <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>
                     </Col>
-            </div>
-            <hr></hr>
-            <div style={{backgroundColor : "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none"}}>
-                <form style={{height:"20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none"}}>
-                    <textarea style={{border:"none", outline:"none", height:"20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px"}}placeholder = "Add a comment"></textarea>
-                </form>
-            </div>
-            <br/>
-            <div>
-                <Row>
-                    <Col>
-                        <h5>{answersall.length} Answers</h5>
-                    </Col>
-                    <Col>
-                    </Col>
-                    <Col>
+                </div>
+                <hr></hr>
+                <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
+                    <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
+                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment"></textarea>
+                    </form>
+                </div>
+                <br />
+                <div>
+                    <Row>
+                        <Col>
+                            <h5>{answersall.length} Answers</h5>
+                        </Col>
+                        <Col>
+                        </Col>
+                        <Col>
                             <label for="sort">Sorted by:</label>
 
                             <select name="sort" id="sort">
@@ -140,7 +147,7 @@ function QuestionsPage() {
                                 <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx}  downVote={onDownVoteClick} upVote={onUpVoteClick} object={ans} type="answer" />
+                                    <Upvote idx={idx} downVote={onDownVoteClick} upVote={onUpVoteClick} object={ans} type="answer" />
                                 </Col>
                                 <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
                                     {ans.description}
