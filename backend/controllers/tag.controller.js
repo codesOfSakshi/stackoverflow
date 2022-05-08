@@ -103,3 +103,25 @@ exports.createTag = (req, res) => {
         }
     })
 }
+
+
+//tag to badge
+exports.tagToBadge = (req,res) =>{
+    console.log("Inside Tag to Badge Calculator")
+
+    TagService.findBadge(req, (err, result) => {
+        if(err)
+        {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        else if(result.status == true){
+            console.log("Tag Created")
+            console.log(result);
+            res.status(200).send(result);
+        }
+        else{
+            res.status(404).send("No tag Found");
+        }
+    })
+}

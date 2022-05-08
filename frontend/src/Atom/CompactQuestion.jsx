@@ -13,20 +13,6 @@ function CompactQuestion(props) {
       navigate(`/question/${props.questions._id}`)
     }
 
-  useEffect(() => {
-    // var api="http://localhost:3900/api"+'/orders/user/'+props.user._id
-    // var ordersfresh=[]
-    // axios.get(api)
-    // .then(response => {
-    //   setorders(response.data) 
-    //   var l=[];
-    //   var orderId=0;
-    //   var l_main=[]
-    //   setlmain(response.data)
-    //   console.log(lmain)
- // })
-  },[])
-
   return (
     <div>
         <Card class="border-0">
@@ -35,7 +21,7 @@ function CompactQuestion(props) {
                 <Col lg={2} style={{"text-align": "right"}}>
                     {question.upVotes && question.upVotes.length} votes
                     <br></br>
-                    {question.answers.length} answers
+                    {question.answers && question.answers.length} answers
                     <br></br>
                     {question.views} views
                 </Col>
@@ -48,7 +34,7 @@ function CompactQuestion(props) {
                     </div>
                     <br></br> */}
                     <div class="displayFlex" style={{"margin-bottom":"1rem"}}>
-                    {question.tags.map( tag =>{
+                    {question.tags && question.tags.map( tag =>{
                         return(<>
                         <Badge 
                         className = 's-tag-badge'
