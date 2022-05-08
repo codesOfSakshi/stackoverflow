@@ -97,16 +97,19 @@ const userSchema = new mongoose.Schema({
     type: Array,
     // required: true,
   },
-    title: { type: String },
-  tagIds: [{
-    tagId:{
-      type: String
+title: { type: String },
+  tagIds: [
+    {
+      tagId: {
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        // ref: "tag",
+      },
+      score: {
+        type: Number,
+      },
     },
-    score:{
-      type: Number
-    }
-  }],
-    title: {type:String},
+  ],
 });
 
 userSchema.set("toObject", { virtuals: true });
