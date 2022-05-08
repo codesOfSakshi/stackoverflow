@@ -26,6 +26,53 @@ class Question{
         }
     }
 
+    static getQuestionsWithTagsAndAnswers = async ({questionIds})=>{
+        try{
+            const query = {
+                "_id": {"$in": questionIds}
+            }
+            //TODO rushabh populate comment, tagIds, answerIds for every question
+            const questions = await QuestionModel.find(query).populate("tags");
+            if(questions?.length){
+                return JSON.parse(JSON.stringify(questions));
+            }else{
+                return [];
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+        }
+    }
+
+    static getScoreById = async ({questionIds})=>{
+        try{
+            let ids =[];
+
+            console.log(ids)
+            const query = {
+                "_id": {"$in": questionIds}
+            }
+            console.log("questionIds")
+            console.log(questionIds)
+            let questions = await QuestionModel.find(query);
+            questions = JSON.parse(JSON.stringify(questions))
+            if(questions?.length){
+                let score =0;
+                console.log(questions)
+                questions.map(question=>{
+
+                    score+=(question.views);
+                })
+                return score;
+            }else{
+                return 0;
+            }
+        }catch(err){
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+        }
+    }
+
     static getQuestionsById = async (req)=>{
         try{
             const query = {
