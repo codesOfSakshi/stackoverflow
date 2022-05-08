@@ -99,6 +99,7 @@ router.get("/tags/:userId",  async (req, res) => {
     const response = {};
     const userObj = {userId};
     const tags = User.getUserTags(userObj,function(error,tags){
+        console.log("tags"+tags);
         if(error){
                 console.log(error);
                 response.success = false;
@@ -106,7 +107,6 @@ router.get("/tags/:userId",  async (req, res) => {
                 response.status = 500;
                 res.status(500).send(response);
         }else{
-            console.log("tags");
             if(tags?.length){
                 response.success = true;
                 response.tags = tags;
@@ -325,9 +325,8 @@ router.get("/searchbyname/:name", async (req, res) => {
 })
 
 router.get("/top-posts/:userId",  async (req, res) => {
-
+    const response = {};
     try{
-        const response = {}
         console.log(req);
         const type = req.query.type; //question, answer, all
         const rankBy = req.query.rankby; //score, latest

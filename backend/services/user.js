@@ -421,10 +421,10 @@ class User {
       };
       let user = await UserModel.findOne(query);
       user = JSON.parse(JSON.stringify(user));
-      if (user?.tags?.length) {
+      if (user?.tagIds?.length) {
         const tagsCombined = [];
         const tagIds = user.tagIds.map((eachTag) => {
-          return mongoose.Types.ObjectId(eachTag.id);
+          return eachTag.tagId;
         });
         const tagsQuery = {
           user: { $in: tagIds },
@@ -435,7 +435,7 @@ class User {
           tagIds,
           (eachTagId, cb) => {
             let tagsObj = {};
-            tagsObj.id = eachTagId;
+            tagsObj.tagId = eachTagId;
             const questionTagQuery = {
               tags: eachTagId,
             };
@@ -443,14 +443,14 @@ class User {
               questions = JSON.parse(JSON.stringify(questions));
               tagsObj.posts = questions.length;
               let tagDataObj = tags.filter((eachTag) => {
-                return eachTag._id === eachTagId.toString();
+                return eachTag.name === eachTagId.toString();
               });
               if (tagDataObj && tagDataObj.length) {
                 tagDataObj = tagDataObj[0];
                 tagsObj.name = tagDataObj.name;
               }
               let tagUserObj = user.tagIds.filter((eachTag) => {
-                return eachTag.id === eachTagId.toString();
+                return eachTag.tagId === eachTagId.toString();
               });
               if (tagUserObj && tagUserObj.length) {
                 tagUserObj = tagUserObj[0];
@@ -473,14 +473,15 @@ class User {
           function (error) {
             if (error) {
               console.log(error);
-              return [];
+              outercb(null, tagsCombined);
             } else {
+              console.log(tagsCombined);
               outercb(null, tagsCombined);
             }
           }
         );
       } else {
-        return [];
+        outercb(null,[]);
       }
     } catch (err) {
       console.log(err);
