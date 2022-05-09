@@ -32,8 +32,10 @@ function SignUp() {
           console.log("done");
           const token = response.data.token;
           const user = response.data;
+          const userID = response.data.user._id;
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("user", user);
+          window.localStorage.setItem("userID", userID);
           navigate("/question", { replace: true });
         }
       })
