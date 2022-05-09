@@ -5,9 +5,9 @@ let config = {
     baseURL: "http://localhost:3000"
   },
   constants: {
-    questionApproved: "approved",
-    questionRejected: "rejected",
-    questionWaiting: "waiting for approval",
+    questionApproved: "APPROVED",
+    questionRejected: "REJECTED",
+    questionWaiting: "PENDING",
   },
 };
 

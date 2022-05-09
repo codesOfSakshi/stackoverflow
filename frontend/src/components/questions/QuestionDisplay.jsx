@@ -52,9 +52,8 @@ function QuestionsPage(props) {
     const navigateToEdit = () => {
         navigate(`/edit/${question._id}`)
     }
-
-    const addBookmark = () => {
-        var api = "http://localhost:3001/api/user/addbookmark/" + decoded
+    const addBookmark = () =>{
+        var api="http://localhost:3001/api/user/addbookmark/"+decoded._id
         var payload = {
             questionId: question._id
         }

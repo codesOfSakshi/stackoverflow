@@ -25,9 +25,9 @@ exports.constants = {
     home: "/"
   },
   constants: {
-    questionApproved: "approved",
-    questionRejected: "rejected",
-    questionWaiting: "waiting for approval",
+    questionApproved: "APPROVED",
+    questionRejected: "REJECTED",
+    questionWaiting: "PENDING",
   },
   baseUrl:'http://localhost:3001'
 };
