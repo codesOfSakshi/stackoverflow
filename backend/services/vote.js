@@ -4,6 +4,7 @@ let AnswerModel = require('../models/answer.js');
 let UserModel = require('../models/user');
 const { constants } = require("../config/config");
 const {ReputationHistory} = require('../services/reputationhistory');
+const tag = require('../models/tag.js');
 
 
 class Vote{
@@ -30,31 +31,31 @@ class Vote{
                     let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
                     let tags = questionparse1[0].tags;
                     let updateValue =[];
+                    let tagHistory= new Map();
+                    user.tagIds.map(userTag=>{
+                        tagHistory.set(userTag.tagId, userTag.score)
+                    })
                     tags.map(tag=>{
-                        let flag=0;
-                        user.tagIds.map(userTag=>{
-                            if(userTag.tagId==tag)
-                            {
-                                //final.set(tag,userTag.score+1)
-                                const pair = {
-                                    "tagId":tag,
-                                    "score":userTag.score+1
-                                }
-                                updateValue.push(pair);
-                                flag=1;
-                            }
-                        })
-
-                        if(flag==0)
+                        if(tagHistory.has(tag.tagId))
                         {
-                            const pair = {
-                                "tagId":tag,
-                                "score":1
-                            }
-                            updateValue.push(pair);
+                            let val=  tagHistory.get(tag.tagId)
+                            val++;
+                            tagHistory.set(tag.tagId,val)
+                        }
+                        else
+                        {
+                            tagHistory.set(tag.tagId,1)
                         }
                     })
 
+                    tagHistory.forEach((value,key)=>{
+                        const pair={
+                            "tagId":key,
+                            "score":value
+                        }
+                        updateValue.push(pair);
+
+                    })
 
                     user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
                     console.log(user);
@@ -151,31 +152,32 @@ class Vote{
                     let questionparse2 = JSON.parse(JSON.stringify(getquestion2))
                     // let user= await UserModel.findOne(userfindCondition);
                let tags = questionparse2[0].tags;
-                    let updateValue =[];
-                    tags.map(tag=>{
-                        let flag=0;
-                        user.tagIds.map(userTag=>{
-                            if(userTag.tagId==tag)
-                            {
-                                //final.set(tag,userTag.score+1)
-                                const pair = {
-                                    "tagId":tag,
-                                    "score":userTag.score-1
-                                }
-                                updateValue.push(pair);
-                                flag=1;
-                            }
-                        })
+               let updateValue =[];
+               let tagHistory= new Map();
+               user.tagIds.map(userTag=>{
+                   tagHistory.set(userTag.tagId, userTag.score)
+               })
+               tags.map(tag=>{
+                   if(tagHistory.has(tag.tagId))
+                   {
+                       let val=  tagHistory.get(tag.tagId)
+                       val--;
+                       tagHistory.set(tag.tagId,val)
+                   }
+                   else
+                   {
+                       tagHistory.set(tag.tagId,1)
+                   }
+               })
 
-                        if(flag==0)
-                        {
-                            const pair = {
-                                "tagId":tag,
-                                "score":1
-                            }
-                            updateValue.push(pair);
-                        }
-                    })
+               tagHistory.forEach((value,key)=>{
+                   const pair={
+                       "tagId":key,
+                       "score":value
+                   }
+                   updateValue.push(pair);
+
+               })
                     user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
                     console.log(user);
                     let userDownvote2 = questionparse2.downVotes.filter((user)=>{
