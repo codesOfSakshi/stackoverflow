@@ -36,7 +36,6 @@ const QuestionActivity = ({ }) => {
     // calculate (and subtract) whole days
     var days = Math.floor(delta / 86400);
     delta -= days * 86400;
-    console.log(days);
 
     // calculate (and subtract) whole hours
     var hours = Math.floor(delta / 3600) % 24;
@@ -54,7 +53,6 @@ const QuestionActivity = ({ }) => {
     }else if(minutes){
         displayDate+= minutes.toString() + " minutes ago"
     }
-    console.log("Display date:", displayDate)
     return displayDate;
   };
   const Answer = ({ activity }) => (
@@ -183,7 +181,6 @@ const QuestionActivity = ({ }) => {
     <div>
       {activityID && (
         <div>
-          QUESTION ACTIVITY:{activityID}
           <div id="content" class="mainbar-full post-timeline-v2">
             {/* <div class="subheader mb16 d-flex fd-column h-auto">
               <h1 class="flex--item">

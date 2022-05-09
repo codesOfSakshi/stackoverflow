@@ -59,7 +59,7 @@ function AskQuestionEditor(props) {
   },[])
 
   const submitHandler =(e)=>{
-    console.log(arr);
+    console.log(e);
     e.preventDefault();
     var payload ={
       user: decoded._id,

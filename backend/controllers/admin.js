@@ -20,17 +20,18 @@ module.exports = class AdminController {
   static async approve(req, res) {
     console.log("INSIDE APPROVE");
     const { questionID, status } = req.body;
+    console.log(req.body);
     const response ={};
     try {
       if (
         questionID &&
-        (status.toLowerCase() == CONSTANTS.questionApproved ||
-          status.toLowerCase() == CONSTANTS.questionRejected)
+        (status == CONSTANTS.questionApproved ||
+          status == CONSTANTS.questionRejected)
       ) {
         response.result = await ADMIN.approve({ questionID, status });
-        //console.log(response);
         response.success=true;
         response.status=200;
+        console.log(response);
         res.status(200);
         res.send(response);
       } else {

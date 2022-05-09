@@ -13,22 +13,18 @@ module.exports = class AdminService {
     const query = { _id: questionID };
     const newData = { status };
 
-    console.log(query, newData);
     let result = await QUESTION.findOne(query);
 
-    if (result && result.status.toLowerCase() != constants.questionWaiting) {
-      throw "Question already " + result.status;
-    } else {
-      result = await QUESTION.findOneAndUpdate(query, newData, {
-        new: true,
-      });
+    console.log("Before update:", query, newData);
+    result = await QUESTION.findOneAndUpdate(query, newData, {
+      new: true,
+    });
 
-      console.log(result);
-      if (result) {
-        return result;
-      } else {
-        throw result;
-      }
+    console.log(result);
+    if (result) {
+      return result;
+    } else {
+      throw result;
     }
   }
 
@@ -121,13 +117,14 @@ module.exports = class AdminService {
   }
 
   static async getUnreviewed() {
-    console.log("constants.questionWaiting",constants.questionWaiting)
-    const query = { status : constants.questionWaiting};
-    try{
+    console.log("constants.questionWaiting", constants.questionWaiting);
+    const query = { status: constants.questionWaiting };
+    try {
       const result = await QUESTION.find(query);
       console.log(result);
       return result;
+    } catch (err) {
+      throw err;
     }
-    catch(err){throw err;}
   }
 };
