@@ -71,7 +71,8 @@ function AskQuestionEditor(props) {
     }
     var api="http://localhost:3001/api/questions/add"
     axios.post(api,payload).then(response => {
-      alert(response)
+      var path = "/question/"+response.data.message
+      navigate(path)
       })
   }
 

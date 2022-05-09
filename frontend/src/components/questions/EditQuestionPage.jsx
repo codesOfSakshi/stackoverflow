@@ -56,7 +56,7 @@ function EditQuestionPage(props) {
     )
     }
     else{
-      alert("Please sign up first")
+      alert("Please sign in first")
       navigate(`/`)
     }
   },[])
@@ -91,7 +91,9 @@ function EditQuestionPage(props) {
     }
     var api="http://localhost:3001/api/questions/edit"
     axios.post(api,payload).then(response => {
-      alert(response)
+      console.log("response.result",response.data.message)
+      var path = "/question/"+response.data.message
+      navigate(path)
       })
   }
 

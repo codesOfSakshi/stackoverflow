@@ -174,8 +174,8 @@ class Question {
       console.log(type, sortType);
       var sorting = 1;
       var questions;
-      if (sortType == "asc" || sortType == 1) {
-        sorting = 1;
+      if (sortType == "desc" || sortType == -1) {
+        sorting = -1;
       }
 
       if (type == "Interesting" || type == 1) {
@@ -189,14 +189,15 @@ class Question {
       } else if (type == "Hot" || type == 2) {
         questions = await QuestionModel.find(query)
         .populate("user")
-        .sort({ views: sorting });
+        .sort({ views: -1 });
       } else if (type == "Score" || type == 3) {
         questions = await QuestionModel.find(query)
-        .populate("user");
-        sort({ answers: sorting });
+        .populate("user")
+        .sort({ upVotes:-1});
       } else if (type == "Unanswered" || type == 4) {
-        questions = await QuestionModel.find(query, {
+        questions = await QuestionModel.find({
           answers: { $size: 0 },
+          status: "APPROVED",
         })
         .populate("user")
         .sort({ score: 1 });
@@ -263,7 +264,7 @@ class Question {
         updateUserData
       );
       await questionNew.save();
-      return "Question Added";
+      return insertedQuestion._id.toString();
     } catch (err) {
       console.log(err);
       throw new Error("Some unexpected error occurred while getting questions");
@@ -358,7 +359,7 @@ class Question {
       if (result == {}) {
         return res.status(400).send(result.error.details[0].message);
       }
-      return "Question Updated";
+      return question._id.toString();
     } catch (err) {
       console.log(err);
       throw new Error("Some unexpected error occurred while getting questions");
