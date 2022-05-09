@@ -28,7 +28,7 @@ const UserTopPost = ({post}) => {
         <div class="flex--item fl-grow1 pr12 js-gps-track" data-gps-track="profile_link.click({ target: 3, type: 1 })">
             <a href="{post.link}" class="question-hyperlink d-table tl-fixed w100 m0 ow-break-word">{post.title}</a>
         </div>
-        <div class="flex--item ml-auto fc-light ws-nowrap"><span title="{post.createdat}" class="relativetime">{changeDate(post.createdat)}</span></div>
+        <div class="flex--item ml-auto fc-light ws-nowrap"><span title="{post.createdat}" class="relativetime">{changeDate(post.createdAt)}</span></div>
     </div>
 </div>
     </div>

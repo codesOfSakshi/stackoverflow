@@ -630,10 +630,10 @@ static sortAll = async(rankBy, userDetails) =>{
         let questionsAnswered = userDetails.questionsAnswered;
         const questionWithScore = []
         for(let questionAnswered of questionsAnswered) {
-
-              const tmp = questionAnswered.questionId;
-              tmp.score = questionAnswered.answerId.upVotes.length - questionAnswered.answerId.downVotes.length;
-              questionWithScore.push(tmp)
+              const tmp = questionAnswered?.questionId;
+              if(tmp)
+              { tmp.score = (questionAnswered?.answerId?.upVotes?.length===undefined?0:questionAnswered.answerId.upVotes.length) - (questionAnswered?.answerId?.downVotes?.length===undefined?0:questionAnswered.answerId.downVotes.length);
+              questionWithScore.push(tmp)}
          }
 
 
