@@ -23,6 +23,7 @@ function QuestionsPage(props) {
     const [answersall, setlans] = useState([])
     const [answer, setAnswer] = useState("")
     const [owner, setOwner] = useState(false)
+    const[comments, setComments] = useState([])
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
     var arr
@@ -47,6 +48,7 @@ function QuestionsPage(props) {
             setlans(response.data.data.answers)
             let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
             setOwner(own)
+            setComments(response.data.data.comment)
         })
     }, [])
 
@@ -76,12 +78,6 @@ function QuestionsPage(props) {
                 console.log(response);
             })
     }
-    // const saveAnsComment = () =>{
-    //     type = 'answer'
-    //     axios.post("http://localhost:3001/api/comment", {type:type, answerId:ans._id, comment : acomment})
-    //             .then(response => {
-    //                 console.log(response);
-    //             })
 
     const recordAnswer = () => {
         if(!decoded){
@@ -100,8 +96,6 @@ function QuestionsPage(props) {
     }
     }
 
-
-    // }
 
     return (
         <div>
@@ -179,6 +173,17 @@ function QuestionsPage(props) {
 
                 </div>
                 <hr></hr>
+                <div>
+                    {comments && comments.map(comment =>{
+                        return(
+                            <>
+                                {comment}
+                                <hr></hr>
+                            </>
+                        );
+                    })}
+                    
+                </div>
                 <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
                     <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
                         <textarea style={{ border: "none", outline: "none", height: "20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setqComment(e.target.value); }}></textarea>
@@ -216,22 +221,36 @@ function QuestionsPage(props) {
                             {ans.upVotes.length} votes */}
                                     <Upvote idx={idx} object={ans} decoded={decoded} question={question} type="answer" owner={owner} />
                                 </Col>
-                                <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
+                                <Col style={{ marginLeft: "64px"}}>
                                     {ans.description}
-                                    <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
-                                        <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
-                                            <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setaComment(e.target.value); }}></textarea>
-                                        </form>
-                                        <Button onClick={() => {
-                                            type = "answer";
-                                            axios.post("http://localhost:3001/api/comment", { type: type, answerId: ans._id, comment: acomment })
-                                                .then(response => {
-                                                    console.log(response);
-                                                })
-                                        }} style={{ float: "right", height: "25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
-                                    </div>
                                 </Col>
-                            </Row></>);
+                            </Row>
+                            <Row>
+                                <div>
+                                {ans.comment && ans.comment.map(com =>{
+                                    return(
+                                        <>
+                                            <hr></hr>
+                                            {com}
+                                        </>
+                                    );
+                                })}
+                                </div>
+                                <br/>
+                                <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
+                                    <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
+                                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setaComment(e.target.value); }}></textarea>
+                                    </form>
+                                    <Button onClick={() => {
+                                        type = "answer";
+                                        axios.post("http://localhost:3001/api/comment", { type: type, answerId: ans._id, comment: acomment })
+                                            .then(response => {
+                                                console.log(response);
+                                            })
+                                    }} style={{ float: "right", height: "25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
+                                </div>
+                            </Row>
+                            </>);
                     })}
                 </div>
                 <div>

@@ -23,6 +23,7 @@ function AskQuestionEditor(props) {
   const[descripiton,setDescription]=useState("")
   const [imageArray, setImage] = useState([]);
   const [uploadUrl,setUploadUrl] = useState([]);
+  const [error,setError] = useState("");
 
   const cookies = new Cookies();
     const token = localStorage.getItem("token");
@@ -61,6 +62,10 @@ function AskQuestionEditor(props) {
   const submitHandler =(e)=>{
     console.log(e);
     e.preventDefault();
+    if(!descripiton){
+      setError("Please Enter a valid Description")
+    }
+    else{
     var payload ={
       user: decoded._id,
       title: e.target.formBasicTitle.value,
@@ -74,6 +79,7 @@ function AskQuestionEditor(props) {
       var path = "/question/"+response.data.message
       navigate(path)
       })
+    }
   }
 
   const deleteTag = (e,val) =>{
@@ -166,7 +172,7 @@ function AskQuestionEditor(props) {
         Be specific and imagine you’re asking a question to another person
         <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Control type="text" placeholder="Enter title" />
+            <Form.Control required type="text" placeholder="Enter title" />
         </Form.Group>
 
         <h3>Body</h3>
@@ -227,6 +233,9 @@ function AskQuestionEditor(props) {
           {return(<a class="flex--item s-tag s-tag__moderator" href="#">{tag}
           <span class="s-tag--dismiss"> <div val={tag} onClick={(e)=>deleteTag(e,tag)}>X</div></span></a>)})}
       </div>
+      </div>
+      <div>
+        {error}
       </div>
 
         <center>

@@ -39,7 +39,7 @@ function UserBookmark({bookMarkQuestion}) {
                 </div>
                 {bookMarkQuestion.tags && bookMarkQuestion.tags.map((tag)=>{
                     return (<span key={tag} style={{display:"inline",marginRight:"10px"}} className="s-post-summary--meta">
-                        <a className="flex--item s-tag" href="#">{tag}</a>
+                        <a className="flex--item s-tag" href={"/tag/"+tag}>{tag}</a>
                     </span>)
                 })}
                 <div className="s-user-card s-user-card__minimal">
