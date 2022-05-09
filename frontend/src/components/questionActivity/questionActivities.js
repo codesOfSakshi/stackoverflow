@@ -66,8 +66,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap creation-date">
         <a href="#answer_72164866">
           <span title="2022-05-08 20:29:06Z" class="relativetime">
-            {Math.floor((new Date() - activity?.createdAt / 1000) / 60)} mins
-            ago
+            {getTimeSince(activity?.createdAt)}
           </span>
         </a>
       </td>
@@ -79,7 +78,7 @@ const QuestionActivity = ({ }) => {
       </td>
       <td class="ws-nowrap">
         <span>
-          <a href="/users/2877241/vlad-from-moscow">Vlad from Moscow</a>
+          <a href="/users/2877241/vlad-from-moscow">{activity?.by}</a>
         </span>
       </td>
       <td class="ws-nowrap">
@@ -87,16 +86,13 @@ const QuestionActivity = ({ }) => {
       </td>
       <td class="event-comment">
         <span>
-          <a class="timeline" href="/posts/72164866/timeline">
-            timeline
-          </a>
-          <span>score: 2</span>
+          <span>{activity?.comment}</span>
         </span>
       </td>
     </tr>
   );
 
-  const Comment = () => (
+  const Comment = ({activity}) => (
     <tr
       class="datehash-1042453665"
       data-datehash="1042453665"
@@ -106,7 +102,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap creation-date">
         <a href="#comment_127504140">
           <span title="2022-05-08 20:27:47Z" class="relativetime">
-            20 mins ago
+            {getTimeSince(activity?.createdAt)}
           </span>
         </a>
       </td>
@@ -121,7 +117,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap">
         <span>
           <a href="/users/3943312/sam-varshavchik" class="comment-user ">
-            Sam Varshavchik
+            {activity?.by}
           </a>
         </span>
       </td>
@@ -130,11 +126,7 @@ const QuestionActivity = ({ }) => {
       </td>
       <td class="event-comment">
         <span>
-          The shown code does not append int to any <code>std::string</code>.
-          That not what <code>" .... "+ #</code> does. <code>" ...."</code> is
-          not a <code>std::string</code>, so that's the first thing. C++ is not
-          C# or Java, and works in fundamentally different ways. Assuming
-          otherwise always ends in tears.
+          {activity?.comment}
         </span>
       </td>
     </tr>
@@ -158,7 +150,9 @@ const QuestionActivity = ({ }) => {
         <span class="event-type history">history</span>
       </td>
       <td class="wmn1">
-        <span>{activity?.comment}</span>
+        <span >
+        <span class={(activity?.comment!="asked")?"expander-arrow-small-hide js-load-revision":""}>{activity?.comment}</span>
+        </span>
       </td>
       <td class="ws-nowrap">
         <span>
@@ -236,15 +230,10 @@ const QuestionActivity = ({ }) => {
                       return <History activity={x} />;
                     } else if (x.type == "comment") {
                       return <Comment activity={x} />;
+                    } else if (x.type == "answer") {
+                      return <Answer activity={x} />;
                     }
                   })}
-
-                <tr>
-                  <hr />{" "}
-                </tr>
-                <Answer />
-                <Comment />
-                <History />
               </tbody>
             </table>
           </div>
