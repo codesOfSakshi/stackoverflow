@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Badge, Button } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
+import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
+import { useNavigate, useParams } from "react-router-dom";
 // import Editor from '../../Atom/EditorQuestion';
+import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
+import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'
+import EditorCustom from '../../Atom/EditorCustom'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
-import { useParams } from 'react-router-dom';
+import ReactTimeAgo from 'react-time-ago'
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -14,16 +20,21 @@ function QuestionsPage(props) {
     let params = useParams();
     const [question, setQuestion] = useState({})
     const [answersall, setlans] = useState([])
+    const [answer, setAnswer] = useState("")
+    const [owner, setOwner] = useState(false)
+    var questionDisplay, answerDisplay;
+    let navigate = useNavigate();
+    var arr
+
+    const mdParser = new MarkdownIt(/* Markdown-it options */);
     const [qcomment, setqComment] = useState([])
     const [acomment, setaComment] = useState([])
     var questionDisplay, answerDisplay;
-    let navigate = useNavigate();
     var type = 'question'
 
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token.split('.')[1], { header: true });
     console.log("decode", decoded)
-
 
     useEffect(() => {
         console.log("Q ID: ", params.id)
@@ -32,15 +43,9 @@ function QuestionsPage(props) {
             console.log(response)
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
-
-            questionDisplay = new window.stacksEditor.StacksEditor(
-                document.querySelector("#editor-container-questionDisplay"),
-                response.data.data.description)
+            let own = (response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
+            setOwner(own)
         })
-
-        answerDisplay = new window.stacksEditor.StacksEditor(
-            document.querySelector("#editor-container-answerDisplay"),
-            "")
     }, [])
 
 
@@ -49,10 +54,9 @@ function QuestionsPage(props) {
     }
 
     const addBookmark = () => {
-        console.log("addBookmark")
-        var api = "http://localhost:3001/api/user/addbookmark/" + "snichat"
+        var api = "http://localhost:3001/api/user/addbookmark/" + decoded
         var payload = {
-            questionId: "627189b4519c18b6b2396bed"
+            questionId: question._id
         }
         axios.post(api, payload).then(response => { alert(response.data) })
     }
@@ -71,42 +75,59 @@ function QuestionsPage(props) {
     //                 console.log(response);
     //             })
 
+    const recordAnswer = () => {
+        console.log("upvote");
+        var api = "http://localhost:3001/api/answer"
+        var payload = {
+            questionId: question._id,
+            answer: answer,
+            user: decoded._id,
+        }
+        axios.post(api, payload).then(response => { alert(response.data) })
+    }
+
 
     // }
 
     return (
         <div>
             <div style={{ width: '60rem', textAlign: 'justify' }}>
-
-                <Row>
-                    <Col xs={1}>
-                        <Upvote type="question" object={question} addBookmark={addBookmark} />
-                    </Col>
-                    <Col>
-                        <h2>
-                            {question.title}
-                        </h2>
-                        <div>
-                            <Row>
-                                <Col>
-
-                                    Asked : <b>{question.asked}</b>
-
-                                </Col>
-                                <Col>
-
-                                    Modified : <b>{question.modified}</b>
-
-                                </Col>
-                                <Col>
-
-                                    Viewed : <b>{question.views}</b>
-
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
+                <Row style={{ textAlign: 'left' }}>
+                    <h2>
+                        {question.title}
+                    </h2>
                 </Row>
+                <div>
+                    <Row>
+                        <Col>
+
+                            Asked :
+
+                            <time class="s-user-card--time">
+                                {question.createdAt &&
+                                    <ReactTimeAgo date={Date.parse(question.createdAt)} locale="en-US" />}</time>
+
+                        </Col>
+                        {question.updatedAt && (
+                            <Col>
+
+                                Modified :
+
+                                <time class="s-user-card--time">
+                                    {question.updatedAt &&
+                                        <ReactTimeAgo date={Date.parse(question.updatedAt)} locale="en-US" />}</time>
+
+                            </Col>)}
+                        <Col>
+
+                            Viewed : <b>{question.views}</b>
+
+                        </Col>
+                        <Col>
+                            <Button onClick={addBookmark} style={{ float: "right" }}>Bookmark</Button>
+                        </Col>
+                    </Row>
+                </div>
                 <br />
 
                 <hr></hr>
@@ -117,12 +138,8 @@ function QuestionsPage(props) {
                             {ans.upVotes.length} votes */}
                         <Upvote object={question} decoded={decoded} type="question" />
                     </Col>
-                    <Col    >
-                        <p>
-                            <>
-                                <div id="editor-container-questionDisplay"></div>
-                            </>
-                        </p>
+                    <Col>
+                        <EditorCustomReadOnly description={question.description}></EditorCustomReadOnly>
                     </Col>
                 </Row>
 
@@ -133,7 +150,6 @@ function QuestionsPage(props) {
                     </div>
                 </Row> */}
 
-
                 <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
                     {question.tags && question.tags.map(tag => {
                         return (
@@ -142,9 +158,9 @@ function QuestionsPage(props) {
                             </div>
                         )
                     })}
-                    <Col style={{ float: "right" }} >
+                    {owner && <Col style={{ float: "right" }} >
                         <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>
-                    </Col>
+                    </Col>}
                 </div>
                 <hr></hr>
                 <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
@@ -153,6 +169,8 @@ function QuestionsPage(props) {
                     </form>
                     <Button onClick={saveQuesComment} style={{ float: "right", height: "25px", width: "100%", marginTop: "70px", marginLeft: "-50px", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
                 </div>
+
+
 
                 <br />
                 <div>
@@ -180,7 +198,7 @@ function QuestionsPage(props) {
                                 <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx} object={ans} decoded={decoded} question={question} type="answer" />
+                                    <Upvote idx={idx} object={ans} decoded={decoded} question={question} type="answer" owner={owner} />
                                 </Col>
                                 <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
                                     {ans.description}
@@ -209,9 +227,10 @@ function QuestionsPage(props) {
                     {/* <Row style={{}}>
                     <Editor></Editor>
                 </Row> */}
-                    <div id="editor-container-answerDisplay"></div>
-                    <Row style={{ width: "200px", marginTop: "30px", marginLeft: "0.5px" }}>
-                        <Button>Post Your Answer</Button>
+
+                    <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
+                    <Row style={{ marginTop: "30px", marginLeft: "0.5px" }}>
+                        <Button onClick={recordAnswer} style={{ float: "center" }}>Post Your Answer</Button>
                     </Row>
                 </div>
             </div>

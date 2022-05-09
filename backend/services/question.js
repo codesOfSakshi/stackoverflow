@@ -110,8 +110,12 @@ class Question {
 
   static getQuestionsBasedOnId = async (questionId) => {
     try {
-      const questionID = mongoose.Types.ObjectId(questionId);
-      var questions = await QuestionModel.findById(questionID);
+      const query = {
+        question: mongoose.Types.ObjectId(questionId),
+      };
+      var questions = await QuestionModel.findById(questionId)
+        .populate("answers")
+        .populate("user");
       // console.log(questions)
 
       var viewIncrement = questions.views + 1;
@@ -137,9 +141,9 @@ class Question {
       const query = {
         question: mongoose.Types.ObjectId(questionId),
       };
-      var questions = await QuestionModel.findById(questionId).populate(
-        "answers"
-      );
+      var questions = await QuestionModel.findById(questionId)
+        .populate("answers")
+        .populate("user");
       // console.log(questions)
 
       var viewIncrement = questions.views + 1;
@@ -147,32 +151,6 @@ class Question {
         "Incrementing the view from " + questions.views + " to " + viewIncrement
       );
       QuestionModel.findByIdAndUpdate(questionId, { views: viewIncrement });
-
-      // var questionsdata=questions._doc
-      // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
-      // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
-      console.log("tttttttT", questions);
-      return questions;
-      // return questions
-    } catch (err) {
-      console.log(err);
-      throw new Error("No question found with this Id");
-    }
-  };
-
-  static getQuestionsBasedOnId = async (questionId) => {
-    try {
-      const query = {
-        question: mongoose.Types.ObjectId(questionId),
-      };
-      var questions = await QuestionModel.findById(questionId).populate(
-        "answers"
-      );
-      // console.log(questions)
-
-      // var viewIncrement=questions.views+1
-      // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
-      // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
 
       // var questionsdata=questions._doc
       // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
@@ -201,7 +179,9 @@ class Question {
       if (type == "Interesting" || type == 1) {
         console.log("here");
         // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-        questions = await QuestionModel.find(query);
+        questions = await QuestionModel.find(query).sort({
+          createdAt: sorting,
+        });
       } else if (type == "Hot" || type == 2) {
         questions = await QuestionModel.find(query).sort({ views: sorting });
       } else if (type == "Score" || type == 3) {
@@ -213,45 +193,41 @@ class Question {
       }
       console.log(questions);
 
-      if (questions?.length) {
-        return questions;
-      } else {
-        return [];
-      }
+      // var viewIncrement=questions.views+1
+      // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
+      // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
+
+      // var questionsdata=questions._doc
+      // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
+      // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
+      // console.log("tttttttT",questions)
+      return questions;
+      // return questions
     } catch (err) {
       console.log(err);
-      throw new Error(
-        "Some unexpected error occurred while getting " + type + " questions"
-      );
+      throw new Error("No question found with this Id");
     }
   };
 
   static addQuestion = async (question) => {
     try {
       console.log("Pop", question);
-      var activityNew = new ActivityModel({
-        activities: {
-          type: "history",
-          comment: "asked",
-          by: question.userId,
-        },
-      });
-      var activityResult = await activityNew.save();
-      console.log("Activity", activityResult);
       var questionNew = new QuestionModel({
+        createdAt: new Date().toISOString(),
         upvotes: [],
         downvotes: [],
         views: 0,
         answers: [],
         images: question.images,
         userId: question.userId,
+        user: question.user,
         title: question.title,
         tags: question.tags,
         description: question.description,
         commentId: "",
         bestAns: null,
         badges: [],
-        activity: activityNew._id,
+        activity: "",
         status:
           question.images && question.images.length == 0
             ? "APPROVED"
@@ -267,7 +243,43 @@ class Question {
         updateUserData
       );
       await questionNew.save();
-      return questionNew;
+      return "Question Added";
+    } catch (err) {
+      console.log(err);
+      throw new Error("Some unexpected error occurred while getting questions");
+    }
+  };
+
+  static editQuestion = async (question) => {
+    try {
+      console.log("EDIT", question);
+      const oldQuestion = await QuestionModel.findById(question._id);
+      console.log("EDIT old question", oldQuestion);
+      const result = await QuestionModel.findByIdAndUpdate(question._id, {
+        images: question.images,
+        title: question.title,
+        tags: question.tags,
+        description: question.description,
+        status:
+          question.images && question.images.length == 0
+            ? "APPROVED"
+            : "PENDING",
+        updatedAt: new Date().toISOString(),
+      });
+      const updateUserData = {};
+      updateUserData.userId = question.userId;
+      updateUserData.questionId = question._id.toString();
+      updateUserData.oldTags = oldQuestion.tags;
+      updateUserData.newTags = question.tags;
+      updateUserData.score =
+        oldQuestion?.upVotes?.length - oldQuestion?.downVotes?.length;
+      const updatedUser = await Question.updateUserOnQuestionEdit(
+        updateUserData
+      );
+      if (result == {}) {
+        return res.status(400).send(result.error.details[0].message);
+      }
+      return "Question Updated";
     } catch (err) {
       console.log(err);
       throw new Error("Some unexpected error occurred while getting questions");
@@ -334,16 +346,16 @@ class Question {
       const result = await QuestionModel.findOneAndUpdate(
         findCondition,
         updateCondition,
-        {returnOriginal : false}
+        { returnOriginal: false }
       );
-      
+
       console.log("Question result is", result);
-      
+
       const newActivity = {
         type: "answer",
         comment: "score 0",
-        by: userId
-      }
+        by: userId,
+      };
 
       await ActivityService.updateActivity(result.activity, newActivity);
 

@@ -1,6 +1,7 @@
 import { Row,Col } from 'react-bootstrap';
 import CompactQuestionListing from '../components/questions/CompactQuestionListing';
 import { useLocation } from "react-router-dom";
+import Navbar from "../components/user/Navbar";
 
 function Question() {
   const location = useLocation();
@@ -14,8 +15,8 @@ function Question() {
   return (
     <>
     <div>
-            <div><h1>Headers</h1></div>
-        <Row>
+    <Navbar></Navbar>
+    <Row style={{marginTop:"5rem"}}>
         <Col style={{"text-align": "-webkit-center"}}>
             <CompactQuestionListing {...props} />
         </Col>
