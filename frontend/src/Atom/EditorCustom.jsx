@@ -33,7 +33,6 @@ export default function EditorCustom(props) {
 
   useEffect(() => {
     console.log("Edit Page recieved description :",props.preDefault, " images : ",props.description)
-
     console.log("Edit Page all props :",props)
     setValue(props.preDefault)
     setImages(props.images)

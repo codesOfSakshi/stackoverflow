@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 
 function EditQuestionPage(props) {  
   let params = useParams();
-  const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
+  const[tags,setTags]=useState([])
   const[selectedTags,setSelectedTags]=useState([])
   const [questionDisplay,setquestionDisplay] = useState({})
   const [question,setQuestion] = useState({})
@@ -32,6 +32,7 @@ function EditQuestionPage(props) {
       console.log(response)
       setQuestion(response.data.data)
       setSelectedTags(response.data.data.tags)
+      setDescription(response.data.data.description)
       console.log("************ description :",response.data.data.description)
       setquestionDisplay(new window.stacksEditor.StacksEditor(
           document.querySelector("#editor-container-questionDisplay-edit"),response.data.data.description,{} ))

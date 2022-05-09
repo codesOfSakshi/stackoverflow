@@ -22,7 +22,7 @@ export default function EditorCustom(props) {
     <div className="App">
       {props && props.description &&
       <Card style={{margin:"1rem",height:"300px"}}>
-      <div id="editor-container">
+      <div id="editor-container" style={{"textAlign":"left"}}>
       </div>
       </Card>}
     </div>

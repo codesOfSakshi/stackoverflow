@@ -18,8 +18,8 @@ import jwt_decode from 'jwt-decode';
 
 
 function AskQuestionEditor(props) {  
-  const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
-  const[selectedTags,setSelectedTags]=useState(["JAVA","PYTHON"])
+  const[tags,setTags]=useState([])
+  const[selectedTags,setSelectedTags]=useState([])
   const[descripiton,setDescription]=useState("")
   const [imageArray, setImage] = useState([]);
   const [uploadUrl,setUploadUrl] = useState([]);
@@ -56,7 +56,7 @@ function AskQuestionEditor(props) {
     console.log(arr);
     e.preventDefault();
     var payload ={
-      userId: decoded._id,
+      user: decoded._id,
       title: e.target.formBasicTitle.value,
       description: descripiton,
       tags:selectedTags,

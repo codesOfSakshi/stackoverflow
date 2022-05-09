@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
+import ReactTimeAgo from 'react-time-ago'
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -41,7 +42,8 @@ function QuestionsPage(props) {
             console.log(response)
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
-            setOwner(response.data.data.user._id == decoded)
+            let own=(response.data.data.user && response.data.data.user._id == decoded._id)?true:false
+            setOwner(own)
         })
     },[])
 
@@ -51,9 +53,9 @@ function QuestionsPage(props) {
       }
 
     const addBookmark = () =>{
-        var api="http://localhost:3001/api/user/addbookmark/"+"627072e35ae4148135c41c39"
+        var api="http://localhost:3001/api/user/addbookmark/"+decoded
         var payload = {
-            questionId:question.user._id
+            questionId:question._id
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
@@ -78,7 +80,7 @@ function QuestionsPage(props) {
         var payload = {
             questionId:question._id,
             answer:answer,
-            user:"627072e35ae4148135c41c39",
+            user:decoded._id,
         }
         axios.post(api,payload).then(response => {alert(response.data)})
     }
@@ -89,29 +91,39 @@ function QuestionsPage(props) {
     return (
         <div>
             <div style={{ width: '60rem',textAlign:'justify'}}>
-
-                <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px",float:"right"}}>
-                    <Button onClick={addBookmark} style={{float:"right"}}>Bookmark</Button>
-                </Row>
+                <Row style={{textAlign:'left'}}> 
                 <h2>
                 {question.title}
                 </h2>
+                </Row>
                 <div>
                     <Row>
                         <Col>
                             
-                                Asked : <b>{question.asked}</b>
+                                Asked : 
+                            
+                            <time class="s-user-card--time">
+                            {question.createdAt && 
+                            <ReactTimeAgo date={Date.parse(question.createdAt)} locale="en-US" />}</time>
                             
                         </Col>
+                        {question.updatedAt &&(
                         <Col>
                             
-                                Modified : <b>{question.modified}</b>
+                                Modified :
                             
-                        </Col>
+                            <time class="s-user-card--time">
+                            {question.updatedAt && 
+                            <ReactTimeAgo date={Date.parse(question.updatedAt)} locale="en-US" />}</time>
+                            
+                        </Col>)}
                         <Col>
                             
                                 Viewed : <b>{question.views}</b>
                             
+                        </Col>
+                        <Col>
+                               <Button onClick={addBookmark} style={{float:"right"}}>Bookmark</Button>
                         </Col>
                     </Row>
                 </div>
@@ -182,7 +194,7 @@ function QuestionsPage(props) {
                                 <Col xs={1}>
                                     {/* {console.log(ans)}
                             {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx} object={ans} decoded = {decoded} question = {question} type="answer" />
+                                    <Upvote idx={idx} object={ans} decoded = {decoded} question = {question} type="answer" owner={owner}/>
                                 </Col>
                                 <Col style={{ marginLeft: "64px", marginTop: "-115px" }}>
                                     {ans.description}
@@ -213,8 +225,8 @@ function QuestionsPage(props) {
                 </Row> */}
                     
                     <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
-                    <Row style={{ width: "200px", marginTop: "30px", marginLeft: "0.5px" }}>
-                        <Button onClick={recordAnswer}>Post Your Answer</Button>
+                    <Row style={{marginTop: "30px", marginLeft: "0.5px" }}>
+                        <Button onClick={recordAnswer} style={{float:"center"}}>Post Your Answer</Button>
                     </Row>
                 </div>
             </div>
