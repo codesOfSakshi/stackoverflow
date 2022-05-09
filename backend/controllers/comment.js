@@ -27,27 +27,6 @@ router.post("/",  async (req, res) => {
     }
 });
 
-router.post("/getcomments", async(req,res) =>{
-    console.log("====================================================================inside get comments")
-    const answerId = req.body.answerId;
-    const response = {};
-    try{
-        const getComment = await Comment.getComment(answerId);
-        if(getComment){
-            response.success = true;
-            response.comments = getComment.result
-            response.status = 200;
-            res.status(200).send(response);
-        }
-    }catch(e){
-        console.log(e);
-        response.success = false;
-        response.error = "Some error occurred. Please try again later";
-        response.status = 500;
-        res.status(500).send(response);
-    }
-})
-
 
 
 

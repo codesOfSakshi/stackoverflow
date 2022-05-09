@@ -69,26 +69,6 @@ class Comment {
       }
     }
   };
-
-  static getComment = async (answerId) => {
-
-      try{
-        var answers =await AnswerModel.findById(answerId);
-        const result = answers.comment
-        if (result) {
-          console.log("RESULT FROM ANSWER COMMENT IS", result);
-          return result;
-        } else {
-          return {};
-        }
-      } 
-      catch (err) {
-        console.log(err);
-        throw new Error(
-          "Some unexpected error occurred while inserting answer"
-        );
-      }
-    };
 }
 
 

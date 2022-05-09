@@ -57,7 +57,7 @@ class Answer{
                 };
                 const ansupdateCondition = {
                     $addToSet:{
-                        "questionsAnswered":  {"questionId" : questionId , "answerId" : answerId}
+                        "questionsAnswered":  {"questionId" : questionId , "answerId" : id}
                     } 
                 }
                 user.tagIds.push({ tagId: eachTag, score: 0 });
