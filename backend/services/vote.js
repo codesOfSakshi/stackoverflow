@@ -146,7 +146,34 @@ class Vote{
                     let getquestion2 = await QuestionModel.findOne(findCondition);
                     let questionparse2 = JSON.parse(JSON.stringify(getquestion2))
                     // let user= await UserModel.findOne(userfindCondition);
+                    let tags = questionparse2[0].tags;
+                    let updateValue =[];
+                    tags.map(tag=>{
+                        let flag=0;
+                        user.tagIds.map(userTag=>{
+                            if(userTag.tagId==tag)
+                            {
+                                //final.set(tag,userTag.score+1)
+                                const pair = {
+                                    "tagId":tag,
+                                    "score":userTag.score+1
+                                }
+                                updateValue.push(pair);
+                                flag=1;
+                            }
+                        })
 
+                        if(flag==0)
+                        {
+                            const pair = {
+                                "tagId":tag,
+                                "score":1
+                            }
+                            updateValue.push(pair);
+                        }
+                    })
+                    user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
+                    console.log(user);
                     let userDownvote2 = questionparse2.downVotes.filter((user)=>{
                         if(user===voter){
                             return(user);

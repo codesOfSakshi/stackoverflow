@@ -41,6 +41,10 @@ const UserBadge = () => {
           <div className="badge-title">
             {badge[1] === "Gold" &&
             <div className="badge-gold-type"></div>}
+            {badge[1] === "Silver" &&
+                <div className="badge-silver-type"></div>}
+            {badge[1] === "Bronze" &&
+                <div className="badge-bronze-type"></div>}
             <div className="badge-name">{badge[0]}</div>
           </div>
          </div>
