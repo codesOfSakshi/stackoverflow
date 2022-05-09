@@ -14,9 +14,11 @@ const reputationHistorySchema = new mongoose.Schema({
         ref: "users",
     },
     action:{
-       type: mongoose.Schema.Types.ObjectId,
-        ref: "reputationaction",
+       type:String
     },
+    gain:{
+        type:Number
+    }
 });
 
 

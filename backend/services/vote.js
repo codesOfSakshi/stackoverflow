@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 let QuestionModel = require('../models/question.js');
 let AnswerModel = require('../models/answer.js');
 let UserModel = require('../models/user');
+const { constants } = require("../config/config");
+const {ReputationHistory} = require('../services/reputationhistory');
 
 
 class Vote{
@@ -20,12 +22,13 @@ class Vote{
             try
             {
                 if(voteType === 'Upvote'){
+                    const reputationResult = await ReputationHistory.insertReputationHistory({action: "UPVOTE_QUESTION",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
                     };
                     let getquestion1 = await QuestionModel.findOne(findCondition);
                     let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
-                    let tags = questionparse1[0].tags;
+                    let tags = questionparse1.tags;
                     let updateValue =[];
                     tags.map(tag=>{
                         let flag=0;
@@ -141,6 +144,7 @@ class Vote{
                     }
                 }
                 else{
+                    const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_QUESTION",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
                     };
@@ -278,6 +282,7 @@ class Vote{
             try
             {
                 if(voteType === 'Upvote'){
+                    const reputationResult = await ReputationHistory.insertReputationHistory({action: "UPVOTE_ANSWER",userId:user.id });
                     console.log("answer", answerId, type, voter)
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
@@ -380,6 +385,7 @@ class Vote{
                     }
                 }
                 else{
+                    const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_ANSWER",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
                     };

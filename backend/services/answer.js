@@ -8,6 +8,9 @@ const ActivityService = require("./activity.js");
 
 const UserModel = require('../models/user');
 
+const {ReputationHistory} = require('../services/reputationhistory.js');
+const { constants } = require("../config/config");
+
 
 class Answer{
 
@@ -93,6 +96,7 @@ class Answer{
                     _id:mongoose.Types.ObjectId(user),
                 };
                 reputationIncrement=user.reputation-15
+                const reputationResult = await ReputationHistory.insertReputationHistory({action: "BEST_ANS_UNMARKED",userId:user.id });
                 userUpdateCondition = {
                     "reputation":  reputationIncrement,
                 }
@@ -108,6 +112,7 @@ class Answer{
                 _id:mongoose.Types.ObjectId(usernew),
             };
             reputationIncrement=usernew.reputation+15
+            const reputationResult = await ReputationHistory.insertReputationHistory({action: "BEST_ANS_MARKED",userId:usernew.id });
             userUpdateConditionnew = {
                 "reputation":  reputationIncrement,
             }

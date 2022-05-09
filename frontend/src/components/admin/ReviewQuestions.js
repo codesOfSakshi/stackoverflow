@@ -73,9 +73,9 @@ const QuestionSummary = ({idx, question, handleButtonClick}) => (
             &ensp;
           </time>
           <div class="dropdown">
-            <button value={constants.constants.questionApproved} onClick={(e)=>{handleButtonClick(e.target.value, idx)}} class="s-btn s-btn__primary" type="button" disabled={question.status!="waiting for approval"?true:false}>Accept</button>
+            <button value={constants.constants.questionApproved} onClick={(e)=>{handleButtonClick(e.target.value, idx)}} class="s-btn s-btn__primary" type="button" disabled={question.status!="PENDING"?true:false}>Accept</button>
             &ensp;&ensp;
-            <button value={constants.constants.questionRejected} onClick={(e)=>{handleButtonClick(e.target.value, idx)}} class="s-btn s-btn__danger s-btn__filled" type="button" disabled={question.status!="waiting for approval"?true:false}>Reject</button>            
+            <button value={constants.constants.questionRejected} onClick={(e)=>{handleButtonClick(e.target.value, idx)}} class="s-btn s-btn__danger s-btn__filled" type="button" disabled={question.status!="PENDING"?true:false}>Reject</button>            
           </div>
         </div>
       </div>
