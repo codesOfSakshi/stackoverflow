@@ -12,6 +12,10 @@ const UserBadgeInfo = () => {
     const [gold, setGold] = useState([]);
     const [silver, setSilver] = useState([]);
     const [bronze, setBronze] = useState([]);
+    const [goldLength, setGoldLength] = useState(0);
+    const [silverLength, setSilverLength] = useState(0);
+    const [bronzeLength, setBronzeLength] = useState(0);
+
 
     const GET_USER_API = "api/tags/badges/";
     const params = useParams();
@@ -29,13 +33,16 @@ const UserBadgeInfo = () => {
                     setBadges(response.data.tags);
                     console.log(badges)
                     let gbadge = response.data.tags.filter(badge=> badge[1] === "Gold")
+                    setGoldLength(gbadge.length);
                     gbadge = gbadge.filter((val,i)=>i<3)
                     setGold(gbadge)
                     let sbadge = response.data.tags.filter(badge=> badge[1] === "Silver")
+                    setSilverLength(sbadge.length);
                     sbadge = sbadge.filter((val,i)=>i<3)
                     setSilver(sbadge)
                     let bbadge = response.data.tags.filter(badge=> badge[1] === "Bronze")
-                    sbadge = sbadge.filter((val,i)=>i<3)
+                    setBronzeLength(bbadge.length);
+                    bbadge = bbadge.filter((val,i)=>i<3)
                     setBronze(bbadge)
                 }
             }
@@ -54,9 +61,9 @@ const UserBadgeInfo = () => {
                   Badges
             </div>
             <div className="badgeinfo-data-outer-container">
-            <GoldBadge badge={gold}/>
-            <SilverBadge badge={silver}/>
-            <BronzeBadge badge={bronze}/>
+            <GoldBadge badge={gold} length={goldLength}/>
+            <SilverBadge badge={silver} length={silverLength}/>
+            <BronzeBadge badge={bronze} length={bronzeLength}/>
             </div>
         </div>
   )

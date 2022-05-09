@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import UserBadge from "./UserBadge";
 import UserTopBadge from "./UserTopBadge";
 
-export default function GoldBadge({badge}) {
+export default function GoldBadge({badge,length}) {
     console.log("Gold---------->>>>>>>>>")
     console.log(badge)
     return (
@@ -13,7 +13,7 @@ export default function GoldBadge({badge}) {
                 </svg>
             </div>
             <div className="badgeinfo-item-info-container">
-                <div className="badgeinfo-item-value">8</div>
+                <div className="badgeinfo-item-value">{length}</div>
                 <div className="badgeinfo-item-heading">Gold badges</div>
             </div>
             <UserTopBadge badge={badge}/>
