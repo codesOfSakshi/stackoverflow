@@ -55,7 +55,7 @@ const QuestionSummary = ({idx, question, handleButtonClick}) => (
     {/* {console.log("IN QUESTION", question)} */}
     <div class="s-post-summary--content ">
       <h3 class="s-post-summary--content-title">
-        <a href="{questionOverviewLink}" class="s-link">
+        <a href={"/question/"+question._id} class="s-link">
           {question.title}
         </a>
       </h3>

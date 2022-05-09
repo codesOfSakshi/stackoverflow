@@ -71,10 +71,10 @@ const Analytics = () => {
 
 const QuestionSummary = ({ idx, question, handleButtonClick }) => (
   <div id="question-summary" class="s-post-summary js-post-summary">
-    {/* {console.log("IN QUESTION", question)} */}
+    {console.log("IN QUESTION", question)}
     <div class="s-post-summary--content ">
       <h3 class="s-post-summary--content-title">
-        <a href="{questionOverviewLink}" class="s-link">
+        <a href={"/question/"+question._id} class="s-link">
           {question.title}
         </a>
       </h3>
@@ -85,7 +85,7 @@ const QuestionSummary = ({ idx, question, handleButtonClick }) => (
           <time class="s-user-card--time">
             asked{" "}
             <span title="2022-04-29 22:54:18Z" class="relativetime">
-              {question.created}
+              {question.createdAt}
             </span>{" "}
             &ensp;
           </time>
@@ -105,9 +105,7 @@ const Tags = ({ tag }) => (
 
 const User = ({ user }) => (
   <div class="s-user-card s-user-card__full">
-    {//console.log("IN USER", user)
-      //TODO: Add user image
-    }
+    {console.log("IN USER", user)}
     <a href="…" class="s-avatar s-avatar__48 s-user-card--avatar">
       {" "}
       {user.name}
