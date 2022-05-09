@@ -29,10 +29,13 @@ const UserBadgeInfo = () => {
                     setBadges(response.data.tags);
                     console.log(badges)
                     let gbadge = response.data.tags.filter(badge=> badge[1] === "Gold")
+                    gbadge = gbadge.filter((val,i)=>i<3)
                     setGold(gbadge)
                     let sbadge = response.data.tags.filter(badge=> badge[1] === "Silver")
+                    sbadge = sbadge.filter((val,i)=>i<3)
                     setSilver(sbadge)
                     let bbadge = response.data.tags.filter(badge=> badge[1] === "Bronze")
+                    sbadge = sbadge.filter((val,i)=>i<3)
                     setBronze(bbadge)
                 }
             }

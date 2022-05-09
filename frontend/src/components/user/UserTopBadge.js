@@ -14,7 +14,7 @@ export default function UserTopBadge({badge}) {
                             <div className="badge-silver-type"></div>}
                         {badges[1] === "Bronze" &&
                             <div className="badge-bronze-type"></div>}
-                        <div className="badge-name">{badge[0]}</div>
+                        <div className="badge-name">{badges[0]}</div>
                     </div>
                 </div>
             })}
