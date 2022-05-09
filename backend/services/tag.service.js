@@ -19,6 +19,22 @@ exports.getAllTags = async (result) => {
 
 }
 
+
+// Get Single Tag Info
+exports.getTag = async (query, result) => {
+    try{
+        const tag = await TagModel.findOne({name:query});
+        console.log(tag);
+
+        result(null, tag);
+    }
+    catch(err){
+        result(err);
+    }
+
+}
+
+
 //Get User Tags
 exports.getUserTags = async (userId,result) => {
     try{
@@ -40,6 +56,9 @@ exports.getTaggedQuestions = async (reqBody, result) => {
 
         console.log("Tag: ", reqBody.tagId);
         console.log("Sorting as: ", reqBody.filterType)
+
+        // Get Tag Info for Page
+        const tag = await TagModel.findOne({name:reqBody.tagId});
 
         let questions;
         
@@ -65,11 +84,11 @@ exports.getTaggedQuestions = async (reqBody, result) => {
         }
 
         if(questions.length > 0){
-            result(null, questions);
+            result(null, {questions: questions , tag:tag});
         }
         else if(reqBody.filterType == 4)
         {
-            result(null, questions);
+            result(null, {questions: questions , tag:tag});
         }
         else{
             result(null , {status:false , message:"No Questions for this tag"});
