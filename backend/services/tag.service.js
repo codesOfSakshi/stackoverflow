@@ -20,21 +20,6 @@ exports.getAllTags = async (result) => {
 }
 
 
-// Get Single Tag Info
-exports.getTag = async (query, result) => {
-    try{
-        const tag = await TagModel.findOne({name:query});
-        console.log(tag);
-
-        result(null, tag);
-    }
-    catch(err){
-        result(err);
-    }
-
-}
-
-
 //Get User Tags
 exports.getUserTags = async (userId,result) => {
     try{
