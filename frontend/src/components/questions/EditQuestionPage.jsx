@@ -18,6 +18,7 @@ function EditQuestionPage(props) {
 
   const[descripiton,setDescription]=useState("")
   const[images,setImages]=useState([])
+  const [error,setError] = useState("");
 
   const token = localStorage.getItem("token");
   const decoded = token?(jwt_decode(token.split('.')[1], { header: true })):false
@@ -79,6 +80,10 @@ function EditQuestionPage(props) {
 
   const submitHandler =(e)=>{
     e.preventDefault();
+    if(!descripiton){
+      setError("Please Enter a valid Description !")
+    }
+    else{
     console.log(questionDisplay.content)
     var payload ={
       userId: decoded._id,
@@ -94,7 +99,7 @@ function EditQuestionPage(props) {
       console.log("response.result",response.data.message)
       var path = "/question/"+response.data.message
       navigate(path)
-      })
+      })}
   }
 
   const deleteTag = (e,val) =>{
@@ -125,6 +130,9 @@ function EditQuestionPage(props) {
         {/* <MyEditor/> */}
         {/* <div id="editor-container-questionDisplay-edit"></div> */}
         {question && <EditorCustom setImages={setImages}  setDescription={setDescription} preDefault={question.description} images={question.images}></EditorCustom>}
+        {error && <div style={{color: "red"}}>
+        {error}
+      </div>}
         <div style={{'marginTop':"3rem"}}>
         <h3>Tags</h3>
         Add up to 5 tags to describe what your question is about
