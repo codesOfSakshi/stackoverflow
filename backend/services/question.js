@@ -108,6 +108,34 @@ class Question {
     }
   };
 
+  // static getQuestionsBasedOnId = async (questionId) => {
+  //   try {
+  //     const query = {
+  //       question: mongoose.Types.ObjectId(questionId),
+  //     };
+  //     var questions = await QuestionModel.findById(questionId)
+  //       .populate("answers")
+  //       .populate("user");
+  //     // console.log(questions)
+
+  //     var viewIncrement = questions.views + 1;
+  //     console.log(
+  //       "Incrementing the view from " + questions.views + " to " + viewIncrement
+  //     );
+  //     QuestionModel.findByIdAndUpdate(questionId, { views: viewIncrement });
+
+  //     // var questionsdata=questions._doc
+  //     // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
+  //     // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
+  //     console.log("tttttttT", questions);
+  //     return questions;
+  //     // return questions
+  //   } catch (err) {
+  //     console.log(err);
+  //     throw new Error("No question found with this Id");
+  //   }
+  // };
+
   static getQuestionsBasedOnId = async (questionId) => {
     try {
       const query = {
@@ -116,41 +144,15 @@ class Question {
       var questions = await QuestionModel.findById(questionId)
         .populate("answers")
         .populate("user");
-      // console.log(questions)
+      console.log(questions)
+      var questionUser = questions.user._id
 
       var viewIncrement = questions.views + 1;
       console.log(
         "Incrementing the view from " + questions.views + " to " + viewIncrement
       );
-      QuestionModel.findByIdAndUpdate(questionId, { views: viewIncrement });
-
-      // var questionsdata=questions._doc
-      // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
-      // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
-      console.log("tttttttT", questions);
-      return questions;
-      // return questions
-    } catch (err) {
-      console.log(err);
-      throw new Error("No question found with this Id");
-    }
-  };
-
-  static getQuestionsBasedOnId = async (questionId) => {
-    try {
-      const query = {
-        question: mongoose.Types.ObjectId(questionId),
-      };
-      var questions = await QuestionModel.findById(questionId)
-        .populate("answers")
-        .populate("user");
-      // console.log(questions)
-
-      var viewIncrement = questions.views + 1;
-      console.log(
-        "Incrementing the view from " + questions.views + " to " + viewIncrement
-      );
-      QuestionModel.findByIdAndUpdate(questionId, { views: viewIncrement });
+      var d=await QuestionModel.findByIdAndUpdate(questionId,{views: viewIncrement});
+      await UserModel.findOneAndUpdate({_id :questionUser}, {$inc : {'reach' : 1}});
 
       // var questionsdata=questions._doc
       // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)

@@ -26,7 +26,7 @@ function AskQuestionEditor(props) {
 
   const cookies = new Cookies();
     const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token?.split('.')[1], { header: true });
+    const decoded = token?(jwt_decode(token.split('.')[1], { header: true })):false
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)
@@ -40,6 +40,11 @@ function AskQuestionEditor(props) {
 
 
   useEffect(() => {
+    if(!props.decoded){
+        alert("Please sign up before asking a question, Redirecting to login ...")
+        navigate("/")
+    }
+    else{
     var arrTags=[]
     var api="http://localhost:3001/api/tags"
     axios.get(api).then(
@@ -50,6 +55,7 @@ function AskQuestionEditor(props) {
         setTags(arrTags)
       }
     )
+    }
   },[])
 
   const submitHandler =(e)=>{

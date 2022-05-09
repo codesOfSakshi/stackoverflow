@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     // required: true,
   },
   reach: {
-    type: String,
+    type: Number,
     // required: true,
   },
   about: {

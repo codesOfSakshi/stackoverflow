@@ -2,6 +2,7 @@ import { Row,Col } from 'react-bootstrap';
 import CompactQuestionListing from '../components/questions/CompactQuestionListing';
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/user/Navbar";
+import SideNav from "../Atom/SideNav.jsx"
 
 function Question() {
   const location = useLocation();
@@ -17,7 +18,10 @@ function Question() {
     <div>
     <Navbar></Navbar>
     <Row style={{marginTop:"5rem"}}>
-        <Col style={{"text-align": "-webkit-center"}}>
+        <Col lg={3}>
+        <SideNav/>
+        </Col>
+        <Col>
             <CompactQuestionListing {...props} />
         </Col>
         </Row>

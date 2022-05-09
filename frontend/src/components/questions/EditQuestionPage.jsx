@@ -18,17 +18,23 @@ function EditQuestionPage(props) {
 
   const[descripiton,setDescription]=useState("")
   const[images,setImages]=useState([])
-    const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token.split('.')[1], { header: true });
-  const [initialDescription,setDescripition] = useState("")
+
+  const token = localStorage.getItem("token");
+  const decoded = token?(jwt_decode(token.split('.')[1], { header: true })):false
+
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)
     }
 
   useEffect(() => {
+    if(decoded){
     var api="http://localhost:3001/api/questions/"+params.questionId
     axios.get(api).then(response => {
+      let own = (response.data.data.user && response.data.data.user._id == decoded._id) ? 
+      true : 
+      navigate(`/`)
+
       console.log(response)
       setQuestion(response.data.data)
       setSelectedTags(response.data.data.tags)
@@ -48,6 +54,11 @@ function EditQuestionPage(props) {
         setTags(arrTags)
       }
     )
+    }
+    else{
+      alert("Please sign up first")
+      navigate(`/`)
+    }
   },[])
 
 
