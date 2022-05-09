@@ -16,7 +16,7 @@ const TaggedQuestions = (props) => {
 
     // Navigates to the Tag page for Tag clicked
     const navitateToTag = (tag) => {
-        navigate('/tag/' + tag ,{state:{tagId:tag}});
+        navigate('/tag/' + tag );
         console.log("Navigating to Tag: ", tag);
     }
 
