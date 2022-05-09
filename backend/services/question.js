@@ -4,6 +4,7 @@ const UserModel = require("../models/user.js");
 const TagModel = require("../models/tag.js");
 const ActivityModel = require("../models/activity.js");
 const AnswerModel = require("../models/answer.js");
+const ActivityService = require("./activity.js");
 
 class Question {
   static getQuestions = async ({ questionIds }) => {
@@ -291,19 +292,14 @@ class Question {
 
       //ADDING EDIT TO ACTIVITY
       console.log("AFTER UPDATE", result);
+
       var newActivity = {
         type: "history",
         comment: "edited",
         by: question.userId,
       };
-      const activityResult = await ActivityModel.findOneAndUpdate(
-        { _id: result.activity },
-        { $push: { activities: newActivity } }
-      );
-      console.log("ACTIVITY RESULT", activityResult);
-      if (activityResult == {}) {
-        return res.status(400).send(result.error.details[0].message);
-      }
+
+      await ActivityService.updateActivity(result.activity, newActivity);
 
       const updateUserData = {};
       updateUserData.userId = question.userId;
@@ -325,28 +321,7 @@ class Question {
     }
   };
 
-  static updateAnswerId = async (answerId, questionId) => {
-    try {
-      const findCondition = {
-        _id: mongoose.Types.ObjectId(questionId),
-      };
-      const activityResult = await ActivityModel.findOneAndUpdate(
-        { _id: result.activity },
-        { $push: { activities: newActivity } }
-      );
-      console.log("ACTIVITY RESULT", activityResult);
-      if (activityResult == {}) {
-        return res.status(400).send(result.error.details[0].message);
-      }
-
-      return "Question & Activity Updated";
-    } catch (err) {
-      console.log(err);
-      throw new Error("Some unexpected error occurred while getting questions");
-    }
-  };
-
-  static updateAnswerId = async (answerId, questionId) => {
+  static updateAnswerId = async (answerId, userId, questionId) => {
     try {
       const findCondition = {
         _id: mongoose.Types.ObjectId(questionId),
@@ -356,11 +331,22 @@ class Question {
         $push: { answers: answerId },
       };
       console.log(findCondition);
-      const result = await QuestionModel.updateOne(
+      const result = await QuestionModel.findOneAndUpdate(
         findCondition,
-        updateCondition
+        updateCondition,
+        {returnOriginal : false}
       );
+      
       console.log("Question result is", result);
+      
+      const newActivity = {
+        type: "answer",
+        comment: "score 0",
+        by: userId
+      }
+
+      await ActivityService.updateActivity(result.activity, newActivity);
+
       if (result) {
         return result;
       } else {

@@ -16,6 +16,9 @@ exports.constants = {
     },
     ACTIVITY: {
       getActivity: "/api/activity/:activityID"
+    },
+    COMMENT: {
+      postComment: "api/comment"
     }
   },
   PAGES: {

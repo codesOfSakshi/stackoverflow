@@ -10,7 +10,7 @@ function AskQuestionEditor(props) {
   const[tags,setTags]=useState(["JAVA","PYTHON","PYTHON-2.5"])
   const[selectedTags,setSelectedTags]=useState(["JAVA","PYTHON"])
     const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token.split('.')[1], { header: true });
+    const decoded = jwt_decode(token?.split('.')[1], { header: true });
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)

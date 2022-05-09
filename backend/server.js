@@ -60,9 +60,9 @@ app.listen(PORT, () => {
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
 
-//const mongoURI = "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority";
 
-const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+// const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
 
 let options = {
   useNewUrlParser: true,

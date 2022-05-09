@@ -26,6 +26,7 @@ function QuestionsPage(props) {
 
 
     useEffect(() => {
+        console.log("Q ID: ", params.id)
         var api = "http://localhost:3001/api/questions/" + params.id
         axios.get(api).then(response => {
             console.log(response)
