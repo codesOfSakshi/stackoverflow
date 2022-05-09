@@ -69,13 +69,13 @@ class User {
 
   static addToBookMark = async (req) => {
     try {
-        let updatedUser =  UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.userId), { $push: { bookmark: mongoose.Types.ObjectId(req.body.questionId) } }).exec();
-        if(updatedUser)
-        {
-            return updatedUser;
-        }
-        else
-            return [];
+      let updatedUser = UserModel.findByIdAndUpdate(
+        mongoose.Types.ObjectId(req.params.userId),
+        { $push: { bookmark: mongoose.Types.ObjectId(req.body.questionId) } }
+      ).exec();
+      if (updatedUser) {
+        return updatedUser;
+      } else return [];
     } catch (err) {
       console.log(err);
       throw new Error(
@@ -84,12 +84,11 @@ class User {
     }
   };
 
-
-
   static getUserById = async ({ userId }) => {
+    console.log(userId);
     try {
       const query = {
-        user: mongoose.Types.ObjectId(userId),
+        _id: mongoose.Types.ObjectId(userId),
       };
       let user = await UserModel.findOne(query);
       console.log(user, "user");
@@ -108,157 +107,170 @@ class User {
     }
   };
 
-    static updateUserById = async ({ userId },{questionId}) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            let question = mongoose.Types.ObjectId(questionId)
-            var user = await UserModel.findOneAndUpdate(
-                { query },
-                { $push: { bookmark: mongoose.Types.ObjectId(questionId) } },
-                done);
+  static updateUserById = async ({ userId }, { questionId }) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      let question = mongoose.Types.ObjectId(questionId);
+      var user = await UserModel.findOneAndUpdate(
+        { query },
+        { $push: { bookmark: mongoose.Types.ObjectId(questionId) } },
+        done
+      );
 
-            console.log(user, "user");
+      console.log(user, "user");
 
-            user = JSON.parse(JSON.stringify(user));
-            if (user) {
-                return user;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
+      user = JSON.parse(JSON.stringify(user));
+      if (user) {
+        return user;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting bookmark question ids"
+      );
+    }
+  };
+
+  static getUserByIdWithQuestion = async ({ userId }) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      let user = await UserModel.findOne(query).populate([
+        "questionsAsked",
+        "questionsAnswered.questionId",
+        "questionsAnswered.answerId",
+      ]);
+
+      console.log(user, "user");
+
+      user = JSON.parse(JSON.stringify(user));
+      if (user) {
+        return user;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting bookmark question ids"
+      );
+    }
+  };
+
+  static getUserQuestionById = async ({ userId }) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      const userObj = userId;
+      const user = await User.getUserById(userObj);
+      let questionIds = user.questionsAsked;
+      const questionObj = {};
+      questionObj.questionIds = questionIds;
+      let response = await Question.getQuestions(questionObj);
+      response = response.filter(
+        (responses) => responses.status === "APPROVED"
+      );
+      console.log(user, "user");
+      response.map((responses) => {
+        console.log("responses------------------------>>>>>>>>>>");
+        console.log(responses.upVotes);
+        console.log(responses.downVotes);
+        let up = responses.upVotes === undefined ? 0 : responses.upVotes.length;
+        let down =
+          responses.downVotes === undefined ? 0 : responses.downVotes.length;
+        console.log(up);
+        console.log(down);
+        responses["score"] = up - down;
+      });
+
+      response = JSON.parse(JSON.stringify(response));
+
+      if (response) {
+        return response;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting bookmark question ids"
+      );
+    }
+  };
+
+  static getUserAnswerQuestionById = async ({ userId }) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      const userObj = userId;
+      const user = await User.getUserById(userObj);
+      var questionIds = user.questionsAnswered.map(function (obj) {
+        return obj.questionId;
+      });
+      var answerIds = user.questionsAnswered.map(function (obj) {
+        return obj.answerId;
+      });
+      const questionObj = {};
+      questionObj.questionIds = questionIds;
+      let response = await Question.getQuestionsWithTagsAndAnswers(questionObj);
+      response = response.filter(
+        (responses) => responses.status === "APPROVED"
+      );
+      console.log(user, "user");
+      response.map((responses) => {
+        let up = responses.upVotes === undefined ? 0 : responses.upVotes.length;
+        let down =
+          responses.downVotes === undefined ? 0 : responses.downVotes.length;
+        responses["score"] = up - down;
+        console.log("lets check-------->>>>>>>");
+        console.log(answerIds);
+        console.log(responses.bestAns);
+        if (answerIds.includes(responses.bestAns)) {
+          responses["best"] = "true";
         }
-    };
+      });
+      response = JSON.parse(JSON.stringify(response));
+      if (response) {
+        return response;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting bookmark question ids"
+      );
+    }
+  };
 
+  static getUserByIdPopulateQuestion = async ({ userId }) => {
+    try {
+      const query = {
+        user: mongoose.Types.ObjectId(userId),
+      };
+      let user = await UserModel.findOne(query).populate("questionsAsked");
+      console.log(user, "user");
 
-    static getUserByIdWithQuestion = async ({ userId }) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            let user = await UserModel.findOne(query).populate(["questionsAsked","questionsAnswered.questionId", "questionsAnswered.answerId"])
-
-            console.log(user, "user");
-
-            user = JSON.parse(JSON.stringify(user));
-            if (user) {
-                return user;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
-        }
-    };
-
-    static getUserQuestionById = async ({ userId }) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            const userObj = userId;
-            const user =await User.getUserById(userObj);
-            let questionIds = user.questionsAsked
-            const questionObj = {};
-            questionObj.questionIds = questionIds;
-            let response = await Question.getQuestions(questionObj);
-            response = response.filter(responses => responses.status==='APPROVED')
-            console.log(user, "user");
-            response.map(responses=>{
-                console.log("responses------------------------>>>>>>>>>>")
-                console.log(responses.upVotes)
-                console.log(responses.downVotes)
-                let up= responses.upVotes===undefined?0:responses.upVotes.length;
-                let down= responses.downVotes===undefined?0:responses.downVotes.length;
-                console.log(up)
-                console.log(down)
-                responses['score']=(up-down);
-            })
-
-            response = JSON.parse(JSON.stringify(response));
-
-            if (response) {
-                return response;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
-        }
-    };
-
-    static getUserAnswerQuestionById = async ({ userId }) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            const userObj = userId;
-            const user =await User.getUserById(userObj);
-            var questionIds = user.questionsAnswered.map(function(obj) { return obj.questionId; });
-            var answerIds = user.questionsAnswered.map(function(obj) { return obj.answerId; });
-            const questionObj = {};
-            questionObj.questionIds = questionIds;
-            let response = await Question.getQuestionsWithTagsAndAnswers(questionObj);
-            response = response.filter(responses => responses.status==='APPROVED')
-            console.log(user, "user");
-            response.map(responses=>{
-                let up= responses.upVotes===undefined?0:responses.upVotes.length;
-                let down= responses.downVotes===undefined?0:responses.downVotes.length;
-                responses['score']=(up-down);
-                console.log("lets check-------->>>>>>>")
-                console.log(answerIds)
-                console.log(responses.bestAns)
-                if(answerIds.includes(responses.bestAns))
-                {
-                    responses['best']="true";
-                }
-                })
-            response = JSON.parse(JSON.stringify(response));
-            if (response) {
-                return response;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
-        }
-    };
-
-    static getUserByIdPopulateQuestion = async ({ userId }) => {
-        try {
-            const query = {
-                user: mongoose.Types.ObjectId(userId),
-            };
-            let user = await UserModel.findOne(query).populate('questionsAsked');
-            console.log(user, "user");
-
-            user = JSON.parse(JSON.stringify(user));
-            if (user) {
-                return user;
-            } else {
-                return [];
-            }
-        } catch (err) {
-            console.log(err);
-            throw new Error(
-                "Some unexpected error occurred while getting bookmark question ids"
-            );
-        }
-    };
+      user = JSON.parse(JSON.stringify(user));
+      if (user) {
+        return user;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      throw new Error(
+        "Some unexpected error occurred while getting bookmark question ids"
+      );
+    }
+  };
 
   static getBookMarkQuestionIds = async ({ userId }) => {
     try {
@@ -345,7 +357,7 @@ class User {
             location: req.body.location,
             name: req.body.name,
             title: req.body.title,
-            profilePicture  : req.body.profilePicture
+            profilePicture: req.body.profilePicture,
           },
         }, // replacement
         { new: true }, // options
@@ -393,7 +405,7 @@ class User {
       let user = await UserModel.findOne(query);
       user = JSON.parse(JSON.stringify(user));
       if (user?.tagIds?.length) {
-        const tagsCombined = [];
+        let tagsCombined = [];
         const tagIds = user.tagIds.map((eachTag) => {
           return eachTag.tagId;
         });
@@ -444,15 +456,17 @@ class User {
           function (error) {
             if (error) {
               console.log(error);
+              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
               outercb(null, tagsCombined);
             } else {
               console.log(tagsCombined);
+              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
               outercb(null, tagsCombined);
             }
           }
         );
       } else {
-        outercb(null,[]);
+        outercb(null, []);
       }
     } catch (err) {
       console.log(err);
@@ -482,186 +496,193 @@ class User {
     }
   };
 
-
-
-static topPosts = async(rankBy, type, userID)=>{
-  // parent function to handle sorting
+  static topPosts = async (rankBy, type, userID) => {
+    // parent function to handle sorting
     try {
-        const query = {
-            user: mongoose.Types.ObjectId(userID),
+      const query = {
+        user: mongoose.Types.ObjectId(userID),
+      };
+      const userObj = { userID };
+      //console.log(userId)
+      let userDetails = await User.getUserByIdWithQuestion(userObj); //await UserModel.findOne(query)
+      if (userDetails) {
+        if (rankBy == "score") {
+          return this.sortByScore(type, rankBy, userDetails);
+        } else if (rankBy == "date") {
+          return this.sortByDate(type, rankBy, userDetails);
         }
-        const userObj = {userID};
-        //console.log(userId)
-        let userDetails = await User.getUserByIdWithQuestion(userObj);//await UserModel.findOne(query)
-        if (userDetails) {
-            if (rankBy == 'score') {
-                return this.sortByScore(type, rankBy, userDetails);
-            } else if (rankBy == 'date') {
-                return this.sortByDate(type, rankBy, userDetails);
-            }
-        } else {
-            return [];
-        }
-    }
-    catch(err){
-        console.log(err);
-        throw new Error("Error while searching for users by name");
-    }
-}
-
-
-static sortByScore = async(type, rankBy, userDetails) =>{
-     // Sorts by score: len(upvotes)-len(downvotes)
-
-     if (type =='answer'){
-         let questionsAnswered = userDetails.questionsAnswered;
-         console.log("questionsAnswered", questionsAnswered)
-         questionsAnswered.sort(function(a, b){
-          var keyA = a.answerId.upVotes.length - a.answerId.downVotes.length,
-            keyB = b.answerId.upVotes.length - b.answerId.downVotes.length;
-          if (keyA < keyB) return 1;
-          if (keyA > keyB) return -1;
-          return 0;
-        });
-
-         var questions = questionsAnswered.map(function(obj) { return obj.questionId; });
-         return questions;
-     }
-      else if(type =='question'){
-        let questionsAsked = userDetails.questionsAsked;
-        var questionIds = questionsAsked.map(function(obj) { return obj._id; });
-        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
-        return this.customSortByVotes(questions);
+      } else {
+        return [];
       }
-
-      return this.sortAll(rankBy, userDetails)
-
-}
-
-
-static sortByDate = async(type, rankBy, userDetails) =>{
-   /**
-   * sorts by latest createdat
-   * */
-     if (type ==='question'){
-        let questionsAsked = userDetails.questionsAsked;
-        var questionIds = questionsAsked.map(function(obj) { return obj._id; });
-        let res = await QuestionModel.find({ '_id': { $in: questionIds }}).sort({createdat: -1});
-
-        let answer = JSON.parse(JSON.stringify(res));
-        if(answer){
-            return answer;
-        }else{
-            return [];
-        }
-     }
-     else if(type =='answer'){
-        let questionsAnswered = userDetails.questionsAnswered;
-       questionsAnswered.sort(function(a, b) {
-          var keyA = new Date(a.answerId.createdat),
-            keyB = new Date(b.answerId.createdat);
-          // Compare the 2 dates
-          if (keyA < keyB) return 1;
-          if (keyA > keyB) return -1;
-          return 0;
-        });
-
-
-       var questions = questionsAnswered.map(function(obj) { return obj.questionId; });
-       return questions;
-
-      }
-      else{
-        return this.sortAll(rankBy, userDetails)
-      }
-
-}
-
-
-static sortAll = async(rankBy, userDetails) =>{
-  /**
-   * sorts all the questions and answers combined based on date or score
-   * */
-    console.log("here", rankBy, userDetails)
-
-    if(rankBy=='date'){
-        let questionsAsked = userDetails.questionsAsked;
-        console.log("questionsAsked", questionsAsked)
-        var questionIds = questionsAsked.map(function(obj) { return obj._id; });
-        console.log("questionIds", questionIds)
-        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
-        for(const question of questions) {
-              question.sortcreatedat = question.createdat;
-         }
-
-        const questionWithDate = []
-        let questionsAnswered = userDetails.questionsAnswered;
-        for(let questionAnswered of questionsAnswered) {
-
-              const tmp = questionAnswered.questionId;
-              tmp.sortcreatedat = questionAnswered.answerId.createdat;
-              questionWithDate.push(tmp)
-         }
-
-        var combined = questions.concat(questionWithDate);
-
-        combined.sort(function(a, b) {
-          var keyA = new Date(a.sortcreatedat),
-            keyB = new Date(b.sortcreatedat);
-          // Compare the 2 dates
-          console.log(keyB, keyA)
-          if (keyA < keyB) return 1;
-          if (keyA > keyB) return -1;
-          return 0;
-        });
-
-        return combined;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error while searching for users by name");
     }
+  };
 
-    else if(rankBy=='score'){
-        let questionsAsked = userDetails.questionsAsked;
-        var questionIds = questionsAsked.map(function(obj) { return obj._id; });
-        const questions = await QuestionModel.find({ '_id': { $in: questionIds }}).lean()
+  static sortByScore = async (type, rankBy, userDetails) => {
+    // Sorts by score: len(upvotes)-len(downvotes)
 
-        for(const question of questions) {
-              question.score = question.upVotes.length - question.downVotes.length;
-         }
-
-        let questionsAnswered = userDetails.questionsAnswered;
-        const questionWithScore = []
-        for(let questionAnswered of questionsAnswered) {
-              const tmp = questionAnswered?.questionId;
-              if(tmp)
-              { tmp.score = (questionAnswered?.answerId?.upVotes?.length===undefined?0:questionAnswered.answerId.upVotes.length) - (questionAnswered?.answerId?.downVotes?.length===undefined?0:questionAnswered.answerId.downVotes.length);
-              questionWithScore.push(tmp)}
-         }
-
-
-        var combined = questions.concat(questionWithScore);
-        combined.sort(function(a, b){
-          return b.score - a.score;
-        });
-        return combined;
-    }
-}
-
-
-static customSortByVotes = async(inputArray) =>{
-  /**
-   * Sorts arrays by larger to smaller difference in upvote and downvote array
-   * length
-   * */
-     inputArray.sort(function(a, b){
-        var keyA = a.upVotes.length - a.downVotes.length,
-          keyB = b.upVotes.length - b.downVotes.length;
+    if (type == "answer") {
+      let questionsAnswered = userDetails.questionsAnswered;
+      console.log("questionsAnswered", questionsAnswered);
+      questionsAnswered.sort(function (a, b) {
+        var keyA = a.answerId.upVotes.length - a.answerId.downVotes.length,
+          keyB = b.answerId.upVotes.length - b.answerId.downVotes.length;
         if (keyA < keyB) return 1;
         if (keyA > keyB) return -1;
         return 0;
       });
-      return inputArray;
+
+      var questions = questionsAnswered.map(function (obj) {
+        return obj.questionId;
+      });
+      return questions;
+    } else if (type == "question") {
+      let questionsAsked = userDetails.questionsAsked;
+      var questionIds = questionsAsked.map(function (obj) {
+        return obj._id;
+      });
+      const questions = await QuestionModel.find({
+        _id: { $in: questionIds },
+      }).lean();
+      return this.customSortByVotes(questions);
     }
 
-  
+    return this.sortAll(rankBy, userDetails);
+  };
+
+  static sortByDate = async (type, rankBy, userDetails) => {
+    /**
+     * sorts by latest createdat
+     * */
+    if (type === "question") {
+      let questionsAsked = userDetails.questionsAsked;
+      var questionIds = questionsAsked.map(function (obj) {
+        return obj._id;
+      });
+      let res = await QuestionModel.find({ _id: { $in: questionIds } }).sort({
+        createdat: -1,
+      });
+
+      let answer = JSON.parse(JSON.stringify(res));
+      if (answer) {
+        return answer;
+      } else {
+        return [];
+      }
+    } else if (type == "answer") {
+      let questionsAnswered = userDetails.questionsAnswered;
+      questionsAnswered.sort(function (a, b) {
+        var keyA = new Date(a.answerId.createdat),
+          keyB = new Date(b.answerId.createdat);
+        // Compare the 2 dates
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
+      });
+
+      var questions = questionsAnswered.map(function (obj) {
+        return obj.questionId;
+      });
+      return questions;
+    } else {
+      return this.sortAll(rankBy, userDetails);
+    }
+  };
+
+  static sortAll = async (rankBy, userDetails) => {
+    /**
+     * sorts all the questions and answers combined based on date or score
+     * */
+    console.log("here", rankBy, userDetails);
+
+    if (rankBy == "date") {
+      let questionsAsked = userDetails.questionsAsked;
+      console.log("questionsAsked", questionsAsked);
+      var questionIds = questionsAsked.map(function (obj) {
+        return obj._id;
+      });
+      console.log("questionIds", questionIds);
+      const questions = await QuestionModel.find({
+        _id: { $in: questionIds },
+      }).lean();
+      for (const question of questions) {
+        question.sortcreatedat = question.createdat;
+      }
+
+      const questionWithDate = [];
+      let questionsAnswered = userDetails.questionsAnswered;
+      for (let questionAnswered of questionsAnswered) {
+        const tmp = questionAnswered.questionId;
+        tmp.sortcreatedat = questionAnswered.answerId.createdat;
+        questionWithDate.push(tmp);
+      }
+
+      var combined = questions.concat(questionWithDate);
+
+      combined.sort(function (a, b) {
+        var keyA = new Date(a.sortcreatedat),
+          keyB = new Date(b.sortcreatedat);
+        // Compare the 2 dates
+        console.log(keyB, keyA);
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
+      });
+
+      return combined;
+    } else if (rankBy == "score") {
+      let questionsAsked = userDetails.questionsAsked;
+      var questionIds = questionsAsked.map(function (obj) {
+        return obj._id;
+      });
+      const questions = await QuestionModel.find({
+        _id: { $in: questionIds },
+      }).lean();
+
+      for (const question of questions) {
+        question.score = question.upVotes.length - question.downVotes.length;
+      }
+
+      let questionsAnswered = userDetails.questionsAnswered;
+      const questionWithScore = [];
+      for (let questionAnswered of questionsAnswered) {
+        const tmp = questionAnswered?.questionId;
+        if (tmp) {
+          tmp.score =
+            (questionAnswered?.answerId?.upVotes?.length === undefined
+              ? 0
+              : questionAnswered.answerId.upVotes.length) -
+            (questionAnswered?.answerId?.downVotes?.length === undefined
+              ? 0
+              : questionAnswered.answerId.downVotes.length);
+          questionWithScore.push(tmp);
+        }
+      }
+
+      var combined = questions.concat(questionWithScore);
+      combined.sort(function (a, b) {
+        return b.score - a.score;
+      });
+      return combined;
+    }
+  };
+
+  static customSortByVotes = async (inputArray) => {
+    /**
+     * Sorts arrays by larger to smaller difference in upvote and downvote array
+     * length
+     * */
+    inputArray.sort(function (a, b) {
+      var keyA = a.upVotes.length - a.downVotes.length,
+        keyB = b.upVotes.length - b.downVotes.length;
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+    return inputArray;
+  };
 }
 
 module.exports.User = User;

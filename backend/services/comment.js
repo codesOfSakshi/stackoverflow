@@ -26,7 +26,7 @@ class Comment {
           var newActivity = {
             type: "comment",
             comment: comment,
-            by: result.userId,
+            by: result.user,
           };
 
           await ActivityService.updateActivity(result.activity, newActivity);

@@ -29,10 +29,12 @@ class Vote{
                     };
                     let getquestion1 = await QuestionModel.findOne(findCondition);
                     let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
-                    let tags = questionparse1[0].tags;
+                    let tags = questionparse1.tags;
                     let updateValue =[];
                     let tagHistory= new Map();
-                    user.tagIds.map(userTag=>{
+                    let questionUser= await UserModel.findById(mongoose.Types.ObjectId(questionparse1.user));
+                    questionUser=JSON.parse(JSON.stringify(questionUser))
+                    questionUser.tagIds.map(userTag=>{
                         tagHistory.set(userTag.tagId, userTag.score)
                     })
                     tags.map(tag=>{
@@ -56,9 +58,8 @@ class Vote{
                         updateValue.push(pair);
 
                     })
-
-                    user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
-                    console.log(user);
+                    questionUser = await UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(questionparse1.user),  {tagIds:updateValue}).exec();
+                    console.log(questionUser);
                     let userUpvote1 = questionparse1.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
@@ -151,34 +152,37 @@ class Vote{
                     let getquestion2 = await QuestionModel.findOne(findCondition);
                     let questionparse2 = JSON.parse(JSON.stringify(getquestion2))
                     // let user= await UserModel.findOne(userfindCondition);
-               let tags = questionparse2[0].tags;
-               let updateValue =[];
-               let tagHistory= new Map();
-               user.tagIds.map(userTag=>{
-                   tagHistory.set(userTag.tagId, userTag.score)
-               })
-               tags.map(tag=>{
-                   if(tagHistory.has(tag.tagId))
-                   {
-                       let val=  tagHistory.get(tag.tagId)
-                       val--;
-                       tagHistory.set(tag.tagId,val)
-                   }
-                   else
-                   {
-                       tagHistory.set(tag.tagId,1)
-                   }
-               })
+                    let tags = questionparse2.tags;
+                    let updateValue =[];
+                    let tagHistory= new Map();
+                    let questionUser= await UserModel.findById(mongoose.Types.ObjectId(questionparse2.user));
+                    questionUser=JSON.parse(JSON.stringify(questionUser))
+                    questionUser.tagIds.map(userTag=>{
+                        tagHistory.set(userTag.tagId, userTag.score)
+                    })
+                    tags.map(tag=>{
+                        if(tagHistory.has(tag.tagId))
+                        {
+                            let val=  tagHistory.get(tag.tagId)
+                            val--;
+                            tagHistory.set(tag.tagId,val)
+                        }
+                        else
+                        {
+                            tagHistory.set(tag.tagId,-1)
+                        }
+                    })
 
-               tagHistory.forEach((value,key)=>{
-                   const pair={
-                       "tagId":key,
-                       "score":value
-                   }
-                   updateValue.push(pair);
+                    tagHistory.forEach((value,key)=>{
+                        const pair={
+                            "tagId":key,
+                            "score":value
+                        }
+                        updateValue.push(pair);
 
-               })
-                    user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
+                    })
+                    questionUser = await UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(questionparse2.user),  {tagIds:updateValue}).exec();
+                    console.log(questionUser);
                     console.log(user);
                     let userDownvote2 = questionparse2.downVotes.filter((user)=>{
                         if(user===voter){

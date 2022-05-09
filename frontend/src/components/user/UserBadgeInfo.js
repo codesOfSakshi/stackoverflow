@@ -56,7 +56,7 @@ const UserBadgeInfo = () => {
     },[]);
 
   return (
-        <div className="profiletab-item-userbadgeinfo-container badgeinfo-container">
+        <div className="badgeinfo-container">
             <div className="badgeinfo-title">
                   Badges
             </div>
