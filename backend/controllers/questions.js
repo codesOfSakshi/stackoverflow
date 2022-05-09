@@ -11,7 +11,7 @@ router.post("/add",  async (req, res) => {
         const questionModelResponse = await Question.addQuestion(question);
         if(questionModelResponse){
             response.success = true;
-            response.message = questionModelResponse;
+            response.result = questionModelResponse;
             response.status = 200;
             res.status(200).send(response);
         }

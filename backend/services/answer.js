@@ -4,6 +4,7 @@ const {Question} = require("./question.js");
 const QuestionModel = require('../models/question');
 
 const AnswerModel = require('../models/answer.js');
+const ActivityService = require("./activity.js");
 
 const UserModel = require('../models/user');
 
@@ -47,7 +48,7 @@ class Answer{
                 console.log("RESULT FROM ANSWER IS", result);
                 const id = result._id;
                 console.log("==="+questionId);
-                const updateAnswer = await Question.updateAnswerId(id,questionId);
+                const updateAnswer = await Question.updateAnswerId(id, user,questionId);
                 const finduserCondition = {
                     _id:mongoose.Types.ObjectId(user),
                 };

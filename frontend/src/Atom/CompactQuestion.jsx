@@ -7,6 +7,7 @@ import ReactTimeAgo from 'react-time-ago'
 function CompactQuestion(props) {  
     const [date,setDate]=useState([])
     const question = props.questions
+    console.log("QUESTION ID:", question._id);
     const questionLink = "/question/"+props.questions._id
     const userLink = "/user/"+"abhsjdahj"
 
