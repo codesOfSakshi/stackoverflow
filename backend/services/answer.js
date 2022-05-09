@@ -57,9 +57,10 @@ class Answer{
                 };
                 const ansupdateCondition = {
                     $addToSet:{
-                        "questionsAnswered":  result._id
+                        "questionsAnswered":  {"questionId" : questionId , "answerId" : answerId}
                     } 
                 }
+                user.tagIds.push({ tagId: eachTag, score: 0 });
                 let userresult = await UserModel.updateOne(finduserCondition, ansupdateCondition)
                 console.log("userresult", userresult)
 
