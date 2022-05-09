@@ -166,7 +166,7 @@ function AskQuestionEditor(props) {
         Be specific and imagine you’re asking a question to another person
         <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Control type="text" placeholder="Enter title" />
+            <Form.Control required type="text" placeholder="Enter title" />
         </Form.Group>
 
         <h3>Body</h3>
