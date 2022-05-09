@@ -157,7 +157,7 @@ class Vote{
                                 //final.set(tag,userTag.score+1)
                                 const pair = {
                                     "tagId":tag,
-                                    "score":userTag.score+1
+                                    "score":userTag.score-1
                                 }
                                 updateValue.push(pair);
                                 flag=1;
