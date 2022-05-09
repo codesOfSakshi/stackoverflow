@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react'
 import UserTopPost from './UserTopPost'
 import axiosService from "../../services/axiosservice";
 import {useParams} from "react-router-dom";
+import "../../styles/usertoppostlist.css";
+
+
 function UserTopPostList({userId}) {
 
      const [question, setQuestion] = useState([]);
@@ -50,10 +53,8 @@ function UserTopPostList({userId}) {
 
 
     return (
-        <div className="profiletab-item-userpostlist-container userpostlist-container">
+        <div className="usertoppostlist-container">
             <div className="usertaglist-title">
-
-
         <div id="js-top-posts" className="grid--item">
             <div className="d-flex ai-end jc-space-between fw-wrap">
                 <div className="flex--item mb8">
