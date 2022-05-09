@@ -7,6 +7,7 @@ import "./questionActivity.css";
 const QuestionActivity = ({ }) => {
   const { activityID } = useParams();
   const [activities, setActivities] = useState();
+  const [timeToggle, setTimeToggle] = useState(true);
   const getActivities = () => {
     if (activityID) {
       axiosApi(
@@ -66,7 +67,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap creation-date">
         <a href="#answer_72164866">
           <span title="2022-05-08 20:29:06Z" class="relativetime">
-            {getTimeSince(activity?.createdAt)}
+            {timeToggle?getTimeSince(activity?.createdAt):activity?.createdAt}
           </span>
         </a>
       </td>
@@ -102,7 +103,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap creation-date">
         <a href="#comment_127504140">
           <span title="2022-05-08 20:27:47Z" class="relativetime">
-            {getTimeSince(activity?.createdAt)}
+            {timeToggle?getTimeSince(activity?.createdAt):activity?.createdAt}
           </span>
         </a>
       </td>
@@ -142,7 +143,7 @@ const QuestionActivity = ({ }) => {
       <td class="ws-nowrap creation-date">
         <a href="#history_52385c2e-ea3b-4a96-b259-8d903c5e790f">
           <span title="2022-05-08 20:25:49Z" class="relativetime">
-            {getTimeSince(activity?.createdAt)}
+            {timeToggle?getTimeSince(activity?.createdAt):activity?.createdAt}
           </span>
         </a>
       </td>
@@ -212,8 +213,8 @@ const QuestionActivity = ({ }) => {
               <thead>
                 <tr>
                   <th>
-                    when
-                    <a class="js-toggle-date-format">toggle format</a>
+                    when&ensp;
+                    <a class="js-toggle-date-format" onClick={()=>setTimeToggle(!timeToggle)}>toggle format</a>
                   </th>
                   <th class="event-type">what</th>
                   <th></th>
