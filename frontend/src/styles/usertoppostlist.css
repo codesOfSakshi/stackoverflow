@@ -1,0 +1,18 @@
+.usertoppostlist-count {
+    display: inline-block;
+}
+
+.usertoppostlist-tab {
+    margin-left: 650px;
+    display: inline-block;
+}
+
+.usertoppostlist-container {
+    margin-top: 32px;
+    margin-left: 16px;
+}
+
+.usertoppostlist-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}

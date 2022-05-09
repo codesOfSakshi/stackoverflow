@@ -5,6 +5,7 @@ const TagModel = require("../models/tag.js");
 const ActivityModel = require("../models/activity.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityService = require("./activity.js");
+const USER = require("../models/user");
 
 class Question {
   static getQuestions = async ({ questionIds }) => {
@@ -144,15 +145,20 @@ class Question {
       var questions = await QuestionModel.findById(questionId)
         .populate("answers")
         .populate("user");
-      console.log(questions)
-      var questionUser = questions.user._id
+      console.log(questions);
+      var questionUser = questions.user._id;
 
       var viewIncrement = questions.views + 1;
       console.log(
         "Incrementing the view from " + questions.views + " to " + viewIncrement
       );
-      var d=await QuestionModel.findByIdAndUpdate(questionId,{views: viewIncrement});
-      await UserModel.findOneAndUpdate({_id :questionUser}, {$inc : {'reach' : 1}});
+      var d = await QuestionModel.findByIdAndUpdate(questionId, {
+        views: viewIncrement,
+      });
+      await UserModel.findOneAndUpdate(
+        { _id: questionUser },
+        { $inc: { reach: 1 } }
+      );
 
       // var questionsdata=questions._doc
       // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
@@ -181,26 +187,24 @@ class Question {
       if (type == "Interesting" || type == 1) {
         console.log("here");
         // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-        questions = await QuestionModel.find(query)
-        .populate("user")
-        .sort({
+        questions = await QuestionModel.find(query).populate("user").sort({
           createdAt: sorting,
         });
       } else if (type == "Hot" || type == 2) {
         questions = await QuestionModel.find(query)
-        .populate("user")
-        .sort({ views: -1 });
+          .populate("user")
+          .sort({ views: -1 });
       } else if (type == "Score" || type == 3) {
         questions = await QuestionModel.find(query)
-        .populate("user")
-        .sort({ upVotes:-1});
+          .populate("user")
+          .sort({ upVotes: -1 });
       } else if (type == "Unanswered" || type == 4) {
         questions = await QuestionModel.find({
           answers: { $size: 0 },
           status: "APPROVED",
         })
-        .populate("user")
-        .sort({ score: 1 });
+          .populate("user")
+          .sort({ score: 1 });
       }
       console.log(questions);
 
@@ -223,15 +227,23 @@ class Question {
   static addQuestion = async (question) => {
     try {
       console.log("Pop", question);
-      var activityNew = new ActivityModel({
-        activities: {
-          type: "history",
-          comment: "asked",
-          by: question.userId,
-        },
-      });
-      var activityResult = await activityNew.save();
-      console.log("Activity", activityResult);
+      
+      const user = await USER.findById(question.user);
+      if (user && user.name) {
+        // console.log("Returned User", user);
+        var newActivity = new ActivityModel({
+          activities: {
+            type: "history",
+            comment: "asked",
+            by: user.name,
+          },
+        });
+        var activityResult = await newActivity.save();
+        console.log("Activity", activityResult);
+      }
+      else{
+        console.log("!!Could not create Activity!!")
+      }
 
       var questionNew = new QuestionModel({
         createdAt: new Date().toISOString(),
@@ -248,7 +260,7 @@ class Question {
         commentId: "",
         bestAns: null,
         badges: [],
-        activity: activityNew._id,
+        activity: newActivity._id,
         status:
           question.images && question.images.length == 0
             ? "APPROVED"
