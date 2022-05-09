@@ -26,6 +26,7 @@ const s3Route = require('./routes/s3Route');
 const answer = require("./controllers/answer")
 const comment = require("./controllers/comment")
 const vote = require("./controllers/vote")
+const activity = require("./routes/activity");
 
 /* -------------------------------------------------------------------------- */
 /*                               start of config                              */
@@ -59,9 +60,9 @@ app.listen(PORT, () => {
 // const mongoURI =
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
 
-//const mongoURI = "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/Stackoverflow?retryWrites=true&w=majority";
 
-const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
+// const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
 
 let options = {
   useNewUrlParser: true,
@@ -115,10 +116,10 @@ app.use("/api/user", user);
 app.use("/api/questions", question);
 app.use("/api/tags", tagRoute);
 app.use("/api/admin", admin);
-app.use('/api/questions',question);
 app.use('/api/messages', messageRoute);
 app.use('/api/s3', s3Route);
 app.use("/api/answer", answer)
 app.use("/api/answer/mark", answer)
 app.use("/api/comment", comment)
 app.use("/api/vote", vote)
+app.use("/api/activity", activity)

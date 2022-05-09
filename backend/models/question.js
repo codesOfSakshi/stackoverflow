@@ -8,9 +8,11 @@ const questionSchema = new mongoose.Schema({
   // },
   createdAt: {
     type: Date,
+    default: new Date()
   },
   updatedAt: {
     type: Date,
+    default: new Date()
   },
   upVotes: {type:Array},
   downVotes: {type:Array},
@@ -52,7 +54,8 @@ const questionSchema = new mongoose.Schema({
     type: Array,
   },
   activity: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "activity",
   },
   score:{
     type: Number,

@@ -21,7 +21,7 @@ function CompactQuestionListing({searchResult, questions}) {
         bestAns:"12231232",
     }
     let navigate = useNavigate();
-    const [questionsAll, setlmain] = useState([question,question,question,question,question]);
+    const [questionsAll, setlmain] = useState([]);
     // const [questionsAll, setlmain] = useState([]);
     // const [state, setstate] = useState(1);
     const [headerMessage, setHeaderMessage] = useState("");
@@ -31,6 +31,7 @@ function CompactQuestionListing({searchResult, questions}) {
     }
 
     useEffect(() => {
+      console.log("Compact Question Listing --------- retriggered")
       if(searchResult){
         setHeaderMessage("Search Result");
         if(!Array.isArray(questions)){
@@ -61,7 +62,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
       console.log("QUESTIONSALL: ", questionsAll);
       
-    },[]);
+    },[searchResult,questions]);
     
     // Question - id, createdAt, updatedAt, upvotes[] (array of userIds), downvotes[] (array of userIds),
     //  views, title, tags[] (tag collection ids), description, 

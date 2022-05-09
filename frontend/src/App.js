@@ -18,6 +18,7 @@ import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
 import Messaging from "./pages/Messages/Messaging"
 import Upvote from "./Atom/upvote";
+import QuestionActivity from "./components/questionActivity/questionActivities";
 import AllMessages from "./pages/Messages/AllMessages";
 
 
@@ -26,6 +27,7 @@ function App() {
     <Routes>
       <Route exact path="/" element={<SignIn />} />
       <Route exact path="/admin" element={<Admin />} />
+      <Route exact path="/activity/:activityID" element={<QuestionActivity />} />
       <Route exact path="/user/:userId" element={<User />} />
       <Route exact path="/user/edit/:userId" element={<UserDetail />} />
       <Route exact path="/signin" element={<SignIn />} />

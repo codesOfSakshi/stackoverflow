@@ -26,7 +26,7 @@ function AskQuestionEditor(props) {
 
   const cookies = new Cookies();
     const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token.split('.')[1], { header: true });
+    const decoded = jwt_decode(token?.split('.')[1], { header: true });
     let navigate = useNavigate();
     const routeQuestion = () =>{
       navigate(`/askquestion`)

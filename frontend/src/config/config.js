@@ -13,15 +13,21 @@ exports.constants = {
       getUnreviewed : "/api/admin/unreviewed",
       getAnalytics : "/api/admin/analytics",
       approval : "/api/admin/approval",
+    },
+    ACTIVITY: {
+      getActivity: "/api/activity/:activityID"
+    },
+    COMMENT: {
+      postComment: "api/comment"
     }
   },
   PAGES: {
     home: "/"
   },
   constants: {
-    questionApproved: "approved",
-    questionRejected: "rejected",
-    questionWaiting: "waiting for approval",
+    questionApproved: "APPROVED",
+    questionRejected: "REJECTED",
+    questionWaiting: "PENDING",
   },
   baseUrl:'http://localhost:3001'
 };
