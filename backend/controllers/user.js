@@ -12,7 +12,7 @@ router.get("/:userId",  async (req, res) => {
     const response = {};
     try{
         const userObj = {userId};
-        const user = await User.getUserById(userObj);
+        const user = await User.getUserById(userId);
         if(user){
                 response.success = true;
                 response.user = user;
