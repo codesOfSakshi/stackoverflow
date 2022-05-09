@@ -120,7 +120,7 @@ function Messaging() {
                     <div>
                         {users.map(user => <li key={user.id} className="user">
                             <picture className="user-picture">
-                                <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" />
+                                <img src={user.profilePicture}/>
                             </picture>
                             <div className="user-info-container">
                                 <div className="user-info">
