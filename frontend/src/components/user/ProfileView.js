@@ -54,19 +54,19 @@ export default function ProfileView() {
                  <Stack direction="row">
                     <CakeIcon/>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Member for 5 years,9 months
+                        Member for 1 day
                     </Typography>
                  </Stack>
                 <Stack direction="row">
                     <WatchLaterIcon/>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Last seen this week
+                        Last seen today
                     </Typography>
                 </Stack>
                 <Stack direction="row">
                     <CalendarMonthIcon/>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Visited 230 days,8 consecutive
+                        Visited today
                     </Typography>
                 </Stack>
             </Stack>

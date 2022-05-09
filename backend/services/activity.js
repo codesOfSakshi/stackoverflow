@@ -28,7 +28,7 @@ module.exports = class ActivityService {
     try {
       console.log("NEW ACTIVITY", newActivity);
       console.log("ADD ACTVITY QUERY", query);
-      if(newActivity.type == "answer"){
+      if(newActivity.type == "answer" || newActivity.type == "comment"|| newActivity.type == "history"){
         const user = await USER.findById(newActivity.by);
         if(user && user.name){
           console.log("Returned User", user);

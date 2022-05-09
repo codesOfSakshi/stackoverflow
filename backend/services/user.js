@@ -405,7 +405,7 @@ class User {
       let user = await UserModel.findOne(query);
       user = JSON.parse(JSON.stringify(user));
       if (user?.tagIds?.length) {
-        const tagsCombined = [];
+        let tagsCombined = [];
         const tagIds = user.tagIds.map((eachTag) => {
           return eachTag.tagId;
         });
@@ -456,9 +456,11 @@ class User {
           function (error) {
             if (error) {
               console.log(error);
+              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
               outercb(null, tagsCombined);
             } else {
               console.log(tagsCombined);
+              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
               outercb(null, tagsCombined);
             }
           }
