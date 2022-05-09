@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Upvote = (props) => {
 
@@ -9,10 +10,16 @@ const Upvote = (props) => {
     const[voter,setvoter] = useState(props.decoded)
     const[bst,setbst] = useState(false)
     var voteType = 'Downvote'
+    let navigate = useNavigate();
 
     var length = props.object.upVotes?.length - props.object.downVotes?.length
 
     const onDownVoteClick =async ()=>{
+        if(!props.decoded){
+            alert("Redirecting to login ...")
+            navigate("/")
+        }
+        else{
         if(type && type === 'question'){
             console.log("inside type && type")
             axios.post("http://localhost:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
@@ -27,8 +34,14 @@ const Upvote = (props) => {
             })
         }
     }
+    }
 
     const onUpVoteClick =async ()=>{
+        if(!props.decoded){
+            alert("Redirecting to login ...")
+            navigate("/")
+        }
+        else{
         voteType = 'Upvote'
 
         if(type && type == 'question'){
@@ -43,6 +56,7 @@ const Upvote = (props) => {
                 console.log(response);
             })
         }
+    }
     }
 
     const bestanswer = async () =>{

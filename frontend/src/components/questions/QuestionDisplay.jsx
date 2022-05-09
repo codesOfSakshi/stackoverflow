@@ -11,7 +11,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
-import ReactTimeAgo from 'react-time-ago'
+import ReactTimeAgo from 'react-time-ago';
+import UserCard from '../../Atom/UserCard';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -33,7 +34,7 @@ function QuestionsPage(props) {
     var type = 'question'
 
     const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token.split('.')[1], { header: true });
+    const decoded = token?(jwt_decode(token.split('.')[1], { header: true })):false
     console.log("decode", decoded)
 
     useEffect(() => {
@@ -43,7 +44,7 @@ function QuestionsPage(props) {
             console.log(response)
             setQuestion(response.data.data)
             setlans(response.data.data.answers)
-            let own = (response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
+            let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
             setOwner(own)
         })
     }, [])
@@ -52,12 +53,19 @@ function QuestionsPage(props) {
     const navigateToEdit = () => {
         navigate(`/edit/${question._id}`)
     }
-    const addBookmark = () =>{
-        var api="http://localhost:3001/api/user/addbookmark/"+decoded._id
+
+    const addBookmark = () => {
+        if(!decoded){
+            alert("Redirecting to login ...")
+            navigate("/")
+        }
+        else{
+        var api = "http://localhost:3001/api/user/addbookmark/" + decoded._id
         var payload = {
             questionId: question._id
         }
         axios.post(api, payload).then(response => { alert(response.data) })
+    }
     }
 
     const saveQuesComment = () => {
@@ -75,6 +83,11 @@ function QuestionsPage(props) {
     //             })
 
     const recordAnswer = () => {
+        if(!decoded){
+            alert("Redirecting to login ...")
+            navigate("/")
+        }
+        else{
         console.log("upvote");
         var api = "http://localhost:3001/api/answer"
         var payload = {
@@ -83,6 +96,7 @@ function QuestionsPage(props) {
             user: decoded._id,
         }
         axios.post(api, payload).then(response => { alert(response.data) })
+    }
     }
 
 
@@ -157,9 +171,11 @@ function QuestionsPage(props) {
                             </div>
                         )
                     })}
-                    {owner && <Col style={{ float: "right" }} >
-                        <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>
-                    </Col>}
+                    <Col style={{ float: "right" }} >
+                    {owner && <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>}
+                        <UserCard date={question.createdAt} user={question.user}></UserCard>
+                    </Col>
+
                 </div>
                 <hr></hr>
                 <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
