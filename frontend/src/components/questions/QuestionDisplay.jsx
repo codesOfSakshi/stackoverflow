@@ -43,6 +43,7 @@ function QuestionsPage(props) {
         axios.get(api).then(response => {
             console.log(response)
             setQuestion(response.data.data)
+            console.log("DISPLAYED QUESTION", response.data.data);
             setlans(response.data.data.answers)
             let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
             setOwner(own)

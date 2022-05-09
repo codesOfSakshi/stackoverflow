@@ -59,7 +59,7 @@ function AskQuestionEditor(props) {
   },[])
 
   const submitHandler =(e)=>{
-    console.log(arr);
+    console.log(e);
     e.preventDefault();
     var payload ={
       user: decoded._id,
@@ -71,7 +71,7 @@ function AskQuestionEditor(props) {
     }
     var api="http://localhost:3001/api/questions/add"
     axios.post(api,payload).then(response => {
-      alert(response)
+      console.log(response)
       })
   }
 

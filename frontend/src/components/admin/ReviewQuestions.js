@@ -7,8 +7,9 @@ const ReviewQuestions = () => {
   const [questions, setQuestions] = useState();
 
   const handleButtonClick = (value, idx) =>{
-    console.log(value, idx);
+    // console.log(value, idx);
     let data = { "questionID": questions[idx]._id, "status": value};
+    console.log("PAYLOAD", data);
     axiosApi.post(constants.API.baseURL+constants.API.ADMIN.approval, data).then(res=>{
         console.log(res);
         if(res && res.data && res.data.success==true){
@@ -51,7 +52,7 @@ const ReviewQuestions = () => {
 
 const QuestionSummary = ({idx, question, handleButtonClick}) => (
   <div id="question-summary" class="s-post-summary js-post-summary">
-    {console.log("IN QUESTION", question)}
+    {/* {console.log("IN QUESTION", question)} */}
     <div class="s-post-summary--content ">
       <h3 class="s-post-summary--content-title">
         <a href="{questionOverviewLink}" class="s-link">
