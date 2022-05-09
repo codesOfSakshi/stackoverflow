@@ -28,7 +28,7 @@ class Vote{
                     };
                     let getquestion1 = await QuestionModel.findOne(findCondition);
                     let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
-                    let tags = questionparse1.tags;
+                    let tags = questionparse1[0].tags;
                     let updateValue =[];
                     tags.map(tag=>{
                         let flag=0;
@@ -58,7 +58,6 @@ class Vote{
 
                     user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
                     console.log(user);
-
                     let userUpvote1 = questionparse1.upVotes.filter((user)=>{
                         if(user===voter){
                             return(user);
