@@ -253,7 +253,7 @@ class Question {
         updateUserData
       );
       await questionNew.save();
-      return questionNew;
+      return "Question Added";
     } catch (err) {
       console.log(err);
       throw new Error("Some unexpected error occurred while getting questions");
