@@ -40,6 +40,16 @@ function AskQuestionEditor(props) {
 
 
   useEffect(() => {
+    var arrTags=[]
+    var api="http://localhost:3001/api/tags"
+    axios.get(api).then(
+      response =>{
+        response.data.map(tag =>{
+          arrTags.push(tag.name)
+        })
+        setTags(arrTags)
+      }
+    )
   },[])
 
   const submitHandler =(e)=>{
@@ -62,7 +72,7 @@ function AskQuestionEditor(props) {
   const deleteTag = (e,val) =>{
     e.preventDefault()
     console.log("Deleting Tag : ",e)
-    var localSelectedTags = selectedTags.slice()
+    var localSelectedTags = selectedTags.slice(0,)
     const index = localSelectedTags.indexOf(val);
     console.log("Deleting Tag : ",val)
     if (index > -1) {
@@ -208,7 +218,7 @@ function AskQuestionEditor(props) {
         <div class="d-flex gs4">
           {selectedTags.map(tag => 
           {return(<a class="flex--item s-tag s-tag__moderator" href="#">{tag}
-          <span class="s-tag--dismiss"> <div val={tag} onClick={(e,tag)=>deleteTag(e,tag)}>X</div></span></a>)})}
+          <span class="s-tag--dismiss"> <div val={tag} onClick={(e)=>deleteTag(e,tag)}>X</div></span></a>)})}
       </div>
       </div>
 

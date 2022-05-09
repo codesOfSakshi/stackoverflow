@@ -37,7 +37,7 @@ export default function EditorCustom(props) {
     console.log("Edit Page all props :",props)
     setValue(props.preDefault)
     setImages(props.images)
-  },[])
+  },[props.preDefault])
 
   const handleClick = () => {
     if (mdEditor.current) {
