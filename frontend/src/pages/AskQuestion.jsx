@@ -22,9 +22,7 @@ function AskQuestion() {
         <Col lg={3}>
         </Col>
       <Col> */}
-    <div style={{"text-align":"left",
-    "margin-left": "20rem",
-    "margin-right":"30rem"}}>
+    <div>
     <br></br>
     <br></br>
     <AskQuestionEditor></AskQuestionEditor>

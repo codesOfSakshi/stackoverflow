@@ -16,7 +16,7 @@ return (
         style={{"float": "right",
         "height": "130px"}}>
         </img>
-    <h1 className="fs-headline1" style={{"paddingTop":"3rem"}}>Edit Question</h1>
+    <h1 className="fs-headline1" style={{"paddingTop":"3rem","margin-left": "-8rem"}}>Edit Question</h1>
     </Col>
     </Row>
     <Row>

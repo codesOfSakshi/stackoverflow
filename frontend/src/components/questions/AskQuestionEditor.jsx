@@ -40,7 +40,7 @@ function AskQuestionEditor(props) {
 
 
   useEffect(() => {
-    if(!props.decoded){
+    if(!decoded){
         alert("Please sign up before asking a question, Redirecting to login ...")
         navigate("/")
     }
