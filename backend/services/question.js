@@ -212,6 +212,16 @@ class Question {
   static addQuestion = async (question) => {
     try {
       console.log("Pop", question);
+      var activityNew = new ActivityModel({
+        activities: {
+          type: "history",
+          comment: "asked",
+          by: question.userId,
+        },
+      });
+      var activityResult = await activityNew.save();
+      console.log("Activity", activityResult);
+
       var questionNew = new QuestionModel({
         createdAt: new Date().toISOString(),
         upvotes: [],
@@ -227,7 +237,7 @@ class Question {
         commentId: "",
         bestAns: null,
         badges: [],
-        activity: "",
+        activity: activityNew._id,
         status:
           question.images && question.images.length == 0
             ? "APPROVED"
@@ -266,6 +276,18 @@ class Question {
             : "PENDING",
         updatedAt: new Date().toISOString(),
       });
+
+      //ADDING EDIT TO ACTIVITY
+      console.log("AFTER UPDATE", result);
+
+      var newActivity = {
+        type: "history",
+        comment: "edited",
+        by: question.userId,
+      };
+
+      await ActivityService.updateActivity(result.activity, newActivity);
+
       const updateUserData = {};
       updateUserData.userId = question.userId;
       updateUserData.questionId = question._id.toString();
