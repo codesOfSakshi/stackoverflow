@@ -33,15 +33,16 @@ class ReputationHistory {
     }
     static insertReputationHistory= async ({userId,action})=>{
         try{
-
+            console.log(action+"========");
             var reputation = new ReputationHistoryModel({
                 createdAt: new Date().toISOString(),
                 user:userId,
                 action:action,
-                gain:reputationHistory.action
+                gain:reputationHistory[action]
             });
-
-            const reputationHistory = await reputation.save();
+            console.log("================");
+            console.log(reputation);
+            const reputationHistoryResult = await reputation.save();
 
         }catch(err){
             console.log(err);
