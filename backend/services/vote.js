@@ -25,7 +25,36 @@ class Vote{
                     };
                     let getquestion1 = await QuestionModel.findOne(findCondition);
                     let questionparse1 = JSON.parse(JSON.stringify(getquestion1))
+                    let tags = questionparse1[0].tags;
+                    let updateValue =[];
+                    tags.map(tag=>{
+                        let flag=0;
+                        user.tagIds.map(userTag=>{
+                            if(userTag.tagId==tag)
+                            {
+                                //final.set(tag,userTag.score+1)
+                                const pair = {
+                                    "tagId":tag,
+                                    "score":userTag.score+1
+                                }
+                                updateValue.push(pair);
+                                flag=1;
+                            }
+                        })
 
+                        if(flag==0)
+                        {
+                            const pair = {
+                                "tagId":tag,
+                                "score":1
+                            }
+                            updateValue.push(pair);
+                        }
+                    })
+
+
+                    user = UserModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId),  {tagIds:updateValue}).exec();
+                    console.log(user);
 
                     let userUpvote1 = questionparse1.upVotes.filter((user)=>{
                         if(user===voter){
