@@ -174,24 +174,32 @@ class Question {
       console.log(type, sortType);
       var sorting = 1;
       var questions;
-      if (sortType == "desc" || sortType == -1) {
-        sorting = -1;
+      if (sortType == "asc" || sortType == 1) {
+        sorting = 1;
       }
 
       if (type == "Interesting" || type == 1) {
         console.log("here");
         // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-        questions = await QuestionModel.find(query).sort({
+        questions = await QuestionModel.find(query)
+        .populate("user")
+        .sort({
           createdAt: sorting,
         });
       } else if (type == "Hot" || type == 2) {
-        questions = await QuestionModel.find(query).sort({ views: sorting });
+        questions = await QuestionModel.find(query)
+        .populate("user")
+        .sort({ views: sorting });
       } else if (type == "Score" || type == 3) {
-        questions = await QuestionModel.find(query).sort({ answers: sorting });
+        questions = await QuestionModel.find(query)
+        .populate("user");
+        sort({ answers: sorting });
       } else if (type == "Unanswered" || type == 4) {
         questions = await QuestionModel.find(query, {
           answers: { $size: 0 },
-        }).sort({ score: 1 });
+        })
+        .populate("user")
+        .sort({ score: 1 });
       }
       console.log(questions);
 

@@ -65,9 +65,9 @@ function CompactQuestion(props) {
 
             <div class="s-user-card s-user-card__minimal">
                 <a href="…" class="s-avatar s-user-card--avatar">
-                    {question.user && <img class="s-avatar--image" src={question.user.profilePic} />}
+                    {question.user && <img class="s-avatar--image" src={question.user.profilePicture} />}
                 </a>
-                <a href="…" class="s-user-card--link">{question.userId}</a>
+                <a href="…" class="s-user-card--link">{question.user.name}</a>
                 <time class="s-user-card--time">
                             {question.createdAt && 
                             <ReactTimeAgo date={Date.parse(question.createdAt)} locale="en-US" />}</time>
