@@ -29,9 +29,11 @@ function SignIn() {
         if (response.status == 200) {
           setMessage("");
           const token = response.data.token;
-          const user = response.data;
+          const user = response.data.user;
+          const userID = response.data.user._id;
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("user", user);
+          window.localStorage.setItem("userID", userID);
           console.log("signed in"); // will be replaced by navigating to a new page
           if (user.admin) {
             navigate("/admin", { replace: true });
