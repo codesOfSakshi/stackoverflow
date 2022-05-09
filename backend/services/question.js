@@ -143,9 +143,9 @@ static getQuestionsBasedOnId = async (questionId)=>{
         var questions =await QuestionModel.findById(questionId).populate("answers").populate('user');
         // console.log(questions)
 
-        // var viewIncrement=questions.views+1
-        // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
-        // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
+        var viewIncrement=questions.views+1
+        console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
+        QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
         
         // var questionsdata=questions._doc
         // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
@@ -209,6 +209,7 @@ static addQuestion = async (question)=>{
             answers:[],
             images:question.images,
             userId:question.userId,
+            user:question.user,
             title:question.title,
             tags:question.tags,
             description:question.description,
