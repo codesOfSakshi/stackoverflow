@@ -2,8 +2,10 @@
     display: grid;
     padding: 10px;
     grid-template-columns: [first] 1fr [second] 3fr [third];
-    grid-template-rows: [first] 1fr [second] 1fr [third];
-    grid-template-areas: "stats-item badgeinfo-item" "stats-item usertaglist-item" "stats-item userpostlist-item";
+    grid-template-rows: [first] 1fr [second] 1fr [third] 1fr [fourth];
+    grid-template-areas: "stats-item badgeinfo-item" 
+    "usertaglist-item usertaglist-item" 
+    "userpostlist-item userpostlist-item";
     margin-top: 16px;
     font-size: 1.5rem;
 }
@@ -11,12 +13,13 @@
 .profiletab-item-stats-container {
     grid-area: stats-item;
     justify-self: start;
-    align-self: center;
+    align-self: start;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     align-content: center;
+    margin-top: 30px;
 }
 
 .profiletab-item-badgeinfo-container {
@@ -40,6 +43,8 @@
     justify-content: center;
     align-items: flex-start;
     align-content: center;
+    margin-left:440px;
+    margin-top:50px;
 }
 
 .profiletab-item-userpostlist-container {
@@ -51,4 +56,5 @@
     justify-content: center;
     align-items: flex-start;
     align-content: center;
+    margin-left: 440px;
 }

@@ -52,9 +52,11 @@ const ProfileTab = () => {
   return (
       <div className="profiletab-container">
         <UserStats reach={reach} reputation={reputation} answerCount={answerCount} questionCount={questionCount}/>
-        <UserBadgeInfo/>
-        <UserTagList/>
-        <UserTopPostList userId={userId}/>
+        <div className="profiletab-item-userbadgeinfo-container">
+          <UserBadgeInfo/>
+          <UserTagList/>
+          <UserTopPostList userId={userId}/>
+        </div>
       </div>
   )
 }

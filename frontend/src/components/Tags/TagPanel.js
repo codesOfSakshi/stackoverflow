@@ -5,11 +5,13 @@ const TagPanel = (props) => {
 
     const navigate = useNavigate();
 
-    const tag = props.tag.tagId;
+    const tag = props.tag.name;
     const tagDescription = props.tag.description;
 
     const navitateToTag = () => {
-        navigate('/tag/' + tag ,{state:{tagId:tag, description: tagDescription}});
+        // navigate('/tag/' + tag ,{state:{tagId:tag, description: tagDescription}});
+        navigate('/tag/' + props.tag.name);
+        console.log("HERE: ",props.tag.name)
     }
 
     return (
