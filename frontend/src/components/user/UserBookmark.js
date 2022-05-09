@@ -1,5 +1,6 @@
 import React from 'react'
 import Stack from '@mui/material/Stack';
+import ReactTimeAgo from 'react-time-ago';
 
 function UserBookmark({bookMarkQuestion}) {
     return (
@@ -13,16 +14,16 @@ function UserBookmark({bookMarkQuestion}) {
                     {(bookMarkQuestion?.views ? bookMarkQuestion?.views : 0 )+" views"}
                 </div>
                 <div className="s-post-summary--stats-item">
-                    {(bookMarkQuestion?.upvotes?.length ? bookMarkQuestion?.upvotes?.length : 0 )+" upvotes"}
+                    {(bookMarkQuestion?.upVotes?.length ? bookMarkQuestion?.upVotes?.length : 0 )+" upvotes"}
                 </div>
                 <div className="s-post-summary--stats-item">
-                    {(bookMarkQuestion?.downvotes?.length ? bookMarkQuestion?.downvotes?.length : 0 )+" downvotes"}
+                    {(bookMarkQuestion?.downVotes?.length ? bookMarkQuestion?.downVotes?.length : 0 )+" downvotes"}
                 </div>
                 </Stack>
             </div>
             <div className="s-post-summary--content">
                 <span>
-                    <a href="/questions/63110429/jaspersoft-template-type-change-from-xml-to-html"
+                    <a href={"/question/"+bookMarkQuestion._id}
                        className="s-post-summary--content-title s-link">{bookMarkQuestion.title}</a>
                 </span>
 
@@ -37,13 +38,15 @@ function UserBookmark({bookMarkQuestion}) {
 
                 </div>
                 {bookMarkQuestion.tags && bookMarkQuestion.tags.map((tag)=>{
-                    return (<div key={tag._id} className="s-post-summary--meta">
-                        <a className="flex--item s-tag" href="#">{tag.name}</a>
-                    </div>)
+                    return (<span key={tag} style={{display:"inline",marginRight:"10px"}} className="s-post-summary--meta">
+                        <a className="flex--item s-tag" href="#">{tag}</a>
+                    </span>)
                 })}
                 <div className="s-user-card s-user-card__minimal">
                     <time className="s-user-card--time">
-                        <span title="2020-07-27 07:18:02Z" className="relativetime">{bookMarkQuestion?.createdAt}</span>
+                        <span className="relativetime">
+                            <ReactTimeAgo date={Date.parse(bookMarkQuestion?.createdAt)} locale="en-US" />
+                        </span>
                     </time>
                 </div>
             </div>
