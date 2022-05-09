@@ -4,15 +4,18 @@ import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 import { toggleButtonClasses } from '@mui/material';
 import CompactQuestion from '../../Atom/CompactQuestion';
+import { useParams } from 'react-router-dom';
 
 
 const TagPage = () => {
 
     const [taggedQuestions , setTaggedQuestions] = useState();
     const [count, setCount] = useState(0);
-    const location = useLocation();
+    // const location = useLocation();
     const [tag, setTag] = useState();
     const [description, setDescription] = useState();
+    const params = useParams();
+    console.log(params.tagId);
 
     useEffect(() => {
 
@@ -20,7 +23,7 @@ const TagPage = () => {
 
             // Get interesting questions by default
             const payload = {
-                tagId: location.state.tagId,
+                tagId: params.tagId,
                 filterType: 1
             }
 
@@ -36,12 +39,12 @@ const TagPage = () => {
             }
 
             console.log(response.data);
-            setTag(location.state.tagId);
-            setDescription(location.state.description);
+            setTag(params.tagId);
+            // setDescription(location.state.description);
 
         }
         getQuestions();
-    },[setTaggedQuestions, setCount, setDescription, setTag, location.state.tagId, location.state.description]);
+    },[setTaggedQuestions, setCount, setDescription, setTag, params.tagId]);
 
 
     const handleFilterQuestions = async (filterType) => {
@@ -49,7 +52,7 @@ const TagPage = () => {
         console.log("SORTING BY: ", filterType)
         // TODO: Sort Questions based on the sortType button clicked
         const payload = {
-            tagId: location.state.tagId,
+            tagId: params.tagId,
             filterType: filterType
         }
         let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
@@ -71,10 +74,10 @@ const TagPage = () => {
 
                 <div class="s-page-title">
                     <div class="s-page-title--text">
-                        <h1 class="s-page-title--header">Questions tagged [{tag}]</h1>
+                        <h1 class="s-page-title--header">Questions tagged [{params.tagId}]</h1>
                         <br/>
                         <p class="s-page-title--description">
-                            {description}
+                            {/* {description} */}
                         </p>
                     </div>
                     <div class="s-page-title--actions">

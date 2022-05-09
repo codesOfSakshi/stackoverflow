@@ -39,7 +39,7 @@ const UserTagList = () => {
 
 
   return (
-    <div className="profiletab-item-usertaglist-container usertaglist-container">
+    <div className="usertaglist-container">
         <div className="usertaglist-title">
             Top Tags
         </div>
