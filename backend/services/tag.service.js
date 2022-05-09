@@ -67,6 +67,10 @@ exports.getTaggedQuestions = async (reqBody, result) => {
         if(questions.length > 0){
             result(null, questions);
         }
+        else if(reqBody.filterType == 4)
+        {
+            result(null, questions);
+        }
         else{
             result(null , {status:false , message:"No Questions for this tag"});
         }
