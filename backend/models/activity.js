@@ -14,7 +14,7 @@ const activitySchema = new mongoose.Schema({
       comment: {
         type: String,
       },
-      by: { type: Schema.Types.ObjectId, ref: "user" },
+      by: { type: String },
     },
   ],
 });

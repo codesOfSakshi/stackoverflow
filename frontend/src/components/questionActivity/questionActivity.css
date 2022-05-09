@@ -47,3 +47,10 @@ a.comment-user {
     border-radius: 3px;
     background-color: hsl(206,96%,90%);
 }
+
+.expander-arrow-small-hide {
+    display: inline-block;
+    width: 8px;
+    height: 13px;
+    background-position: 0 -380px;
+}

@@ -27,10 +27,11 @@ module.exports = class ActivityService {
     const query = { _id: activityID };
     try {
       console.log("NEW ACTIVITY", newActivity);
-      console.log("ACTVITY QUERY", query);
+      console.log("ADD ACTVITY QUERY", query);
       if(newActivity.type == "answer"){
-        const user = await USER.find(newActivity.by);
+        const user = await USER.findById(newActivity.by);
         if(user && user.name){
+          console.log("Returned User", user);
           newActivity.by = user.name;
         }
         console.log("ANSWER ACTIVITY", newActivity);
