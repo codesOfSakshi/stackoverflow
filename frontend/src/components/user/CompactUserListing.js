@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { constants } from "../../config/config";
 import CompactUser from "../../Atom/CompactUser";
 
-function CompactUserListing() {
+function CompactUserListing({users, setUsers}) {
   let navigate = useNavigate();
-const [users, setUsers] = useState("");
+// const [users, setUsers] = useState("");
   const routeQuestion = () => {
     // TODO naviagate to the user profile page
     // navigate(`/askquestion`);

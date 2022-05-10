@@ -87,13 +87,10 @@ class User {
   static getUserById = async ({ userId }) => {
     console.log(userId);
     try {
-      const query = {
-        _id: mongoose.Types.ObjectId(userId),
-      };
-      let user = await UserModel.findOne(query);
+      let user = await UserModel.findById(mongoose.Types.ObjectId(userId));
       console.log(user, "user");
 
-      user = JSON.parse(JSON.stringify(user));
+      user = JSON.parse(JSON.stringify(userId));
       if (user) {
         return user;
       } else {
@@ -168,7 +165,7 @@ class User {
         user: mongoose.Types.ObjectId(userId),
       };
       const userObj = userId;
-      const user = await User.getUserById(userObj);
+      const user = await User.getUserById(userId);
       let questionIds = user.questionsAsked;
       const questionObj = {};
       questionObj.questionIds = questionIds;
@@ -210,7 +207,7 @@ class User {
         user: mongoose.Types.ObjectId(userId),
       };
       const userObj = userId;
-      const user = await User.getUserById(userObj);
+      const user = await User.getUserById(userId);
       var questionIds = user.questionsAnswered.map(function (obj) {
         return obj.questionId;
       });

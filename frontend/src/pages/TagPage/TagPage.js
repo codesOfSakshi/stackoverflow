@@ -1,6 +1,6 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import TaggedQuestions from '../../components/Tags/TaggedQuestions';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { toggleButtonClasses } from '@mui/material';
 import CompactQuestion from '../../Atom/CompactQuestion';
@@ -15,6 +15,7 @@ const TagPage = () => {
     const [tag, setTag] = useState();
     const [description, setDescription] = useState();
     const params = useParams();
+    const navigate = useNavigate();
     console.log(params.tagId);
 
     useEffect(() => {
@@ -31,8 +32,9 @@ const TagPage = () => {
             response = await response;
     
             if(response.status === 200){
-                setTaggedQuestions(response.data)
-                setCount(response.data.length);
+                setTaggedQuestions(response.data.questions)
+                setCount(response.data.questions.length);
+                setDescription(response.data.tag.description);
             }
             else{
                 setCount(0);
@@ -40,7 +42,7 @@ const TagPage = () => {
 
             console.log(response.data);
             setTag(params.tagId);
-            // setDescription(location.state.description);
+
 
         }
         getQuestions();
@@ -59,12 +61,18 @@ const TagPage = () => {
         response = await response;
 
         if(response.status === 200){
-            setTaggedQuestions(response.data)
-            setCount(response.data.length);
+            setTaggedQuestions(response.data.questions)
+            console.log(response.data.questions.length);
+            setCount(response.data.questions.length);
         }
         else{
             setCount(0);
         }
+    }
+
+    // Navigate to Ask Question page
+    const navToAskQuestion = () => {
+        navigate('/askquestion');
     }
 
 
@@ -77,11 +85,11 @@ const TagPage = () => {
                         <h1 class="s-page-title--header">Questions tagged [{params.tagId}]</h1>
                         <br/>
                         <p class="s-page-title--description">
-                            {/* {description} */}
+                            {description}
                         </p>
                     </div>
                     <div class="s-page-title--actions">
-                        <button className='s-btn s-btn__primary'>Ask Question</button>
+                        <button onClick={navToAskQuestion} className='s-btn s-btn__primary'>Ask Question</button>
                     </div>
                 </div>
 

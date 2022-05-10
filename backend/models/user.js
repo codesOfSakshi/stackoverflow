@@ -64,16 +64,9 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "questions",
   }],
-    questionsAnswered: [{
-    questionId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "questions"
-    },
-    answerId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "answers",
-    }
-  }],
+    questionsAnswered: {
+    type : Array
+  },
    questionsAsked: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "questions",

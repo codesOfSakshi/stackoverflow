@@ -6,6 +6,7 @@ const ActivityModel = require("../models/activity.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityService = require("./activity.js");
 const USER = require("../models/user");
+const TagService = require('../services/tag.service');
 
 class Question {
   static getQuestions = async ({ questionIds }) => {
@@ -266,6 +267,19 @@ class Question {
             ? "APPROVED"
             : "PENDING",
       });
+      question.tags.map(async(tag)=>{
+        await TagModel.findOneAndUpdate({name: tag} , 
+          {
+              $inc: { 'numQuestions': 1, 
+                      'numQuestionsToday': 1,
+                      'numQuestionsThisWeek': 1 
+              },
+              $set:{
+                  updatedAt:Date.now()
+              }
+          },  
+          {returnOriginal:false});
+      })
       //ToDO - Append the tag in user tag list
       const insertedQuestion = await questionNew.save();
       const updateUserData = {};
