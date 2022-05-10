@@ -105,6 +105,10 @@ function QuestionsPage(props) {
                         {question.title}
                     </h2>
                 </Row>
+                    {question.status=="PENDING"}
+                    {question.status=="PENDING"?
+                    <Badge style={{"background-color": "orange"}}>Waiting for Approval</Badge>:
+                    null}
                 <div>
                     <Row>
                         <Col>
