@@ -6,7 +6,6 @@ const ActivityModel = require("../models/activity.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityService = require("./activity.js");
 const USER = require("../models/user");
-const TagService = require('../services/tag.service');
 
 class Question {
   static getQuestions = async ({ questionIds }) => {
