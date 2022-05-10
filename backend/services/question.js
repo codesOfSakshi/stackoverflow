@@ -6,6 +6,7 @@ const ActivityModel = require("../models/activity.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityService = require("./activity.js");
 const USER = require("../models/user");
+const redisClient = require('./redisservice.js');
 
 class Question {
   static getQuestions = async ({ questionIds }) => {
@@ -180,31 +181,81 @@ class Question {
       console.log(type, sortType);
       var sorting = 1;
       var questions;
+      let key = "";
       if (sortType == "desc" || sortType == -1) {
         sorting = -1;
       }
 
       if (type == "Interesting" || type == 1) {
-        console.log("here");
-        // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-        questions = await QuestionModel.find(query).populate("user").sort({
-          createdAt: sorting,
-        });
+
+        if(sorting===1){
+          key = "11"; // ascending & interesting
+        }else{
+          key = "-11" // descending & interesting
+        }
+        questions = await redisClient.get(key);
+        if(questions && questions.length){
+          console.log("Questions fetched from redis");
+          // console.log(questions);
+          return JSON.parse(questions);
+        }else{
+          console.log("here");
+          // questions = await QuestionModel.find({}).sort({createdAt: sorting})
+          questions = await QuestionModel.find(query).populate("user").sort({
+            createdAt: sorting,
+          });
+        }
       } else if (type == "Hot" || type == 2) {
-        questions = await QuestionModel.find(query)
+        if(sorting===1){
+          key = "12"; // ascending & hot
+        }else{
+          key = "-12" // descending & hot
+        }
+        questions = await redisClient.get(key);
+        if(questions && questions.length){
+          console.log("Questions fetched from redis");
+          // console.log(questions);
+          return JSON.parse(questions);
+        }else{
+          questions = await QuestionModel.find(query)
           .populate("user")
           .sort({ views: -1 });
+        }
       } else if (type == "Score" || type == 3) {
-        questions = await QuestionModel.find(query)
+        if(sorting===1){
+          key = "13"; // ascending & score
+        }else{
+          key = "-13" // descending & score
+        }
+        questions = await redisClient.get(key);
+        if(questions && questions.length){
+          console.log("Questions fetched from redis");
+          // console.log(questions);
+          return JSON.parse(questions);
+        }else{
+          questions = await QuestionModel.find(query)
           .populate("user")
           .sort({ upVotes: -1 });
-      } else if (type == "Unanswered" || type == 4) {
-        questions = await QuestionModel.find({
-          answers: { $size: 0 },
-          status: "APPROVED",
-        })
-          .populate("user")
-          .sort({ score: 1 });
+        }
+        } else if (type == "Unanswered" || type == 4) {
+         if(sorting===1){
+            key = "14"; // ascending & unanswered
+          }else{
+            key = "-14" // descending & unanswered
+          }
+          questions = await redisClient.get(key);
+          if(questions && questions.length){
+            console.log("Questions fetched from redis");
+            // console.log(questions);
+            return JSON.parse(questions);
+          }else{
+            questions = await QuestionModel.find({
+              answers: { $size: 0 },
+              status: "APPROVED",
+            })
+            .populate("user")
+            .sort({ score: 1 });
+          }
       }
       console.log(questions);
 
@@ -216,6 +267,7 @@ class Question {
       // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
       // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
       // console.log("tttttttT",questions)
+      redisClient.set(key,JSON.stringify(questions));
       return questions;
       // return questions
     } catch (err) {
@@ -289,6 +341,7 @@ class Question {
         updateUserData
       );
       await questionNew.save();
+      this.invalidateQuestionCache();
       return insertedQuestion._id.toString();
     } catch (err) {
       console.log(err);
@@ -337,6 +390,7 @@ class Question {
       if (result == {}) {
         return res.status(400).send(result.error.details[0].message);
       }
+      this.invalidateQuestionCache();
       return "Question Updated";
     } catch (err) {
       console.log(err);
@@ -384,6 +438,7 @@ class Question {
       if (result == {}) {
         return res.status(400).send(result.error.details[0].message);
       }
+      this.invalidateQuestionCache();
       return question._id.toString();
     } catch (err) {
       console.log(err);
@@ -546,6 +601,17 @@ class Question {
       );
     }
   };
+
+  static invalidateQuestionCache = ()=>{
+    const keys = ["11","-11","12","-12","13","-13","14","-14"];
+    keys.forEach(async (eachKey)=>{
+      try{
+        await redisClient.del(eachKey);
+      }catch(e){
+        console.log(e);
+      }
+    })
+  }
 }
 
 module.exports.Question = Question;

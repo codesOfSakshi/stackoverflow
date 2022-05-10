@@ -1,12 +1,16 @@
-import { createClient } from 'redis';
+const { createClient } = require('redis');
 
 const client = createClient({
-  url: 'redis://alice:foobared@awesome.redis.server:6380'
+  url: 'redis://localhost:6379'
 });
 
 client.on('error', (err) => console.log('Redis Client Error', err));
 
-await client.connect();
+const redisConnect = async ()=>{
+  await client.connect();
+  console.log('Redis Connected!');
+}
 
-await client.set('key', 'value');
-const value = await client.get('key');
+redisConnect();
+
+module.exports = client;
