@@ -84,13 +84,13 @@ class User {
     }
   };
 
-  static getUserById = async ({ userId }) => {
+  static getUserById = async (userId ) => {
     console.log(userId);
     try {
       let user = await UserModel.findById(mongoose.Types.ObjectId(userId));
       console.log(user, "user");
 
-      user = JSON.parse(JSON.stringify(userId));
+      user = JSON.parse(JSON.stringify(user));
       if (user) {
         return user;
       } else {
@@ -132,12 +132,12 @@ class User {
     }
   };
 
-  static getUserByIdWithQuestion = async ({ userId }) => {
+  static getUserByIdWithQuestion = async (userId) => {
     try {
       const query = {
         user: mongoose.Types.ObjectId(userId),
       };
-      let user = await UserModel.findOne(query).populate([
+      let user = await UserModel.findById(mongoose.Types.ObjectId(userId)).populate([
         "questionsAsked",
         "questionsAnswered.questionId",
         "questionsAnswered.answerId",
@@ -501,7 +501,7 @@ class User {
       };
       const userObj = { userID };
       //console.log(userId)
-      let userDetails = await User.getUserByIdWithQuestion(userObj); //await UserModel.findOne(query)
+      let userDetails = await User.getUserByIdWithQuestion(userID); //await UserModel.findOne(query)
       if (userDetails) {
         if (rankBy == "score") {
           return this.sortByScore(type, rankBy, userDetails);
@@ -562,7 +562,7 @@ class User {
         createdat: -1,
       });
 
-      let answer = JSON.parse(JSON.stringify(res));
+      let answer =JSON.parse(JSON.stringify(res));
       if (answer) {
         return answer;
       } else {
@@ -645,7 +645,7 @@ class User {
       let questionsAnswered = userDetails.questionsAnswered;
       const questionWithScore = [];
       for (let questionAnswered of questionsAnswered) {
-        const tmp = questionAnswered?.questionId;
+        const tmp = questionAnswered.questionId
         if (tmp) {
           tmp.score =
             (questionAnswered?.answerId?.upVotes?.length === undefined

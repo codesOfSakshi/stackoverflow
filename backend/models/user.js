@@ -64,12 +64,19 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "questions",
   }],
-    questionsAnswered: {
-    type : Array
-  },
-   questionsAsked: [{
+  questionsAnswered: [{
+    questionId:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "questions",
+      ref: "questions"
+    },
+    answerId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "answers",
+    }
+  }],
+  questionsAsked: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "questions",
   }],
   commentCount: {
     type: String,
