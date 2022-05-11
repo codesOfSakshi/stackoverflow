@@ -63,7 +63,7 @@ function AskQuestionEditor(props) {
     console.log(e);
     e.preventDefault();
     if(!descripiton){
-      setError("Please Enter a valid Description")
+      setError("Please Enter a valid Description !")
     }
     else{
     var payload ={
@@ -199,6 +199,10 @@ function AskQuestionEditor(props) {
         renderHTML={text => mdParser.render(text)}
       /> */}
       <EditorCustom setDescription={setDescription} setImage={setImage}></EditorCustom>
+      {error && <div style={{color: "red"}}>
+        {error}
+      </div>}
+
         {/* <div id="editor-container"></div> */}
         {/* <table>
           {imageGallery && imageGallery.map(image => {
@@ -234,10 +238,6 @@ function AskQuestionEditor(props) {
           <span class="s-tag--dismiss"> <div val={tag} onClick={(e)=>deleteTag(e,tag)}>X</div></span></a>)})}
       </div>
       </div>
-      <div>
-        {error}
-      </div>
-
         <center>
         <Button variant="primary" type="submit" style={{'marginTop':"2rem"}}>
             Review your question 

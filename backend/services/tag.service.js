@@ -161,7 +161,7 @@ exports.findBadge = async(reqBody, result) => {
     try {
         const userObj = {userId};
         console.log(userId)
-        const user =await User.getUserById(userObj);
+        const user =await User.getUserById(userId);
         let questions = user.questionsAsked
         const questionObj = {};
         questionObj.questionIds = questions;

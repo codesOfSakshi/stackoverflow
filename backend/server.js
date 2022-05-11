@@ -121,4 +121,5 @@ app.use("/api/answer/mark", answer);
 app.use("/api/comment", comment);
 app.use("/api/vote", vote);
 app.use("/api/activity", activity);
-app.use("/api/comments/getcomments", comment)
+app.use("/api/comments/getcomments", comment);
+
