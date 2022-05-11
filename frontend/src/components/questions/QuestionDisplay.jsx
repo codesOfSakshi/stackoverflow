@@ -53,6 +53,17 @@ function QuestionsPage(props) {
         })
     }, [value])
 
+    const length = () =>{
+        var api = "http://localhost:3001/api/questions/" + params.id
+            axios.get(api).then(async response => {
+                await setQuestion(response.data.data)
+                await setlans(response.data.data.answers)
+                let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
+                await setOwner(own)
+                await setComments(response.data.data.comment)
+            })  
+    }
+
 
     const navigateToEdit = () => {
         navigate(`/edit/${question._id}`)
@@ -101,19 +112,12 @@ function QuestionsPage(props) {
             answer: answer,
             user: decoded._id,
         }
-        axios.post(api, payload).then(response => { alert(response.data) })
+        axios.post(api, payload).then(response => { 
+            alert(response.data); 
+            length() ;
+            setAnswer("")
+        })
     }
-    }
-
-    const length = () =>{
-        var api = "http://localhost:3001/api/questions/" + params.id
-            axios.get(api).then(async response => {
-                await setQuestion(response.data.data)
-                await setlans(response.data.data.answers)
-                let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
-                await setOwner(own)
-                await setComments(response.data.data.comment)
-            })  
     }
 
 
