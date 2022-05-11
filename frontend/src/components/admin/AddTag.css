@@ -20,9 +20,6 @@ label {
   margin-bottom: 0.5rem;
   color: #607d8b;
 }
-input {
-  margin-bottom: 0.5rem !important;
-}
 #newTag {
   height: 3rem;
   margin-bottom: 1rem;

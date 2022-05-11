@@ -3,6 +3,7 @@ const { constants } = require("../config/config");
 const QUESTION = require("../models/question");
 const TAGS = require("../models/tag");
 const USERS = require("../models/user");
+const redisClient = require('./redisservice.js');
 
 module.exports = class AdminService {
   static async test() {
@@ -22,8 +23,10 @@ module.exports = class AdminService {
 
     console.log(result);
     if (result) {
+      this.invalidateQuestionCache();
       return result;
     } else {
+      this.invalidateQuestionCache();
       throw result;
     }
   }
@@ -126,5 +129,16 @@ module.exports = class AdminService {
     } catch (err) {
       throw err;
     }
+  }
+
+  static invalidateQuestionCache = ()=>{
+    const keys = ["11","-11","12","-12","13","-13","14","-14"];
+    keys.forEach(async (eachKey)=>{
+      try{
+        await redisClient.del(eachKey);
+      }catch(e){
+        console.log(e);
+      }
+    })
   }
 };

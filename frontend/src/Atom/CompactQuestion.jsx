@@ -9,7 +9,7 @@ function CompactQuestion(props) {
     const question = props.questions
     console.log("QUESTION ID:", question._id);
     const questionLink = "/question/" + props.questions._id
-    const userLink = "/user/" + "abhsjdahj"
+    // const userLink = "/user/" + props.user._id
 
     let navigate = useNavigate();
     const questiondisplay = () => {
@@ -59,9 +59,10 @@ function CompactQuestion(props) {
                             <div style={{ "color": "blue" }}>{question.title}</div>
                         </h3>
                         <div class="s-post-summary--meta">
-                            {question.tags.map(tag => {
+                            {question.tags.map(tag => { 
+                                var route= "/tag/"+tag
                                 return (<><div class="s-post-summary--meta-tags" onClick={questiondisplay}>
-                                    <a class="s-tag" href={questiondisplay}>{tag}</a>
+                                    <a class="s-tag" href={route}>{tag}</a>
                                 </div></>)
                             })}
 

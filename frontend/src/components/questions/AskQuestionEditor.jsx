@@ -23,6 +23,7 @@ function AskQuestionEditor(props) {
   const[descripiton,setDescription]=useState("")
   const [imageArray, setImage] = useState([]);
   const [uploadUrl,setUploadUrl] = useState([]);
+  const [error,setError] = useState("");
 
   const cookies = new Cookies();
     const token = localStorage.getItem("token");
@@ -61,6 +62,10 @@ function AskQuestionEditor(props) {
   const submitHandler =(e)=>{
     console.log(e);
     e.preventDefault();
+    if(!descripiton){
+      setError("Please Enter a valid Description !")
+    }
+    else{
     var payload ={
       user: decoded._id,
       title: e.target.formBasicTitle.value,
@@ -74,6 +79,7 @@ function AskQuestionEditor(props) {
       var path = "/question/"+response.data.message
       navigate(path)
       })
+    }
   }
 
   const deleteTag = (e,val) =>{
@@ -193,6 +199,10 @@ function AskQuestionEditor(props) {
         renderHTML={text => mdParser.render(text)}
       /> */}
       <EditorCustom setDescription={setDescription} setImage={setImage}></EditorCustom>
+      {error && <div style={{color: "red"}}>
+        {error}
+      </div>}
+
         {/* <div id="editor-container"></div> */}
         {/* <table>
           {imageGallery && imageGallery.map(image => {
@@ -228,7 +238,6 @@ function AskQuestionEditor(props) {
           <span class="s-tag--dismiss"> <div val={tag} onClick={(e)=>deleteTag(e,tag)}>X</div></span></a>)})}
       </div>
       </div>
-
         <center>
         <Button variant="primary" type="submit" style={{'marginTop':"2rem"}}>
             Review your question 

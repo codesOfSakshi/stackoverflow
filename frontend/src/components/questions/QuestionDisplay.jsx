@@ -119,12 +119,16 @@ function QuestionsPage(props) {
 
     return (
         <div>
-            <div style={{ width: '60rem', textAlign: 'justify' }}>
+            {((owner && question.status=="PENDING")|| question.status=="APPROVED")?(<div style={{ width: '60rem', textAlign: 'justify' }}>
                 <Row style={{ textAlign: 'left' }}>
                     <h2>
                         {question.title}
                     </h2>
                 </Row>
+                    {question.status=="PENDING"}
+                    {question.status=="PENDING"?
+                    <Badge style={{"background-color": "orange"}}>Waiting for Approval</Badge>:
+                    null}
                 <div>
                     <Row>
                         <Col>
@@ -172,11 +176,11 @@ function QuestionsPage(props) {
 
                 <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
                     {question.tags && question.tags.map(tag => {
-                        return (
-                            <div class="s-badge s-badge__moderator" style={{ margin: "0.5rem" }}>
-                                {tag}
-                            </div>
-                        )
+                        var route= "/tag/"+tag
+                        return (<><div class="s-post-summary--meta-tags">
+                        <a class="s-tag" href={route}>
+                            {tag}</a>
+                        </div></>)
                     })}
                     <Col style={{ float: "right" }} >
                     {owner && <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>}
@@ -294,7 +298,10 @@ function QuestionsPage(props) {
                         <Button onClick={recordAnswer} style={{ float: "center" }}>Post Your Answer</Button>
                     </Row>
                 </div>
-            </div>
+            </div>):
+            (<div class="s-empty-state wmx4 p48">
+            <p>This question is waiting for approval from the admin.</p>
+        </div>)}
         </div>
     );
 
