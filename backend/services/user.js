@@ -423,14 +423,22 @@ class User {
               questions = JSON.parse(JSON.stringify(questions));
               tagsObj.posts = questions.length;
               let tagDataObj = tags.filter((eachTag) => {
-                return eachTag.name === eachTagId.toString();
+                if(eachTagId){
+                  return eachTag.name === eachTagId.toString();
+                }else{
+                  return false;
+                }
               });
               if (tagDataObj && tagDataObj.length) {
                 tagDataObj = tagDataObj[0];
                 tagsObj.name = tagDataObj.name;
               }
               let tagUserObj = user.tagIds.filter((eachTag) => {
-                return eachTag.tagId === eachTagId.toString();
+                if(eachTagId){
+                  return eachTag.tagId === eachTagId.toString();
+                }else{
+                  return false;
+                }
               });
               if (tagUserObj && tagUserObj.length) {
                 tagUserObj = tagUserObj[0];
