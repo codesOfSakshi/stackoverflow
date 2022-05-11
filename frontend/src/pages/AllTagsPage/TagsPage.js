@@ -2,6 +2,9 @@ import React, {useEffect, useState, Fragment} from 'react';
 import axios from 'axios';
 import './TagsPage.scss';
 import TagPanel from '../../components/Tags/TagPanel';
+import { Row,Col } from 'react-bootstrap';
+import Navbar from '../../components/user/Navbar';
+import SideNav from '../../Atom/SideNav';
 
 const TagsPage = () => {
 
@@ -57,6 +60,13 @@ const TagsPage = () => {
 
     return(
         <Fragment>
+            <Navbar/>
+            <Row>
+            <Col lg={3}>
+                <br/><br/><br/>
+            <SideNav/>
+            </Col>
+            <Col>
             <div id='mainbar' className='tags-page fc-black-800'>
                 <h1 className='headline'>Tags</h1>
                 <p className='fs-body'>
@@ -89,6 +99,9 @@ const TagsPage = () => {
                     }
                 </div>
             </div>
+            
+            </Col>
+            </Row>
         </Fragment>
     )
 
