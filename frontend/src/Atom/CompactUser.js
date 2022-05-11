@@ -1,10 +1,10 @@
-   
 import { Card, Col, Row, Badge } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // import "./atom.css";
 // import "../styles/compactUser.css";
 
-function CompactUser({ name, profilePic, reputation, location }) {
+function CompactUser({ name, profilePic, reputation, location, _id }) {
   profilePic =
     profilePic != null
       ? profilePic
@@ -12,17 +12,22 @@ function CompactUser({ name, profilePic, reputation, location }) {
   reputation = reputation != null ? reputation : 100;
   name = name != null ? name : "Default name";
   location = location != null ? location : "San Jose, CA";
+  const USERURL = `/user/${_id}`;
 
   return (
     <>
+      <Link to={USERURL}></Link>
       <div className="s-user-card s-user-card__full">
-        <a href="…" className="s-avatar s-avatar__48 s-user-card--avatar">
+        <Link
+          to="/signin"
+          className="s-avatar s-avatar__48 s-user-card--avatar"
+        >
           <img className="s-avatar--image" src={profilePic} />
-        </a>
+        </Link>
         <div className="s-user-card--info">
-          <a href="#" className="s-user-card--link d-flex g4">
+          <Link to={USERURL} className="s-user-card--link d-flex g4">
             <div className="flex--item">{name}</div>
-          </a>
+          </Link>
           <ul className="s-user-card--awards">
             <li className="s-user-card--rep">{reputation}</li>
           </ul>
