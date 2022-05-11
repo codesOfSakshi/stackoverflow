@@ -58,7 +58,7 @@ class AllMessages extends Component {
                 <Col>
                     {/* <h1 style={{position:'absolute', top:100, right:700}}>My Messages</h1> */}
                     <br/><br/><br/><br/>
-                    <h1 style={{marginLeft:570}}>My Messages</h1>
+                    <h1 className='center-div'>My Messages</h1>
                     <br/><br/>
                     <div style={{height: '500px'}} className="inbox-container" ref={c => this.container = c}>
                         <LinearProgress/>
