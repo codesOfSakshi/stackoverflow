@@ -6,6 +6,9 @@ import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Talk from "talkjs";
 import './Messaging.css'
+import { Row,Col } from 'react-bootstrap';
+import Navbar from '../../components/user/Navbar';
+import SideNav from '../../Atom/SideNav';
 
 function Messaging() {
 
@@ -104,51 +107,66 @@ function Messaging() {
     return (
 
 
-        <div className="users">
-            <div className="users-container">
-            <ul>
+        <div>
 
-                <Button variant="outlined" style={{position:'absolute', top:80, right:300}} onClick={() => navigateToAllMessages()}>View All Messages</Button>
-                <br/>
-                <h1>Search Users to Message</h1>
-                <br/>
-                <TextField id="standard-basic" style={{marginLeft:170, width:150}} label="User's Name" variant="standard" onChange={handleSearch} placeholder="Enter User's Name" />
-                <br/>
-                <br/>
-                {users.length > 0 ? 
-            
-                    <div>
-                        {users.map(user => <li key={user.id} className="user">
-                            <picture className="user-picture">
-                                <img src={user.profilePicture}/>
-                            </picture>
-                            <div className="user-info-container">
-                                <div className="user-info">
-                                    <h4>{user.name}</h4>
-                                    <p>{user.email}</p>
+            <Navbar/>
+                <Row>
+                <Col lg={3}>
+                    <br/><br/><br/>
+                <SideNav/>
+                </Col>
+                <Col>
+                    <div className="users">
+                        <div className="users-container">
+                        <ul>
+
+                            <Button variant="outlined" style={{position:'absolute', top:80, right:300}} onClick={() => navigateToAllMessages()}>View All Messages</Button>
+                            <br/>
+                            <h1>Search Users to Message</h1>
+                            <br/>
+                            <TextField id="standard-basic" style={{marginLeft:170, width:190}} label="User's Name" variant="standard" onChange={handleSearch} placeholder="Enter User's Name" />
+                            <br/>
+                            <br/>
+                            {users.length > 0 ? 
+                        
+                                <div>
+                                    {users.map(user => <li key={user.id} className="user">
+                                        <picture className="user-picture">
+                                            <img src={user.profilePicture}/>
+                                        </picture>
+                                        <div className="user-info-container">
+                                            <div className="user-info">
+                                                <h4>{user.name}</h4>
+                                                <p>{user.email}</p>
+                                            </div>
+                                            <div className="user-action">
+                                                <button onClick={(userId) => handleMessage(user.id)}>Message</button>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    )}
+
                                 </div>
-                                <div className="user-action">
-                                    <button onClick={(userId) => handleMessage(user.id)}>Message</button>
-                                </div>
-                            </div>
-                            </li>
-                        )}
 
-                    </div>
+                            :
+                                        
+                            ""
 
-                :
+                            }
                             
-                ""
+                        </ul>
 
-                }
-                
-            </ul>
+                        <div className="chatbox-container" ref={c => Talk.container = c}>
+                            <div id="talkjs-container" style={{ height: "300px" }}><i></i></div>
+                        </div>
+                        </div>
+                    </div>
+                </Col>
+                </Row>
 
-            <div className="chatbox-container" ref={c => Talk.container = c}>
-                <div id="talkjs-container" style={{ height: "300px" }}><i></i></div>
-            </div>
-            </div>
         </div>
+
+
     )
 }
 

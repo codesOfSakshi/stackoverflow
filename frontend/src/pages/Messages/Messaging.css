@@ -1,13 +1,13 @@
   
   .users {
-    display: flex;
-    width: 50%;
+    /* display: flex; */
+    /* width: 50%; */
     margin: 0 auto;
     justify-content: space-around;
   }
   .users-container {
     background-color: #ffffff;
-    width: 85%;
+    width: 65%;
     padding: 60px 0;
   }
 
@@ -46,7 +46,7 @@
     justify-content: center;
   }
   .user-info-container {
-    display: flex;
+    /* display: flex; */
     width: 100%;
   }
   
