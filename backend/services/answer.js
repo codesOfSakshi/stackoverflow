@@ -60,7 +60,7 @@ class Answer{
                         "questionsAnswered":  {"questionId" : questionId , "answerId" : id}
                     } 
                 }
-                user.tagIds.push({ tagId: eachTag, score: 0 });
+                // user.tagIds.push({ tagId: eachTag, score: 0 });
                 let userresult = await UserModel.updateOne(finduserCondition, ansupdateCondition)
                 console.log("userresult", userresult)
 
