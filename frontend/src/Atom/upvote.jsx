@@ -11,47 +11,23 @@ const Upvote = (props) => {
     const[downvote, setdownvote] = useState(props.object.downVotes)
     const[type, settype] = useState(props.type)
     const[voter,setvoter] = useState(props.decoded)
-    const[bst,setbst] = useState(false)
+    const[bst,setbst] = useState(props?.question?.bestAns === props?.object?._id)
     var voteType = 'Downvote'
-    // const[len, setlen] = useState()
-    console.log("console.log", len, props.object.upVotes?.length,props.object.downVotes?.length)
-
-    // const length = () =>{
-    //     console.log("inside the function")
-    //     var l = upvote?.length - downvote?.length
-    //     setlen(l);
-    // }
 
     var len = props.object.upVotes?.length - props.object.downVotes?.length;
 
 
     const onDownVoteClick =async ()=>{
         if(type && type === 'question'){
-            console.log("inside type && type")
             axios.post("http://localhost:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
                 .then(response => {
-                    console.log(response);
                     props.function();
                 })
-            // var api = "http://localhost:3001/api/questions/" + params.id
-            // axios.get(api).then(async response => {
-            //     await setdownvote(response.data.data.downVotes)
-            //     await setupvote(response.data.data.upVotes)
-            //     // length();
-            //     console.log("RESPONSE IN DOWNVOTE", response.data.data.downVotes, response.data.data.upVotes)
-            // })
         }
         else{
             axios.post("http://localhost:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
             .then(response => {
-                console.log(response);
-                var ans = props.object._id
-                axios.post("http://localhost:3001/api/answer/id" , {answerId : ans})
-                    .then(async response => {
-                        await setdownvote(response.data.answer[0].downVotes)
-                        await setupvote(response.data.answer[0].upVotes)
-                        // length();
-                    })
+                props.function();
             }) 
         }
         
@@ -63,45 +39,24 @@ const Upvote = (props) => {
         if(type && type == 'question'){
             axios.post("http://localhost:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
                 .then(response => {
-                    console.log(response);
+                    props.function();
                 })
-            // var api = "http://localhost:3001/api/questions/" + params.id
-            // axios.get(api).then(async response => {
-            //     await setupvote(response.data.data.upVotes)
-            //     await setdownvote(response.data.data.downVotes)
-            //     // length();
-            //     console.log("RESPONSE IN UPVOTE", response.data.data.upVotes, response.data.data.downVotes)
-            // })
-            props.function();
         }
         else{
             axios.post("http://localhost:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
                 .then(response => {
-                    console.log(response);
-                    var ans = props.object._id
-                    axios.post("http://localhost:3001/api/answer/id" , {answerId : ans})
-                        .then(async response => {
-                            await setdownvote(response.data.answer[0].downVotes)
-                            await setupvote(response.data.answer[0].upVotes)
-                            // length();
-                        })
+                    props.function();
                 })
         }
     }
 
     const bestanswer = async () =>{
-        if(bst){
-            await setbst(false)
-        }
-        else{
-            await setbst(true)
-            axios.post("http://localhost:3001/api/answer/mark", {questionId : props.question._id, answerId : props.object._id})
-                .then(response => {
-                    console.log(response);
-                })
-        }
+        axios.post("http://localhost:3001/api/answer/mark", {questionId : props.question._id, answerId : props.object._id})
+            .then(response => {
+                console.log(response);
+                props.function();
+            })
     }
-
 
     return (
         <div>
@@ -124,12 +79,12 @@ const Upvote = (props) => {
 
 
                     {/* TODO: add attribute to show its checked answer */}
-                    {bst && props.type && props.type == "answer" && 
+                    {/* {bst && props.type && props.type == "answer" && 
                         <button class="js-accepted-answer-indicator flex--item fc-green-500 py6 mtn8" data-s-tooltip-placement="right" tabindex="0" role="note" aria-label="Accepted" data-controller="null s-tooltip" aria-describedby="--stacks-s-tooltip-0bkl8i4o" aria-pressed="false" data-selected-classes="fc-green-500" data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution" data-title-unaccept="You accepted this answer  (select to undo)" aria-label="Accept answer" data-s-tooltip-placement="right" data-controller="null s-tooltip" aria-describedby="--stacks-s-tooltip-9bp99esw" onClick = {bestanswer}>
                             <svg aria-hidden="true" class="m0 svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
                         </button>
-                    }
-                    {props.type == "answer" && props.question.bestAns === props.object._id &&
+                    } */}
+                    {props.type == "answer" && props.question?.bestAns === props.object._id &&
                         <div class="js-accepted-answer-indicator flex--item fc-green-500 py6 mtn8" data-s-tooltip-placement="right" tabindex="0" role="note" aria-label="Accepted" data-controller="null s-tooltip" aria-describedby="--stacks-s-tooltip-0bkl8i4o">
                             <div class="">
                                 <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
@@ -137,7 +92,7 @@ const Upvote = (props) => {
                         </div>
                     }
 
-                    {!bst && props.type == "answer" && props.question.bestAns !== props.object._id && 
+                    {props.type == "answer" && props.question?.bestAns !== props.object._id && 
                     <button class="js-accept-answer-btn  flex--item s-btn s-btn__unset c-pointer" aria-pressed="false" data-selected-classes="fc-green-500" data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution" data-title-unaccept="You accepted this answer  (select to undo)" aria-label="Accept answer" data-s-tooltip-placement="right" data-controller="null s-tooltip" aria-describedby="--stacks-s-tooltip-9bp99esw" onClick = {bestanswer}>
                                     <svg aria-hidden="true" class="m0 svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
                     </button>

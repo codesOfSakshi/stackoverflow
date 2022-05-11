@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
-// import Editor from '../../Atom/EditorQuestion';
 import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';

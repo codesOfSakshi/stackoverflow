@@ -25,29 +25,6 @@ router.post("/",  async (req, res) => {
     }
 });
 
-router.post("/id", async(req,res) =>{
-    const answerId = req.body.answerId;
-    const response ={};
-    console.log("inside answerr get")
-    try{
-        const answer = await Answer.getAnswer(answerId);
-        if(answer){
-            response.success = true;
-            response.answerId = answerId;
-            response.answer = answer
-            response.status = 200;
-            res.status(200).send(response);
-        }
-    }catch(e){
-        console.log(e);
-        response.success = false;
-        response.error = "Some error occurred. Please try again later";
-        response.status = 500;
-        res.status(500).send(response);
-    }
-
-})
-
 router.post("/mark",  async (req, res) => {
     const questionId = req.body.questionId;
     const answerId = req.body.answerId;
