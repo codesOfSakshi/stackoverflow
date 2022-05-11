@@ -133,7 +133,24 @@ class Answer{
             console.log(err);
             throw new Error("Some unexpected error occurred while inserting answer");
         }
-      } 
+    }
+
+    static getAnswer = async(answerId) =>{
+        try {
+            const query = {
+              _id: answerId
+            };
+            const answer = await AnswerModel.find(query);
+            if (answer?.length) {
+              return answer;
+            } else {
+              return [];
+            }
+          } catch (err) {
+            console.log(err);
+            throw new Error("Some unexpected error occurred while getting questions");
+          }
+    }
 
     
 }
