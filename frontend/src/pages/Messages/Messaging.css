@@ -12,7 +12,13 @@
   }
 
   .users-container h1 {
-    margin-left: 100px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .center-div {
+    display: flex;
+    justify-content: center;
   }
 
   .user {

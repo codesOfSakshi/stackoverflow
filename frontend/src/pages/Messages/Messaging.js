@@ -124,7 +124,9 @@ function Messaging() {
                             <br/>
                             <h1>Search Users to Message</h1>
                             <br/>
-                            <TextField id="standard-basic" style={{marginLeft:170, width:190}} label="User's Name" variant="standard" onChange={handleSearch} placeholder="Enter User's Name" />
+                            <div className='center-div'>
+                                <TextField id="standard-basic" label="User's Name" variant="standard" onChange={handleSearch} placeholder="Enter User's Name" />
+                            </div>
                             <br/>
                             <br/>
                             {users.length > 0 ? 
