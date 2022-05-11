@@ -41,7 +41,7 @@ function QuestionsPage(props) {
 
     useEffect(() => {
         console.log("Q ID: ", params.id)
-        var api = "http://localhost:3001/api/questions/" + params.id
+        var api = "http://54.183.240.252:3001/api/questions/" + params.id
         axios.get(api).then(response => {
             console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
@@ -54,7 +54,7 @@ function QuestionsPage(props) {
     }, [value])
 
     const length = () =>{
-        var api = "http://localhost:3001/api/questions/" + params.id
+        var api = "http://54.183.240.252:3001/api/questions/" + params.id
             axios.get(api).then(async response => {
                 await setQuestion(response.data.data)
                 await setlans(response.data.data.answers)
@@ -75,7 +75,7 @@ function QuestionsPage(props) {
             navigate("/")
         }
         else{
-        var api = "http://localhost:3001/api/user/addbookmark/" + decoded._id
+        var api = "http://54.183.240.252:3001/api/user/addbookmark/" + decoded._id
         var payload = {
             questionId: question._id
         }
@@ -93,7 +93,7 @@ function QuestionsPage(props) {
         type = 'question'
         setqComment("")
 
-        axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+        axios.post("http://54.183.240.252:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
             .then(response => {
                 console.log(response);
             })
@@ -106,7 +106,7 @@ function QuestionsPage(props) {
         }
         else{
         console.log("upvote");
-        var api = "http://localhost:3001/api/answer"
+        var api = "http://54.183.240.252:3001/api/answer"
         var payload = {
             questionId: question._id,
             answer: answer,
@@ -279,7 +279,7 @@ function QuestionsPage(props) {
                                             setValue(true)
                                         }
                                         setaComment("")
-                                        axios.post("http://localhost:3001/api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
+                                        axios.post("http://54.183.240.252:3001/api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
                                             .then(response => {
                                                 
                                                 console.log(response);

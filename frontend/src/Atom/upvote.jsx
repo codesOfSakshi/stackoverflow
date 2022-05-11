@@ -19,13 +19,13 @@ const Upvote = (props) => {
 
     const onDownVoteClick =async ()=>{
         if(type && type === 'question'){
-            axios.post("http://localhost:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
+            axios.post("http://54.183.240.252:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
                 .then(response => {
                     props.function();
                 })
         }
         else{
-            axios.post("http://localhost:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
+            axios.post("http://54.183.240.252:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
             .then(response => {
                 props.function();
             }) 
@@ -37,13 +37,13 @@ const Upvote = (props) => {
         voteType = 'Upvote'
 
         if(type && type == 'question'){
-            axios.post("http://localhost:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
+            axios.post("http://54.183.240.252:3001/api/vote", {voteType:voteType, questionId : props.object._id, type:type, voter: voter})
                 .then(response => {
                     props.function();
                 })
         }
         else{
-            axios.post("http://localhost:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
+            axios.post("http://54.183.240.252:3001/api/vote", {voteType:voteType, answerId : props.object._id, type:type, voter: voter})
                 .then(response => {
                     props.function();
                 })
@@ -51,7 +51,7 @@ const Upvote = (props) => {
     }
 
     const bestanswer = async () =>{
-        axios.post("http://localhost:3001/api/answer/mark", {questionId : props.question._id, answerId : props.object._id})
+        axios.post("http://54.183.240.252:3001/api/answer/mark", {questionId : props.question._id, answerId : props.object._id})
             .then(response => {
                 console.log(response);
                 props.function();

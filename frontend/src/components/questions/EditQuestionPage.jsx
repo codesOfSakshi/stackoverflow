@@ -30,7 +30,7 @@ function EditQuestionPage(props) {
 
   useEffect(() => {
     if(decoded){
-    var api="http://localhost:3001/api/questions/"+params.questionId
+    var api="http://54.183.240.252:3001/api/questions/"+params.questionId
     axios.get(api).then(response => {
       let own = (response.data.data.user && response.data.data.user._id == decoded._id) ? 
       true : 
@@ -46,7 +46,7 @@ function EditQuestionPage(props) {
       })
 
     var arrTags=[]
-    var api="http://localhost:3001/api/tags"
+    var api="http://54.183.240.252:3001/api/tags"
     axios.get(api).then(
       response =>{
         response.data.map(tag =>{
@@ -94,7 +94,7 @@ function EditQuestionPage(props) {
       _id:params.questionId,
       user: question.user
     }
-    var api="http://localhost:3001/api/questions/edit"
+    var api="http://54.183.240.252:3001/api/questions/edit"
     axios.post(api,payload).then(response => {
       console.log("response.result",response.data.message)
       var path = "/question/"+response.data.message

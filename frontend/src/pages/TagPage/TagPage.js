@@ -31,7 +31,7 @@ const TagPage = () => {
                 filterType: 1
             }
 
-            let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+            let response = axios.post("http://54.183.240.252:3001/api/tags/questionbytag/", payload );
             response = await response;
     
             if(response.status === 200){
@@ -60,7 +60,7 @@ const TagPage = () => {
             tagId: params.tagId,
             filterType: filterType
         }
-        let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+        let response = axios.post("http://54.183.240.252:3001/api/tags/questionbytag/", payload );
         response = await response;
 
         if(response.status === 200){
