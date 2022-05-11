@@ -181,7 +181,7 @@ function QuestionsPage(props) {
                 <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
                     {question.tags && question.tags.map(tag => {
                         var route= "/tag/"+tag
-                        return (<><div class="s-post-summary--meta-tags">
+                        return (<><div class="s-post-summary--meta-tags" style={{"padding-right":"5px"}}>
                         <a class="s-tag" href={route}>
                             {tag}</a>
                         </div></>)
