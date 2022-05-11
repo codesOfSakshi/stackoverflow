@@ -46,7 +46,7 @@
     justify-content: center;
   }
   .user-info-container {
-    /* display: flex; */
+    display: flex;
     width: 100%;
   }
   
