@@ -133,8 +133,7 @@ class Answer{
             console.log(err);
             throw new Error("Some unexpected error occurred while inserting answer");
         }
-      } 
-
+    }
     
 }
 

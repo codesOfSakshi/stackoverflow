@@ -5,31 +5,37 @@ const ActivityModel = require("../models/activity.js");
 const ActivityService = require("./activity.js");
 
 class Comment {
-  static postComment = async (answerId, questionId, type, comment) => {
+  static postComment = async (answerId, questionId, type, comment, user, name) => {
     if (type === "question") {
       try {
         const findCondition = {
           _id: mongoose.Types.ObjectId(questionId),
         };
+        const commentObj ={
+          comment: comment,
+          user : mongoose.Types.ObjectId(user),
+          createdAt: new Date().toISOString(),
+          name : name
+        }
         const updateCondition = {
-          $push: { comment: comment },
+          $addToSet: { "comment": commentObj },
         };
         const result = await QuestionModel.findByIdAndUpdate(
           findCondition,
           updateCondition,
-          { returnOriginal: false }
+          // { returnOriginal: false }
         );
         if (result) {
           console.log("RESULT FROM QUESTION COMMENT IS", result);
           //add comment activity
 
-          var newActivity = {
-            type: "comment",
-            comment: comment,
-            by: result.user,
-          };
+          // var newActivity = {
+          //   type: "comment",
+          //   comment: comment,
+          //   by: result.user,
+          // };
 
-          await ActivityService.updateActivity(result.activity, newActivity);
+          // await ActivityService.updateActivity(result.activity, newActivity);
 
           return result;
         } else {
@@ -46,9 +52,14 @@ class Comment {
         const findCondition = {
           _id: mongoose.Types.ObjectId(answerId),
         };
-        console.log("answer", answerId);
+        const commentObj ={
+          comment: comment,
+          user : mongoose.Types.ObjectId(user),
+          createdAt: new Date().toISOString(),
+          name : name
+        }
         const updateCondition = {
-          $push: { comment: comment },
+          $addToSet: { "comment": commentObj },
         };
         console.log("comment", comment);
         const result = await AnswerModel.updateOne(

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
-// import Editor from '../../Atom/EditorQuestion';
 import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
@@ -23,14 +22,16 @@ function QuestionsPage(props) {
     const [answersall, setlans] = useState([])
     const [answer, setAnswer] = useState("")
     const [owner, setOwner] = useState(false)
-    const[comments, setComments] = useState([])
+    const [comments, setComments] = useState([])
+    const [addcomment, setaddcomment] = useState("Add a comment")
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
     var arr
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
-    const [qcomment, setqComment] = useState([])
-    const [acomment, setaComment] = useState([])
+    const [qcomment, setqComment] = useState("")
+    const [acomment, setaComment] = useState("")
+    const[value, setValue] = useState(false)
     var questionDisplay, answerDisplay;
     var type = 'question'
 
@@ -42,7 +43,7 @@ function QuestionsPage(props) {
         console.log("Q ID: ", params.id)
         var api = "http://localhost:3001/api/questions/" + params.id
         axios.get(api).then(response => {
-            console.log(response)
+            console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
             console.log("DISPLAYED QUESTION", response.data.data);
             setlans(response.data.data.answers)
@@ -50,7 +51,7 @@ function QuestionsPage(props) {
             setOwner(own)
             setComments(response.data.data.comment)
         })
-    }, [])
+    }, [value])
 
 
     const navigateToEdit = () => {
@@ -72,8 +73,16 @@ function QuestionsPage(props) {
     }
 
     const saveQuesComment = () => {
+        if(value){
+            setValue(false)
+        }
+        else{
+            setValue(true)
+        }
         type = 'question'
-        axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment })
+        setqComment("")
+
+        axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
             .then(response => {
                 console.log(response);
             })
@@ -94,6 +103,17 @@ function QuestionsPage(props) {
         }
         axios.post(api, payload).then(response => { alert(response.data) })
     }
+    }
+
+    const length = () =>{
+        var api = "http://localhost:3001/api/questions/" + params.id
+            axios.get(api).then(async response => {
+                await setQuestion(response.data.data)
+                await setlans(response.data.data.answers)
+                let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
+                await setOwner(own)
+                await setComments(response.data.data.comment)
+            })  
     }
 
 
@@ -146,21 +166,13 @@ function QuestionsPage(props) {
 
                 <Row>
                     <Col xs={1}>
-                        {/* {console.log(ans)}
-                            {ans.upVotes.length} votes */}
-                        <Upvote object={question} decoded={decoded} type="question" />
+                        
+                        <Upvote object={question} decoded={decoded} type="question" function ={length}/>
                     </Col>
                     <Col>
                         <EditorCustomReadOnly description={question.description}></EditorCustomReadOnly>
                     </Col>
                 </Row>
-
-
-                {/* <Row style={{width:"200px", marginTop:"30px", marginLeft: "0.5px"}}>
-                    <div style={{float:"right"}} >
-                    <Button onClick={navigateToEdit} style={{float:"right"}}>Edit Question</Button>
-                    </div>
-                </Row> */}
 
                 <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
                     {question.tags && question.tags.map(tag => {
@@ -178,19 +190,28 @@ function QuestionsPage(props) {
                 </div>
                 <hr></hr>
                 <div>
+                    {/* {JSON.stringify(comments)} */}
                     {comments && comments.map(comment =>{
                         return(
                             <>
-                                {comment}
+                            <Row>
+                                <Col>
+                                    {comment.comment} –&nbsp;
+                                    <a href={"/user/" + comment.user}>{comment.name}</a> &nbsp;
+                                    <time>{comment.createdAt &&<ReactTimeAgo date={Date.parse(comment.createdAt)} locale="en-US" />}</time>
+                                </Col>
                                 <hr></hr>
+                            </Row>
+                                
                             </>
                         );
                     })}
                     
+                    
                 </div>
                 <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
                     <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
-                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setqComment(e.target.value); }}></textarea>
+                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "60rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setqComment(e.target.value); }} value = {qcomment}></textarea>
                     </form>
                     <Button onClick={saveQuesComment} style={{ float: "right", height: "25px", width: "100%", marginTop: "70px", marginLeft: "-50px", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
                 </div>
@@ -221,9 +242,7 @@ function QuestionsPage(props) {
                         return (<><hr></hr>
                             <Row>
                                 <Col xs={1}>
-                                    {/* {console.log(ans)}
-                            {ans.upVotes.length} votes */}
-                                    <Upvote idx={idx} object={ans} decoded={decoded} question={question} type="answer" owner={owner} />
+                                    <Upvote idx={idx} object={ans} decoded={decoded} question={question} type="answer" owner={owner} function ={length}/>
                                 </Col>
                                 <Col style={{ marginLeft: "64px"}}>
                                     {ans.description}
@@ -235,7 +254,9 @@ function QuestionsPage(props) {
                                     return(
                                         <>
                                             <hr></hr>
-                                            {com}
+                                            {com.comment} –&nbsp;
+                                            <a href={"/user/" + com.user}>{com.name}</a> &nbsp;
+                                            <time>{com.createdAt &&<ReactTimeAgo date={Date.parse(com.createdAt)} locale="en-US" />}</time>
                                         </>
                                     );
                                 })}
@@ -243,12 +264,20 @@ function QuestionsPage(props) {
                                 <br/>
                                 <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
                                     <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
-                                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder="Add a comment" onChange={(e) => { setaComment(e.target.value); }}></textarea>
+                                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder={addcomment} onChange={(e) => { setaComment(e.target.value); }} value = {acomment}></textarea>
                                     </form>
                                     <Button onClick={() => {
                                         type = "answer";
-                                        axios.post("http://localhost:3001/api/comment", { type: type, answerId: ans._id, comment: acomment })
+                                        if(value){
+                                            setValue(false)
+                                        }
+                                        else{
+                                            setValue(true)
+                                        }
+                                        setaComment("")
+                                        axios.post("http://localhost:3001/api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
                                             .then(response => {
+                                                
                                                 console.log(response);
                                             })
                                     }} style={{ float: "right", height: "25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
@@ -263,9 +292,6 @@ function QuestionsPage(props) {
                             Your Answer
                         </h3>
                     </Row>
-                    {/* <Row style={{}}>
-                    <Editor></Editor>
-                </Row> */}
 
                     <EditorCustom setDescription={setAnswer} preDefault="" height="300px"></EditorCustom>
                     <Row style={{ marginTop: "30px", marginLeft: "0.5px" }}>
