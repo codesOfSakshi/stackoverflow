@@ -1,18 +1,24 @@
   
   .users {
-    display: flex;
-    width: 50%;
+    /* display: flex; */
+    /* width: 50%; */
     margin: 0 auto;
     justify-content: space-around;
   }
   .users-container {
     background-color: #ffffff;
-    width: 85%;
+    width: 65%;
     padding: 60px 0;
   }
 
   .users-container h1 {
-    margin-left: 100px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .center-div {
+    display: flex;
+    justify-content: center;
   }
 
   .user {

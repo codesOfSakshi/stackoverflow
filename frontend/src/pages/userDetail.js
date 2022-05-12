@@ -9,7 +9,8 @@ import DialogContent from '@mui/material/DialogContent';
 import ImageUploadCard from '../components/user/ImageUpload';
 import Cookies from 'universal-cookie';
 import {useParams} from "react-router-dom";
-import axiosService from "../services/axiosservice";
+import {axiosInstance as authapi} from '../services/authaxiosservice';
+import Navbar from "../components/user/Navbar";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -42,7 +43,7 @@ export default function ReviewCard() {
     const getUser = async () => {
 
         try{
-            const response = await axiosService.get(GET_USER_API+userId);
+            const response = await authapi.get(GET_USER_API+userId);
             if(response && response.data && response.data.success && response.data.user){
               console.log(response.data.user)
               setUser(response.data.user)
@@ -77,7 +78,7 @@ export default function ReviewCard() {
     const updateUser = () => {
         const req= {
             method: "POST",
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization':'JWT '+localStorage.getItem('token') },
             body: JSON.stringify({
                 name: name,
                 location: location,
@@ -85,7 +86,7 @@ export default function ReviewCard() {
                 profilePicture:cookies.get('imageUrl')
             })
         }
-        fetch("http://localhost:3001/api/user/edit-partial/"+user._id,req)
+        fetch("http://54.183.240.252:3001/api/user/edit-partial/"+user._id,req)
             .then(response => {
                 if(response.status===200)
                 {   console.log("User updated successfully")
@@ -104,6 +105,7 @@ export default function ReviewCard() {
 
     return (
         <Card sx={{ maxWidth: 800, ml:50 }}>
+            <Navbar/>
             <Card sx={{ maxWidth: 200, ml:50 }}>
                 <Dialog open={open} onClose={handleClose}>
 

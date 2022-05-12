@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/navbar.css";
 import { ReactComponent as Logo } from "../../images/logo-stackoverflow.svg";
 import { Link } from "react-router-dom";
-import { constants } from "../../config/config";
-import axios from "axios";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 import { useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -21,9 +20,9 @@ function Navbar() {
 
   const PROFILELINK = `/user/${userID}`;
   const MESSAGELINK = `/messaging`;
-  const SEARCHURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/search`;
-  const GETUSERDATAURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/user/${userID}`;
-  const GETBADGES = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/tags/badges/${userID}`;
+  const SEARCHURL = `api/search`;
+  const GETUSERDATAURL = `api/user/${userID}`;
+  const GETBADGES = `api/tags/badges/${userID}`;
   const [searchString, setsearchString] = useState("");
 
   /* ------------------------ search related functions ------------------------ */
@@ -42,7 +41,7 @@ function Navbar() {
   /* ---------------------- useEffect to get user details --------------------- */
   useEffect(() => {
     console.log("userDetails ka URL is...", GETUSERDATAURL);
-    axios
+    authapi
       .get(GETUSERDATAURL)
       .then((response) => {
         if (response && response.status == 200) {
@@ -53,7 +52,7 @@ function Navbar() {
       })
       .catch();
 
-    axios
+    authapi
       .get(GETBADGES)
       .then((response) => {
         if (response && response.data) {
@@ -145,7 +144,7 @@ function Navbar() {
     }
 
     console.log("the final data is", data);
-    axios
+    authapi
       .post(SEARCHURL, data)
       .then((response) => {
         if (response.status === 200) {

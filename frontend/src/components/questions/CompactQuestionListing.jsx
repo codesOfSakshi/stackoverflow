@@ -47,7 +47,7 @@ function CompactQuestionListing({searchResult, questions}) {
       } else {
         setHeaderMessage("All Questions");
         console.log("calling useeffect");
-        var api="http://localhost:3001/api"+'/questions'
+        var api="http://54.183.240.252:3001/api"+'/questions'
         var payload={
           "sortType":1,
           "type":1
@@ -71,7 +71,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
   const repopulate=(e,num)=>{
     e.preventDefault()
-    var api="http://localhost:3001/api"+'/questions'
+    var api="http://54.183.240.252:3001/api"+'/questions'
     var payload={
       "sortType":1,
       "type":num

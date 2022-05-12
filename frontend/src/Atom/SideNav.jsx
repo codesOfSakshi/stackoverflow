@@ -1,8 +1,5 @@
-import {Card,Col,Row,Badge} from 'react-bootstrap';
-import {useEffect,useState} from 'react';
+import {useEffect} from 'react';
 import './atom.css';
-import { useNavigate } from "react-router-dom";
-import ReactTimeAgo from 'react-time-ago'
 import { useLocation } from 'react-router-dom'
 
 function SideNav(props) {  

@@ -4,6 +4,9 @@ import Talk from "talkjs";
 import jwt_decode from 'jwt-decode';
 import { LinearProgress } from '@mui/material';
 import './Messaging.css'
+import { Row,Col } from 'react-bootstrap';
+import Navbar from '../../components/user/Navbar';
+import SideNav from '../../Atom/SideNav';
 
 class AllMessages extends Component {
 
@@ -46,13 +49,22 @@ class AllMessages extends Component {
     render() {
         return (
             <Fragment>
-
-                <br/><br/><br/><br/><br/><br/>
-                <h1 style={{position:'absolute', top:90, right:700}}>My Messages</h1>
-                <br/><br/>
-                <div style={{height: '500px'}} className="inbox-container" ref={c => this.container = c}>
-                    <LinearProgress/>
-                </div>
+                <Navbar/>
+                <Row>
+                <Col lg={1}>
+                    <br/><br/><br/>
+                <SideNav/>
+                </Col>
+                <Col>
+                    {/* <h1 style={{position:'absolute', top:100, right:700}}>My Messages</h1> */}
+                    <br/><br/><br/><br/>
+                    <h1 className='center-div'>My Messages</h1>
+                    <br/><br/>
+                    <div style={{height: '500px'}} className="inbox-container" ref={c => this.container = c}>
+                        <LinearProgress/>
+                    </div>
+                </Col>
+                </Row>
             </Fragment>
         );
     }

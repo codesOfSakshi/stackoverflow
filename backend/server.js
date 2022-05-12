@@ -13,7 +13,7 @@ const config = require("./config/config");
 const user = require("./controllers/user");
 const search = require("./routes/search");
 const question = require("./controllers/questions");
-
+const passportLocal = require('passport-local').Strategy;
 require("./models/tag.js");
 
 /* ---------------------------- importing routes ---------------------------- */
@@ -60,7 +60,8 @@ app.listen(PORT, () => {
 //   "mongodb+srv://user1:user1@cluster0.olc4f.mongodb.net/stackover?retryWrites=true&w=majority";
 
 // const mongoURI = `mongodb://127.0.0.1:27017/stackoverflow`;
-const mongoURI =  "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/stackoverflow_scratch?retryWrites=true&w=majority";
+const mongoURI =
+  "mongodb+srv://SnigdhaAWSMongo:AWSPa$$wordMongo@cluster0.fj6vo.mongodb.net/stackoverflow_scratch?retryWrites=true&w=majority";
 
 let options = {
   useNewUrlParser: true,
@@ -122,4 +123,3 @@ app.use("/api/comment", comment);
 app.use("/api/vote", vote);
 app.use("/api/activity", activity);
 app.use("/api/comments/getcomments", comment);
-

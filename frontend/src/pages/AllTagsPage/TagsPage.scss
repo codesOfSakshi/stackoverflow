@@ -4,10 +4,11 @@
   
   .tags-page {
     display: inline-block;
-    width: 70%;
-    margin-left: 15%;
+    width: 80%;
+    margin-top: 5%;
+    // margin-left: 15%;
     margin-right: 10%;
-    padding: 24px 0;
+    // padding: 24px 0;
   
     .headline {
       font-size: 28px;
@@ -42,7 +43,7 @@
   
       .grid-layout {
         display: grid;
-        grid-gap: 25px;
+        grid-gap: 20px;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       }
     }

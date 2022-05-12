@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {Answer} = require("../services/answer");
+const {checkAuth} = require("../passport");
 
-router.post("/",  async (req, res) => {
+router.post("/",checkAuth,  async (req, res) => {
     const questionId = req.body.questionId;
     const answer = req.body.answer;
     const user = req.body.user;
@@ -25,7 +26,7 @@ router.post("/",  async (req, res) => {
     }
 });
 
-router.post("/mark",  async (req, res) => {
+router.post("/mark",checkAuth,  async (req, res) => {
     const questionId = req.body.questionId;
     const answerId = req.body.answerId;
     const response = {};

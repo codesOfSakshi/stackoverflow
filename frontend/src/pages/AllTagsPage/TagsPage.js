@@ -2,6 +2,9 @@ import React, {useEffect, useState, Fragment} from 'react';
 import axios from 'axios';
 import './TagsPage.scss';
 import TagPanel from '../../components/Tags/TagPanel';
+import { Row,Col } from 'react-bootstrap';
+import Navbar from '../../components/user/Navbar';
+import SideNav from '../../Atom/SideNav';
 
 const TagsPage = () => {
 
@@ -11,7 +14,7 @@ const TagsPage = () => {
     useEffect(() => {
 
         async function getTags() {
-            let response = axios.get("http://localhost:3001/api/tags");
+            let response = axios.get("http://54.183.240.252:3001/api/tags");
             response = await response;
     
             setTags(response.data);
@@ -31,7 +34,7 @@ const TagsPage = () => {
 
         if(query.length === 0){
             async function getTags() {
-                let response = axios.get("http://localhost:3001/api/tags");
+                let response = axios.get("http://54.183.240.252:3001/api/tags");
                 response = await response;
         
                 setTags(response.data);
@@ -43,7 +46,7 @@ const TagsPage = () => {
 
             console.log("Search tag: ", query);
             // Handle Tag Search here
-            axios.get("http://localhost:3001/api/tags/search/" + query)
+            axios.get("http://54.183.240.252:3001/api/tags/search/" + query)
                 .then(response => {
                     if(response.data.length > 0){
                         setTags(response.data.slice(0, 5));
@@ -57,6 +60,13 @@ const TagsPage = () => {
 
     return(
         <Fragment>
+            <Navbar/>
+            <Row>
+            <Col lg={3}>
+                <br/><br/><br/>
+            <SideNav/>
+            </Col>
+            <Col>
             <div id='mainbar' className='tags-page fc-black-800'>
                 <h1 className='headline'>Tags</h1>
                 <p className='fs-body'>
@@ -89,6 +99,9 @@ const TagsPage = () => {
                     }
                 </div>
             </div>
+            
+            </Col>
+            </Row>
         </Fragment>
     )
 

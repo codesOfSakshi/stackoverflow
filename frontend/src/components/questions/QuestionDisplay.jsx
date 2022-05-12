@@ -13,6 +13,7 @@ import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
 import ReactTimeAgo from 'react-time-ago';
 import UserCard from '../../Atom/UserCard';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -75,11 +76,11 @@ function QuestionsPage(props) {
             navigate("/")
         }
         else{
-        var api = "http://localhost:3001/api/user/addbookmark/" + decoded._id
+        var api = "api/user/addbookmark/" + decoded._id
         var payload = {
             questionId: question._id
         }
-        axios.post(api, payload).then(response => { alert(response.data) })
+        authapi.post(api, payload).then(response => { alert(response.data) })
     }
     }
 
@@ -107,7 +108,13 @@ function QuestionsPage(props) {
                     console.log("++++++", response);
                 })
         }
-        
+        type = 'question'
+        setqComment("")
+
+        authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+            .then(response => {
+                console.log(response);
+            })
     }
 
     const recordAnswer = () => {
@@ -116,14 +123,14 @@ function QuestionsPage(props) {
             navigate("/")
         }
         else{
-        // console.log("upvote");
-        var api = "http://localhost:3001/api/answer"
+        console.log("upvote");
+        var api = "api/answer"
         var payload = {
             questionId: question._id,
             answer: answer,
             user: decoded._id,
         }
-        axios.post(api, payload).then(response => { 
+        authapi.post(api, payload).then(response => {
             alert(response.data); 
             length() ;
             setAnswer("")
@@ -191,7 +198,7 @@ function QuestionsPage(props) {
                 <div class="displayFlex" style={{ "margin-bottom": "3rem" }}>
                     {question.tags && question.tags.map(tag => {
                         var route= "/tag/"+tag
-                        return (<><div class="s-post-summary--meta-tags">
+                        return (<><div class="s-post-summary--meta-tags" style={{"padding-right":"5px"}}>
                         <a class="s-tag" href={route}>
                             {tag}</a>
                         </div></>)

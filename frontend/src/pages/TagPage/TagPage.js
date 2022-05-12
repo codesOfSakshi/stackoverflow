@@ -5,6 +5,9 @@ import axios from 'axios';
 import { toggleButtonClasses } from '@mui/material';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useParams } from 'react-router-dom';
+import { Row,Col } from 'react-bootstrap';
+import Navbar from '../../components/user/Navbar';
+import SideNav from '../../Atom/SideNav';
 
 
 const TagPage = () => {
@@ -28,7 +31,7 @@ const TagPage = () => {
                 filterType: 1
             }
 
-            let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+            let response = axios.post("http://54.183.240.252:3001/api/tags/questionbytag/", payload );
             response = await response;
     
             if(response.status === 200){
@@ -57,7 +60,7 @@ const TagPage = () => {
             tagId: params.tagId,
             filterType: filterType
         }
-        let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+        let response = axios.post("http://54.183.240.252:3001/api/tags/questionbytag/", payload );
         response = await response;
 
         if(response.status === 200){
@@ -78,62 +81,72 @@ const TagPage = () => {
 
     return (
         <div>
-            <div id='mainbar' class='questions-page fc-black-800 ' style={{marginLeft:270, marginRight:270}} >
+            <Navbar/>
+            <Row>
+            <Col xs={3}>
+                <br/><br/><br/>
+            <SideNav/>
+            </Col>
+            <Col>
+                <div id='mainbar' class='questions-page fc-black-800 ' style={{ marginRight:270, marginTop:70}} >
 
-                <div class="s-page-title">
-                    <div class="s-page-title--text">
-                        <h1 class="s-page-title--header">Questions tagged [{params.tagId}]</h1>
-                        <br/>
-                        <p class="s-page-title--description">
-                            {description}
-                        </p>
-                    </div>
-                    <div class="s-page-title--actions">
-                        <button onClick={navToAskQuestion} className='s-btn s-btn__primary'>Ask Question</button>
-                    </div>
-                </div>
-
-                <div class="d-flex ai-center jc-space-between mb12 sm:fd-column sm:ai-stretch">
-                    <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
-                        {count} Questions
+                    <div class="s-page-title">
+                        <div class="s-page-title--text">
+                            <h1 class="s-page-title--header">Questions tagged [{params.tagId}]</h1>
+                            <br/>
+                            <p class="s-page-title--description">
+                                {description}
+                            </p>
+                        </div>
+                        <div class="s-page-title--actions">
+                            <button onClick={navToAskQuestion} className='s-btn s-btn__primary'>Ask Question</button>
+                        </div>
                     </div>
 
-                    <div class="uql-nav flex--item" data-action="se-uql-list:edit-current-requested@document->se-uql#toggleEditor">
-                        <div class="d-flex ai-center jc-space-between">
-                            <div class="js-uql-navigation s-btn-group flex--item mr16 ff-row-nowrap">
-                                    <a onClick={() => handleFilterQuestions(1)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Newest" data-shortcut="N">
-                                        <div class="flex--item">Interesting</div>
-                                    </a>
-                                    <a  onClick={() => handleFilterQuestions(2)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Active" data-shortcut="A">
-                                        <div class="flex--item">Hot</div>
-                                    </a>
-                                    <a  onClick={() => handleFilterQuestions(3)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Bounties" data-shortcut="E">
-                                        <div class="flex--item">Score</div>
-                                    </a>
-                                    <a onClick={() => handleFilterQuestions(4)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Unanswered" data-shortcut="U">
-                                        <div  class="flex--item">Unanswered</div>
-                                    </a>
+                    <div class="d-flex ai-center jc-space-between mb12 sm:fd-column sm:ai-stretch">
+                        <div class="fs-body3 flex--item fl1 mr12 sm:mr0 sm:mb12">
+                            {count} Questions
+                        </div>
+
+                        <div class="uql-nav flex--item" data-action="se-uql-list:edit-current-requested@document->se-uql#toggleEditor">
+                            <div class="d-flex ai-center jc-space-between">
+                                <div class="js-uql-navigation s-btn-group flex--item mr16 ff-row-nowrap">
+                                        <a onClick={() => handleFilterQuestions(1)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Newest" data-shortcut="N">
+                                            <div class="flex--item">Interesting</div>
+                                        </a>
+                                        <a  onClick={() => handleFilterQuestions(2)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Active" data-shortcut="A">
+                                            <div class="flex--item">Hot</div>
+                                        </a>
+                                        <a  onClick={() => handleFilterQuestions(3)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Bounties" data-shortcut="E">
+                                            <div class="flex--item">Score</div>
+                                        </a>
+                                        <a onClick={() => handleFilterQuestions(4)} class="s-btn s-btn__muted s-btn__outlined s-btn__sm d-flex" data-nav-value="Unanswered" data-shortcut="U">
+                                            <div  class="flex--item">Unanswered</div>
+                                        </a>
+                                </div>
                             </div>
                         </div>
-                     </div>
+                    </div>
+
+                    {count > 0 ? 
+                        <div id="questions" class=" flush-left">
+
+                            {taggedQuestions.map((question, index) => ( 
+                                <TaggedQuestions key={index} question={question}/>
+                                // <CompactQuestion questions={question}/>
+                            ))}
+
+                        </div>
+                
+                    :
+                    
+                    "No Tagged questions"
+                    }
+                    
                 </div>
 
-                {count > 0 ? 
-                    <div id="questions" class=" flush-left">
-
-                        {taggedQuestions.map((question, index) => ( 
-                            <TaggedQuestions key={index} question={question}/>
-                            // <CompactQuestion questions={question}/>
-                        ))}
-
-                    </div>
-            
-                :
-                
-                "No Tagged questions"
-                }
-                
-            </div>
+            </Col>
+            </Row>
     </div>
     )
 }

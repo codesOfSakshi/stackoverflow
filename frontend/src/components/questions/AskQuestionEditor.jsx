@@ -4,6 +4,7 @@ import {useEffect,useState,useRef} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 import Cookies from 'universal-cookie';
 import MarkdownIt from 'markdown-it';
@@ -47,7 +48,7 @@ function AskQuestionEditor(props) {
     }
     else{
     var arrTags=[]
-    var api="http://localhost:3001/api/tags"
+    var api="http://54.183.240.252:3001/api/tags"
     axios.get(api).then(
       response =>{
         response.data.map(tag =>{
@@ -78,9 +79,11 @@ function AskQuestionEditor(props) {
       images:imageArray
       // userId: question.user._id
     }
-    var api="http://localhost:3001/api/questions/add"
-    axios.post(api,payload).then(response => {
-      var path = "/question/"+response.data.message
+    var api="api/questions/add"
+      authapi.post(api,payload).then(response => {
+        console.log(response.data);
+        console.log(response.data.result);
+      var path = "/question/"+response.data.result
       navigate(path)
       })
     }
@@ -120,7 +123,7 @@ function AskQuestionEditor(props) {
   //   const formData = new FormData();
   //   formData.append("image", form.formFileSm.files[0])
 
-  //   var api="http://localhost:3001/api"+'/shop/editImage'
+  //   var api="http://54.183.240.252:3001/api"+'/shop/editImage'
 
   //   axios.post(api,formData,{'Content-Type': 'multipart/form-data'})
   //   .then(response => {
@@ -136,7 +139,7 @@ function AskQuestionEditor(props) {
 
   //   // get secure url from our server
   //   const  server_url  =
-  //       await fetch("http://localhost:3001/s3Url/addImage")
+  //       await fetch("http://54.183.240.252:3001/s3Url/addImage")
   //           .then(response => {
   //               return response.json()
   //           })
