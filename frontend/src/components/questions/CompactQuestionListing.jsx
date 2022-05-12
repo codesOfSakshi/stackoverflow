@@ -109,7 +109,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
             <div>
             </div>
-            {questionsAll.map((question) =>{  return (<div key={question._id}><hr /><CompactQuestion questions={question} /></div>)})}
+            {questionsAll && questionsAll.map((question) =>{  return (<div key={question._id}><hr /><CompactQuestion questions={question} /></div>)})}
             {/* <PaginatedList
             list={questionsAll}
             itemsPerPage={10}

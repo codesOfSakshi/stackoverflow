@@ -185,7 +185,9 @@ function Navbar() {
           parsedData.tags.push(eachString.split("[").pop().split("]")[0]);
         } else if(eachString.startsWith("is:question")){
           parsedData.question = true;
-        } else if(eachString.startsWith("user:")){
+        } else if(eachString.startsWith("is:answer")){
+          parsedData.answer = true;
+        }else if(eachString.startsWith("user:")){
           const userArray = eachString.split(":");
           console.log(userArray);
           if(userArray && userArray.length){
@@ -274,7 +276,13 @@ function Navbar() {
            word+=searchString[i++];
          }
          parsedStrings.push(word);
-      }else{
+      }
+      else if(searchString.substring(i,i+12)==="is:answer"){
+        while(i<searchString.length && searchString[i]!==" "){
+          word+=searchString[i++];
+        }
+        parsedStrings.push(word);
+       }else{
         while(i<searchString.length && searchString[i]!==" "){
            word+=searchString[i++];
         }
