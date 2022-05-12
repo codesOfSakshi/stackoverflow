@@ -304,7 +304,7 @@ class Question {
         views: 0,
         answers: [],
         images: question.images,
-        userId: question.userId,
+        userId: question.user,
         user: question.user,
         title: question.title,
         tags: question.tags,
@@ -334,7 +334,7 @@ class Question {
       //ToDO - Append the tag in user tag list
       const insertedQuestion = await questionNew.save();
       const updateUserData = {};
-      updateUserData.userId = question.userId;
+      updateUserData.userId = question.user;
       updateUserData.questionId = insertedQuestion._id.toString();
       updateUserData.tags = question.tags;
       const updatedUser = await Question.updateUserOnQuestionAdd(
