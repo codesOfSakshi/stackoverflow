@@ -4,8 +4,7 @@ import {Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import "../../styles/usertaglist.css";
 import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
-import axiosService from '../../services/axiosservice';
-
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 const GET_USER_TAGS_API = "api/user/tags/";
 
 const UserTagList = () => {
@@ -19,7 +18,7 @@ const UserTagList = () => {
   const getUserTags = async () => {
       setGettingTags(true);
       try{
-          const response = await axiosService.get(GET_USER_TAGS_API+userId);
+          const response = await authapi.get(GET_USER_TAGS_API+userId);
           if(response && response.data && response.data.success && response.data.tags){
               console.log(response.data.tags);
               setTags(response.data.tags);

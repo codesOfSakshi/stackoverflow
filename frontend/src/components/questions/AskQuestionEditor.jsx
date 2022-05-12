@@ -4,6 +4,7 @@ import {useEffect,useState,useRef} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 import Cookies from 'universal-cookie';
 import MarkdownIt from 'markdown-it';
@@ -59,11 +60,15 @@ function AskQuestionEditor(props) {
     }
   },[])
 
+  const trim=(x)=>{
+    return x.replace(/^\s+|\s+$/gm, '');
+  }
+
   const submitHandler =(e)=>{
     console.log(e);
     e.preventDefault();
-    if(!descripiton){
-      setError("Please Enter a valid Description !")
+    if(!trim(descripiton) || !trim(e.target.formBasicTitle.value)){
+      setError("Please Enter a valid Title and Description !")
     }
     else{
     var payload ={
@@ -74,9 +79,11 @@ function AskQuestionEditor(props) {
       images:imageArray
       // userId: question.user._id
     }
-    var api="http://54.183.240.252:3001/api/questions/add"
-    axios.post(api,payload).then(response => {
-      var path = "/question/"+response.data.message
+    var api="api/questions/add"
+      authapi.post(api,payload).then(response => {
+        console.log(response.data);
+        console.log(response.data.result);
+      var path = "/question/"+response.data.result
       navigate(path)
       })
     }

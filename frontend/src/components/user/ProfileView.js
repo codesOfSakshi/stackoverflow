@@ -7,9 +7,10 @@ import CakeIcon from '@mui/icons-material/Cake';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Stack from '@mui/material/Stack';
-import axiosService from "../../services/axiosservice";
 import {useEffect, useState} from "react";
 import {useLocation, useParams} from "react-router-dom";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
+import jwt_decode from 'jwt-decode';
 
 export default function ProfileView() {
     const GET_USER_API = "api/user/";
@@ -17,9 +18,12 @@ export default function ProfileView() {
     const {userId} = new useParams(search);
     const [user,setUser] = useState("");
     const theme = useTheme();
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token.split('.')[1], { header: true });
+    const logincred= decoded._id;
     const getUser = async () => {
         try{
-            const response = await axiosService.get(GET_USER_API+userId);
+            const response = await authapi.get(GET_USER_API+userId);
             if(response && response.data && response.data.success && response.data.user){
                 if(response.data.user){
                     setUser(response.data.user);
@@ -76,14 +80,14 @@ export default function ProfileView() {
             </Box>
             </Box>
         </div>
-            <div className="flex--item">
+            {userId == logincred && <div className="flex--item">
 
             <a className="flex--item s-btn s-btn__outlined s-btn__muted s-btn__icon s-btn__sm"
                href={"/user/edit/"+userId}>
                 <svg aria-hidden="true" className="svg-icon iconPencil" width="18" height="18" viewBox="0 0 18 18">
                 </svg>
                 Edit profile</a>
-            </div>
+            </div>}
 
         </div>
 

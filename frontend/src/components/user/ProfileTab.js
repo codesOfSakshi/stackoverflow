@@ -4,8 +4,8 @@ import UserBadgeInfo from './UserBadgeInfo.js';
 import UserTagList from './UserTagList.js';
 import UserTopPostList from './UserTopPostList.js';
 import "../../styles/profiletab.css";
-import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
-import axiosService from '../../services/axiosservice';
+import {useNavigate, useLocation, useParams} from "react-router-dom";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const GET_USER_API = "api/user/";
 
@@ -23,7 +23,7 @@ const ProfileTab = () => {
   const getUser = async () => {
       setGettingUser(true);
       try{
-          const response = await axiosService.get(GET_USER_API+userId);
+          const response = await authapi.get(GET_USER_API+userId);
           if(response && response.data && response.data.success && response.data.user){
               setReputation(response.data.user.reputation);
               setReach(response.data.user.reach);

@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import Stack from '@mui/material/Stack';
+
 
 
 const UserTopPost = ({post}) => {

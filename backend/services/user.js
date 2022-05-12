@@ -351,7 +351,7 @@ class User {
 
   static editUserPartially = (req) => {
     try {
-      UserModel.findOneAndUpdate(
+     UserModel.findByIdAndUpdate(
         mongoose.Types.ObjectId(req.params.userId), // query
         {
           $set: {

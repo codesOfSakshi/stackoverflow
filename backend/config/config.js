@@ -9,6 +9,9 @@ let config = {
     questionRejected: "REJECTED",
     questionWaiting: "PENDING",
   },
+
+    secret_token: "CMPE_SAM_TOKEN"
+
 };
 
 module.exports = Object.freeze(config);

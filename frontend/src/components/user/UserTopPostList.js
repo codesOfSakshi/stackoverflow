@@ -3,7 +3,7 @@ import UserTopPost from './UserTopPost'
 import axiosService from "../../services/axiosservice";
 import {useParams} from "react-router-dom";
 import "../../styles/usertoppostlist.css";
-
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 function UserTopPostList({userId}) {
 
@@ -20,7 +20,7 @@ function UserTopPostList({userId}) {
       setGettingPosts(true);
       try{
 
-          const response = await axiosService.get(GET_USER_POSTS_API, {params:{rankby: rankby, type: type}});
+          const response = await authapi.get(GET_USER_POSTS_API, {params:{rankby: rankby, type: type}});
           if(response && response.data && response.data.success){
               setTopPosts(response.data.data);
               console.log(topPosts,'a')

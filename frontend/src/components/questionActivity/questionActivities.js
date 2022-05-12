@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosApi from "../../config/axios.config";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 import { constants } from "../../config/config";
 import "./questionActivity.css";
 
@@ -10,7 +11,7 @@ const QuestionActivity = ({ }) => {
   const [timeToggle, setTimeToggle] = useState(true);
   const getActivities = () => {
     if (activityID) {
-      axiosApi(
+      authapi.get(
         constants.baseUrl +
           constants.API.ACTIVITY.getActivity.replace(":activityID", activityID)
       ).then(

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Editor from "react-markdown-editor-lite";
 import axios from 'axios';
 import Upvote from '../../Atom/upvote';
+import Answer from '../../Atom/answer';
 import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'
 import EditorCustom from '../../Atom/EditorCustom'
 import ReactMarkdown from 'react-markdown'
@@ -12,6 +13,7 @@ import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
 import ReactTimeAgo from 'react-time-ago';
 import UserCard from '../../Atom/UserCard';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -23,27 +25,26 @@ function QuestionsPage(props) {
     const [answer, setAnswer] = useState("")
     const [owner, setOwner] = useState(false)
     const [comments, setComments] = useState([])
-    const [addcomment, setaddcomment] = useState("Add a comment")
+    const [qerror,qsetError] = useState("");
+    
     var questionDisplay, answerDisplay;
     let navigate = useNavigate();
     var arr
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
     const [qcomment, setqComment] = useState("")
-    const [acomment, setaComment] = useState("")
     const[value, setValue] = useState(false)
     var questionDisplay, answerDisplay;
     var type = 'question'
 
     const token = localStorage.getItem("token");
     const decoded = token?(jwt_decode(token.split('.')[1], { header: true })):false
-    console.log("decode", decoded)
+    // console.log("decode", decoded)
 
     useEffect(() => {
-        console.log("Q ID: ", params.id)
-        var api = "http://54.183.240.252:3001/api/questions/" + params.id
+        var api = "http://localhost:3001/api/questions/" + params.id
         axios.get(api).then(response => {
-            console.log("============", response.data.data.comment)
+            // console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
             console.log("DISPLAYED QUESTION", response.data.data);
             setlans(response.data.data.answers)
@@ -54,7 +55,7 @@ function QuestionsPage(props) {
     }, [value])
 
     const length = () =>{
-        var api = "http://54.183.240.252:3001/api/questions/" + params.id
+        var api = "http://localhost:3001/api/questions/" + params.id
             axios.get(api).then(async response => {
                 await setQuestion(response.data.data)
                 await setlans(response.data.data.answers)
@@ -75,25 +76,42 @@ function QuestionsPage(props) {
             navigate("/")
         }
         else{
-        var api = "http://54.183.240.252:3001/api/user/addbookmark/" + decoded._id
+        var api = "api/user/addbookmark/" + decoded._id
         var payload = {
             questionId: question._id
         }
-        axios.post(api, payload).then(response => { alert(response.data) })
+        authapi.post(api, payload).then(response => { alert(response.data) })
     }
     }
 
+    const trim=(x)=>{
+        return x.replace(/^\s+|\s+$/gm, '');
+      }
+
     const saveQuesComment = () => {
-        if(value){
-            setValue(false)
+
+        if(!trim(qcomment)){
+            qsetError("Please enter a valid comment")
         }
         else{
-            setValue(true)
+            if(value){
+                setValue(false)
+            }
+            else{
+                setValue(true)
+            }
+            type = 'question'
+            setqComment("")
+    
+            axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+                .then(response => {
+                    console.log("++++++", response);
+                })
         }
         type = 'question'
         setqComment("")
 
-        axios.post("http://54.183.240.252:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+        authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
             .then(response => {
                 console.log(response);
             })
@@ -106,20 +124,19 @@ function QuestionsPage(props) {
         }
         else{
         console.log("upvote");
-        var api = "http://54.183.240.252:3001/api/answer"
+        var api = "api/answer"
         var payload = {
             questionId: question._id,
             answer: answer,
             user: decoded._id,
         }
-        axios.post(api, payload).then(response => { 
+        authapi.post(api, payload).then(response => {
             alert(response.data); 
             length() ;
             setAnswer("")
         })
     }
     }
-
 
     return (
         <div>
@@ -219,7 +236,9 @@ function QuestionsPage(props) {
                     </form>
                     <Button onClick={saveQuesComment} style={{ float: "right", height: "25px", width: "100%", marginTop: "70px", marginLeft: "-50px", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
                 </div>
-
+                {qerror && <div style={{color: "red"}}>
+                    {qerror}
+                </div>}
 
 
                 <br />
@@ -253,39 +272,7 @@ function QuestionsPage(props) {
                                 </Col>
                             </Row>
                             <Row>
-                                <div>
-                                {ans.comment && ans.comment.map(com =>{
-                                    return(
-                                        <>
-                                            <hr></hr>
-                                            {com.comment} –&nbsp;
-                                            <a href={"/user/" + com.user}>{com.name}</a> &nbsp;
-                                            <time>{com.createdAt &&<ReactTimeAgo date={Date.parse(com.createdAt)} locale="en-US" />}</time>
-                                        </>
-                                    );
-                                })}
-                                </div>
-                                <br/>
-                                <div style={{ backgroundColor: "#f5f6f6", display: "flex", fontFamily: "sans-serif", justifyContent: "center", alignItems: "center", height: "10vh", border: "none", outline: "none" }}>
-                                    <form style={{ height: "20px", width: "100%", border: "none", backgroundColor: "transparent", borderBottom: "2px solid #aaa", resize: "none", outline: "none" }}>
-                                        <textarea style={{ border: "none", outline: "none", height: "20px", width: "50rem", backgroundColor: "#f5f6f6", marginTop: "-10px" }} placeholder={addcomment} onChange={(e) => { setaComment(e.target.value); }} value = {acomment}></textarea>
-                                    </form>
-                                    <Button onClick={() => {
-                                        type = "answer";
-                                        if(value){
-                                            setValue(false)
-                                        }
-                                        else{
-                                            setValue(true)
-                                        }
-                                        setaComment("")
-                                        axios.post("http://54.183.240.252:3001/api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
-                                            .then(response => {
-                                                
-                                                console.log(response);
-                                            })
-                                    }} style={{ float: "right", height: "25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>
-                                </div>
+                                <Answer ans ={ans} function ={length}/>
                             </Row>
                             </>);
                     })}

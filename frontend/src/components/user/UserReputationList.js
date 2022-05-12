@@ -4,7 +4,7 @@ import UserReputationHistory from './UserReputationHistory.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import "../../styles/reputationlist.css";
 import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
-import axiosService from '../../services/axiosservice';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const GET_USER_REPUTATION_API = "api/user/reputation/history/";
 
@@ -18,7 +18,7 @@ const UserReputationList = () => {
     const getUserReputationHistory = async () => {
       setGettingUserReputationHistory(true);
       try{
-          const response = await axiosService.get(GET_USER_REPUTATION_API+userId);
+          const response = await authapi.get(GET_USER_REPUTATION_API+userId);
           if(response && response.data && response.data.success && response.data.reputationHistory){
               console.log(response.data.reputationHistory);
               setGettingUserReputationHistory(false);
