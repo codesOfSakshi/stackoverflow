@@ -141,7 +141,7 @@ function QuestionsPage(props) {
 
     return (
         <div>
-            {((owner && question.status=="PENDING")|| question.status=="APPROVED")?(<div style={{ width: '60rem', textAlign: 'justify' }}>
+            {((owner && question.status=="PENDING")||decoded.admin==true || question.status=="APPROVED")?(<div style={{ width: '60rem', textAlign: 'justify' }}>
                 <Row style={{ textAlign: 'left' }}>
                     <h2>
                         {question.title}
@@ -206,7 +206,7 @@ function QuestionsPage(props) {
                     })}
                     <Col style={{ float: "right" }} >
                     {owner && <Button onClick={navigateToEdit} style={{ float: "right", margin: "0.5rem" }}>Edit Question</Button>}
-                        <UserCard date={question.createdAt} user={question.user}></UserCard>
+                        {question.user && <UserCard date={question.createdAt} user={question.user}></UserCard>}
                     </Col>
 
                 </div>
