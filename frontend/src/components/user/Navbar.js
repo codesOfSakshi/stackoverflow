@@ -199,7 +199,7 @@ function Navbar() {
              parsedData.accepted = accepted==="yes" ? true : false;
            }
         } else if(eachString.startsWith("\"") && eachString.endsWith("\"")){
-          parsedData.phrases.push(searchString.split("[").pop().split("]")[0]);
+          parsedData.phrases.push(eachString.split("\"")[1]);
         } else{
           parsedData.phrases.push(searchString);
         }
@@ -208,11 +208,8 @@ function Navbar() {
       parsedData.question = false;
     }
     console.log("the final data is", parsedData);
-    axios
-      .post(SEARCHURL, parsedData)
-    console.log("the final data is", data);
     authapi
-      .post(SEARCHURL, data)
+      .post(SEARCHURL, parsedData)
       .then((response) => {
         if (response.status === 200) {
           const temp_items = response.data;
