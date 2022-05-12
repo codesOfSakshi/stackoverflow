@@ -4,8 +4,7 @@ import {useEffect,useState} from 'react';
 import { useNavigate,useParams } from "react-router-dom";
 import axios from 'axios';
 import EditorCustom from '../../Atom/EditorCustom';
-// import question from '../../../../backend/models/question';
-// import EditQuestion from '../../pages/EditQuestion';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 import jwt_decode from 'jwt-decode';
 
 
@@ -95,7 +94,7 @@ function EditQuestionPage(props) {
       user: question.user
     }
     var api="http://54.183.240.252:3001/api/questions/edit"
-    axios.post(api,payload).then(response => {
+    authapi.post(api,payload).then(response => {
       console.log("response.result",response.data.message)
       var path = "/question/"+response.data.message
       navigate(path)

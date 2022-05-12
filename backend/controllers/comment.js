@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {Comment} = require("../services/comment");
+const {checkAuth} = require("../passport");
 
-router.post("/",  async (req, res) => {
+router.post("/", checkAuth, async (req, res) => {
     const questionId = req.body.questionId;
     const answerId = req.body.answerId;
     const comment = req.body.comment;

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import UserBadge from "./UserBadge";
 import UserTopBadge from "./UserTopBadge";
 
 export default function SilverBadge({badge,length}) {

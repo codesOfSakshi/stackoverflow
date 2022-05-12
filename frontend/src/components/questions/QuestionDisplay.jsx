@@ -12,6 +12,7 @@ import MarkdownIt from 'markdown-it';
 import jwt_decode from 'jwt-decode';
 import ReactTimeAgo from 'react-time-ago';
 import UserCard from '../../Atom/UserCard';
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const markdown = `Just a link: https://reactjs.com.`
 
@@ -75,11 +76,11 @@ function QuestionsPage(props) {
             navigate("/")
         }
         else{
-        var api = "http://54.183.240.252:3001/api/user/addbookmark/" + decoded._id
+        var api = "api/user/addbookmark/" + decoded._id
         var payload = {
             questionId: question._id
         }
-        axios.post(api, payload).then(response => { alert(response.data) })
+        authapi.post(api, payload).then(response => { alert(response.data) })
     }
     }
 
@@ -93,7 +94,7 @@ function QuestionsPage(props) {
         type = 'question'
         setqComment("")
 
-        axios.post("http://54.183.240.252:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+        authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
             .then(response => {
                 console.log(response);
             })
@@ -106,13 +107,13 @@ function QuestionsPage(props) {
         }
         else{
         console.log("upvote");
-        var api = "http://54.183.240.252:3001/api/answer"
+        var api = "api/answer"
         var payload = {
             questionId: question._id,
             answer: answer,
             user: decoded._id,
         }
-        axios.post(api, payload).then(response => { 
+        authapi.post(api, payload).then(response => {
             alert(response.data); 
             length() ;
             setAnswer("")

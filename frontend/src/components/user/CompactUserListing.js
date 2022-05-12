@@ -1,6 +1,7 @@
    
 import { Form, Row, Col, Card, Button } from "react-bootstrap";
 import axios from "axios";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 import { useEffect, useState } from "react";
 import CompactQuestion from "../../Atom/CompactQuestion";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +15,7 @@ function CompactUserListing({users, setUsers}) {
     // TODO naviagate to the user profile page
     // navigate(`/askquestion`);
   };
-  const SEARCHURL = `http://${constants.IP.ipAddress}:${constants.IP.port}/api/search/name`;
+  const SEARCHURL = `api/search/name`;
 
   //   const [searchString, setsearchString] = useState("");
 
@@ -22,7 +23,7 @@ function CompactUserListing({users, setUsers}) {
     let data = {
       name: "",
     };
-    axios.post(SEARCHURL, data).then((response) => {
+    authapi.post(SEARCHURL, data).then((response) => {
       console.log(response.data.users);
       setUsers(response.data.users);
     });

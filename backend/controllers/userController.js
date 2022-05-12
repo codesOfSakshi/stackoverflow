@@ -3,7 +3,10 @@ const { User } = require("../services/user.js");
 const ENCRYPT = require("../services/encrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config.js").config;
+const  { secret_token } = require("../config/config");
+const { auth, checkAuth } = require("../passport");
 
+auth();
 module.exports = class UserController {
   /* -------------------------------------------------------------------------- */
   /*                               sign in method                               */
@@ -56,12 +59,12 @@ module.exports = class UserController {
 
     const user = JSON.parse(JSON.stringify(userObj.user));
     delete user.password;
-    const token = jwt.sign(user, config.SECRET_KEY, {
+    const token = jwt.sign(user, secret_token, {
       expiresIn: "24h",
     });
 
     returnMessage.user = user;
-    returnMessage.token = token;
+    returnMessage.token =  "JWT " + token;
     returnMessage.success = true;
     returnMessage.status = 200;
     returnMessage.message = "Signed in successfully";
@@ -120,7 +123,7 @@ module.exports = class UserController {
     /* ----------------- create a token and return the response ----------------- */
     user = JSON.parse(JSON.stringify(user));
     delete user.password;
-    const token = jwt.sign(user, config.SECRET_KEY, {
+    const token = jwt.sign(user, secret_token, {
       expiresIn: "24h",
     });
     returnMessage.token = token;

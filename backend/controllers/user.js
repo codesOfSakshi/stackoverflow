@@ -5,9 +5,11 @@ const { Answer } = require("../services/answer");
 const { Question } = require("../services/question");
 const { ReputationHistory } = require("../services/reputationhistory");
 const { ReputationAction } = require("../services/reputationaction");
+const {  checkAuth } = require("../passport");
 
 
 router.get("/:userId",  async (req, res) => {
+    console.log("Inside user")
     const userId = req.params.userId;
     const response = {};
     try{
@@ -33,7 +35,7 @@ router.get("/:userId",  async (req, res) => {
     }
 });
 
-router.get("/bookmark/:userId",  async (req, res) => {
+router.get("/bookmark/:userId",checkAuth,  async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
@@ -69,7 +71,7 @@ router.get("/bookmark/:userId",  async (req, res) => {
     }
 });
 
-router.post("/addbookmark/:userId",  async (req, res) => {
+router.post("/addbookmark/:userId", checkAuth, async (req, res) => {
     const response = {};
     try{
         const questionIds = await User.addToBookMark(req);
@@ -84,7 +86,7 @@ router.post("/addbookmark/:userId",  async (req, res) => {
             response.status = 200;
             res.status(200).send(response);
         }
-      
+
     }catch(e){
         console.log(e);
         response.success = false;
@@ -94,7 +96,7 @@ router.post("/addbookmark/:userId",  async (req, res) => {
     }
 });
 
-router.get("/tags/:userId",  async (req, res) => {
+router.get("/tags/:userId",checkAuth,  async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     const userObj = {userId};
@@ -122,7 +124,7 @@ router.get("/tags/:userId",  async (req, res) => {
     });
 });
 
-router.get("/reputation/history/:userId",  async (req, res) => {
+router.get("/reputation/history/:userId", checkAuth, async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
@@ -148,7 +150,7 @@ router.get("/reputation/history/:userId",  async (req, res) => {
     }
 });
 
-router.get("/reputation/:userId",  async (req, res) => {
+router.get("/reputation/:userId", checkAuth, async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
@@ -174,10 +176,10 @@ router.get("/reputation/:userId",  async (req, res) => {
     }
 });
 
-router.post("/edit/:userId",  async (req, res) => {
+router.post("/edit/:userId", checkAuth, async (req, res) => {
     const response = {};
     try{
-        
+
         const successData = await User.editUser(req);
         console.log("successData", successData)
         if(successData){
@@ -224,10 +226,10 @@ router.get("/:userId",  async (req, res) => {
     }
 });
 
-router.post("/edit-partial/:userId",  async (req, res) => {
+router.post("/edit-partial/:userId", async (req, res) => {
     const response = {};
     try{
-        
+
         const successData =  User.editUserPartially(req);
         console.log("successData", successData)
         response.success = true;
@@ -244,7 +246,7 @@ router.post("/edit-partial/:userId",  async (req, res) => {
 });
 
 
-router.get("/answer/activity/:userId",  async (req, res) => {
+router.get("/answer/activity/:userId",checkAuth,  async (req, res) => {
     const userId = req.params.userId;
     const response = {};
     try{
@@ -269,7 +271,7 @@ router.get("/answer/activity/:userId",  async (req, res) => {
     }
 });
 
-router.get("/question/activity/:userId",  async (req, res) => {
+router.get("/question/activity/:userId", checkAuth, async (req, res) => {
     const userId= req.params.userId;
     const response = {};
     try{
@@ -324,13 +326,13 @@ router.get("/searchbyname/:name", async (req, res) => {
     }
 })
 
-router.get("/top-posts/:userId",  async (req, res) => {
+router.get("/top-posts/:userId", checkAuth, async (req, res) => {
     const response = {};
     try{
         console.log(req);
         const type = req.query.type; //question, answer, all
         const rankBy = req.query.rankby; //score, latest
-        const userId = req.params.userId; 
+        const userId = req.params.userId;
         console.log(type, rankBy)
         const rep = await User.topPosts(rankBy, type, userId)
         console.log(rep)

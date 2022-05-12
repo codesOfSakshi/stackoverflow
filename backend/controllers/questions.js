@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../services/user");
 const { Question } = require("../services/question");
+const {checkAuth} = require("../passport");
 
-router.post("/add",  async (req, res) => {
+router.post("/add",checkAuth,  async (req, res) => {
     const question = req.body
     console.log("in route",question)
     const response = {};
@@ -24,7 +25,7 @@ router.post("/add",  async (req, res) => {
     }
 });
 
-router.post("/edit",  async (req, res) => {
+router.post("/edit", checkAuth, async (req, res) => {
     console.log(req.body)
     const response = {};
     try{
@@ -63,7 +64,7 @@ router.get("/:questionId",  async (req, res) => {
     }
 });
 
-router.post("/",  async (req, res) => {
+router.post("/", async (req, res) => {
     try{
         const response = {}
         const questionModelResponse = await Question.getQuestionsByType(req.body.type,req.body.sortType);

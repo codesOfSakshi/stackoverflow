@@ -13,7 +13,7 @@ const config = require("./config/config");
 const user = require("./controllers/user");
 const search = require("./routes/search");
 const question = require("./controllers/questions");
-
+const passportLocal = require('passport-local').Strategy;
 require("./models/tag.js");
 
 /* ---------------------------- importing routes ---------------------------- */
