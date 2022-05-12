@@ -1,10 +1,10 @@
 exports.constants = {
   IP: {
-    ipAddress: "54.183.240.252",
+    ipAddress: "localhost",
     port: "3001",
   },
   API: {
-    baseURL: "http://54.183.240.252:3001",
+    baseURL: "http://localhost:3001",
     TAG: {
       addTag : "/api/tags/add",
       getTags: "/api/tags/"
@@ -29,5 +29,5 @@ exports.constants = {
     questionRejected: "REJECTED",
     questionWaiting: "PENDING",
   },
-  baseUrl:'http://54.183.240.252:3001'
+  baseUrl:'http://localhost:3001'
 };

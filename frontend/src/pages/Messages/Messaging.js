@@ -30,7 +30,7 @@ function Messaging() {
         let search = e.target.value
         if(search.length >= 3){
             
-            axios.get("http://54.183.240.252:3001/api/user/searchbyname/" + search)
+            axios.get("http://localhost:3001/api/user/searchbyname/" + search)
             .then(response => {
                     if(response.data.data){
                         setUsers(response.data.data);
