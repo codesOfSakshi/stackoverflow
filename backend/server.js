@@ -14,6 +14,9 @@ const user = require("./controllers/user");
 const search = require("./routes/search");
 const question = require("./controllers/questions");
 const passportLocal = require('passport-local').Strategy;
+const questionKafkaRedis = require("./controllers/questions-kafka");
+
+
 require("./models/tag.js");
 
 /* ---------------------------- importing routes ---------------------------- */
@@ -123,3 +126,5 @@ app.use("/api/comment", comment);
 app.use("/api/vote", vote);
 app.use("/api/activity", activity);
 app.use("/api/comments/getcomments", comment);
+app.use('/api/backend-redis-kafka',questionKafkaRedis);
+
