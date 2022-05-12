@@ -201,7 +201,7 @@ function Navbar() {
         } else if(eachString.startsWith("\"") && eachString.endsWith("\"")){
           parsedData.phrases.push(eachString.split("\"")[1]);
         } else{
-          parsedData.phrases.push(searchString);
+          parsedData.phrases.push(eachString);
         }
     })
     if(!parsedData.question){
