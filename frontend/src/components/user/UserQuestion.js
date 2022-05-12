@@ -46,13 +46,14 @@ export default function UserQuestion({question}) {
                 <h3 className="s-post-summary--content-title">
 
 
-                    <a href="/questions/61933462/aerospike-as-cache" className="s-link">{que.title}</a>
+                    <a href={"/question/"+que._id} className="s-link">{que.title}</a>
                 </h3>
                 <div className="s-post-summary--meta">
                     <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
                         {(que.tags).map(tag=>{
-                       return <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
-                           title="" rel="tag">{tag.title}</a>
+                            return (<span key={tag} style={{display:"inline",marginRight:"10px"}} className="s-post-summary--meta">
+                        <a className="flex--item s-tag" href={"/tag/"+tag}>{tag}</a>
+                    </span>)
                     })}
                     </div>
 

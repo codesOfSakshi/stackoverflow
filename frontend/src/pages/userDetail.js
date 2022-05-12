@@ -86,7 +86,7 @@ export default function ReviewCard() {
                 profilePicture:cookies.get('imageUrl')
             })
         }
-        fetch("http://54.183.240.252:3001/api/user/edit-partial/"+user._id,req)
+        fetch("http://localhost:3001/api/user/edit-partial/"+user._id,req)
             .then(response => {
                 if(response.status===200)
                 {   console.log("User updated successfully")

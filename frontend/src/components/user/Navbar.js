@@ -80,72 +80,136 @@ function Navbar() {
       );
   }, []);
   /* ----------------------------- search-function ---------------------------- */
-  let searchFunction = async () => {
-    // console.log(typeof searchString);
-    console.log(SEARCHURL);
-    const data = {};
-    if (searchString.includes("[")) {
-      let temp = searchString.split("[").pop().split("]");
-      data.type = "tag";
-      data.keyword = temp[0];
-      data.searchString = temp[1];
-    } else if (searchString.includes("user:")) {
-      let temp = searchString.split(":").pop();
-      data.type = "user";
-      let temp2 = temp.substring(0, temp.indexOf(" "));
-      if (temp2.length > 0) {
-        data.keyword = temp.substring(0, temp.indexOf(" "));
-        data.searchString = temp.substring(temp.indexOf(" ") + 1);
-      } else {
-        data.keyword = temp;
-        data.searchString = "";
-      }
-    } else if (searchString.includes('"')) {
-      let temp = searchString.split('"');
-      data.type = "exact phrase";
-      // data.keyword = temp[1];
-      data.keyword = "";
-      data.searchString = temp[1];
-    } else if (searchString.toLowerCase().includes("is:question")) {
-      let temp = searchString.split(":").pop();
-      data.type = "question";
-      let temp2 = temp.substring(0, temp.indexOf(" "));
-      if (temp2.length > 0) {
-        data.keyword = "";
-        data.searchString = temp.substring(temp.indexOf(" ") + 1);
-      } else {
-        data.keyword = "";
-        data.searchString = "";
-      }
-    } else if (searchString.includes("is:answer")) {
-      let temp = searchString.split(":").pop();
-      data.type = "answer";
-      let temp2 = temp.substring(0, temp.indexOf(" "));
-      if (temp2.length > 0) {
-        data.keyword = "";
-        data.searchString = temp.substring(temp.indexOf(" ") + 1);
-      } else {
-        data.keyword = "";
-        data.searchString = "";
-      }
-    } else if (searchString.includes("isaccepted:")) {
-      let temp = searchString.split(":").pop();
-      data.type = "isaccepted";
-      let temp2 = temp.substring(0, temp.indexOf(" "));
-      if (temp2.length > 0) {
-        data.keyword = temp.substring(0, temp.indexOf(" "));
-        data.searchString = temp.substring(temp.indexOf(" ") + 1);
-      } else {
-        data.keyword = temp;
-        data.searchString = "";
-      }
-    } else {
-      data.searchString = searchString;
-    }
+  // let searchFunction = async () => {
+  //   // console.log(typeof searchString);
+  //   console.log(SEARCHURL);
+  //   const data = {};
+  //   if (searchString.includes("[")) {
+  //     let temp = searchString.split("[").pop().split("]");
+  //     data.type = "tag";
+  //     data.keyword = temp[0];
+  //     data.searchString = temp[1];
+  //   } else if (searchString.includes("user:")) {
+  //     let temp = searchString.split(":").pop();
+  //     data.type = "user";
+  //     let temp2 = temp.substring(0, temp.indexOf(" "));
+  //     if (temp2.length > 0) {
+  //       data.keyword = temp.substring(0, temp.indexOf(" "));
+  //       data.searchString = temp.substring(temp.indexOf(" ") + 1);
+  //     } else {
+  //       data.keyword = temp;
+  //       data.searchString = "";
+  //     }
+  //   } else if (searchString.includes('"')) {
+  //     let temp = searchString.split('"');
+  //     data.type = "exact phrase";
+  //     // data.keyword = temp[1];
+  //     data.keyword = "";
+  //     data.searchString = temp[1];
+  //   } else if (searchString.toLowerCase().includes("is:question")) {
+  //     let temp = searchString.split(":").pop();
+  //     data.type = "question";
+  //     let temp2 = temp.substring(0, temp.indexOf(" "));
+  //     if (temp2.length > 0) {
+  //       data.keyword = "";
+  //       data.searchString = temp.substring(temp.indexOf(" ") + 1);
+  //     } else {
+  //       data.keyword = "";
+  //       data.searchString = "";
+  //     }
+  //   } else if (searchString.includes("is:answer")) {
+  //     let temp = searchString.split(":").pop();
+  //     data.type = "answer";
+  //     let temp2 = temp.substring(0, temp.indexOf(" "));
+  //     if (temp2.length > 0) {
+  //       data.keyword = "";
+  //       data.searchString = temp.substring(temp.indexOf(" ") + 1);
+  //     } else {
+  //       data.keyword = "";
+  //       data.searchString = "";
+  //     }
+  //   } else if (searchString.includes("isaccepted:")) {
+  //     let temp = searchString.split(":").pop();
+  //     data.type = "isaccepted";
+  //     let temp2 = temp.substring(0, temp.indexOf(" "));
+  //     if (temp2.length > 0) {
+  //       data.keyword = temp.substring(0, temp.indexOf(" "));
+  //       data.searchString = temp.substring(temp.indexOf(" ") + 1);
+  //     } else {
+  //       data.keyword = temp;
+  //       data.searchString = "";
+  //     }
+  //   } else {
+  //     data.searchString = searchString;
+  //   }
+  //   console.log("the final data is", data);
+  //   axios
+  //     .post(SEARCHURL, data)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         const temp_items = response.data;
+  //         console.log(
+  //           "the items recieved from sending the api are are.......",
+  //           temp_items
+  //         );
+  //         navigate("/question", {
+  //           replace: true,
+  //           state: {
+  //             searchResult: true,
+  //             questions: temp_items.questions,
+  //             count: temp_items.count,
+  //           },
+  //         });
+  //       } else if (response.data.code === 500) {
+  //         console.log(response.data.message);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(
+  //         "error in getting all items in the search input field in navbar and the error is",
+  //         err
+  //       );
+  //     });
+  // };
 
-    console.log("the final data is", data);
+  /* ----------------------------- search-function ---------------------------- */
+  //[Tag1] [Tag2] "Exact phrase2" user:31221321 isaccepted:yes is:question "Exact phrase1"
+  let searchFunction = async () => {
+    const searchStringSplit = getSearchStrings();
+    const parsedData = {};
+    parsedData.tags = [];
+    parsedData.phrases = [];
+    searchStringSplit.forEach((eachString)=>{
+        console.log(eachString);
+        if(eachString.startsWith("[") && eachString.endsWith("]")){
+          parsedData.tags.push(eachString.split("[").pop().split("]")[0]);
+        } else if(eachString.startsWith("is:question")){
+          parsedData.question = true;
+        } else if(eachString.startsWith("user:")){
+          const userArray = eachString.split(":");
+          console.log(userArray);
+          if(userArray && userArray.length){
+            parsedData.user = userArray[1];
+          }
+        } else if(eachString.startsWith("isaccepted:")){
+           const acceptedArray = eachString.split(":");
+           if(acceptedArray && acceptedArray.length){
+             let accepted = acceptedArray[1];
+             accepted = accepted.toLowerCase();
+             parsedData.accepted = accepted==="yes" ? true : false;
+           }
+        } else if(eachString.startsWith("\"") && eachString.endsWith("\"")){
+          parsedData.phrases.push(eachString.split("\"")[1]);
+        } else{
+          parsedData.phrases.push(eachString);
+        }
+    })
+    if(!parsedData.question){
+      parsedData.question = false;
+    }
+    console.log("the final data is", parsedData);
     authapi
-      .post(SEARCHURL, data)
+      .post(SEARCHURL, parsedData)
       .then((response) => {
         if (response.status === 200) {
           const temp_items = response.data;
@@ -172,6 +236,53 @@ function Navbar() {
         );
       });
   };
+
+  let getSearchStrings = ()=>{
+    const parsedStrings = [];
+    let i = 0;
+    for(i=0;i<searchString.length;i++){
+      let word = "";
+      if(searchString[i]==="["){
+         while(i<searchString.length && searchString[i]!=="]"){
+           word+=searchString[i++];
+         }
+         word+=searchString[i++];
+         parsedStrings.push(word);
+      }
+      else if(searchString[i]==="\""){
+         while(i+1<searchString.length && searchString[i+1]!=="\""){
+           word+=searchString[i++];
+         }
+         word+=searchString[i++];
+         word+=searchString[i++];
+         parsedStrings.push(word);
+      }
+      else if(searchString.substring(i,i+5)==="user:"){
+         while(i<searchString.length && searchString[i]!==" "){
+           word+=searchString[i++];
+         }
+         parsedStrings.push(word);
+      }
+      else if(searchString.substring(i,i+14)==="isaccepted:"){
+         while(i<searchString.length && searchString[i]!==" "){
+           word+=searchString[i++];
+         }
+         parsedStrings.push(word);
+      }
+      else if(searchString.substring(i,i+14)==="is:question"){
+         while(i<searchString.length && searchString[i]!==" "){
+           word+=searchString[i++];
+         }
+         parsedStrings.push(word);
+      }else{
+        while(i<searchString.length && searchString[i]!==" "){
+           word+=searchString[i++];
+        }
+        parsedStrings.push(word);
+      }
+    }
+    return parsedStrings;
+  }
   /* ----------------------------- logout function ---------------------------- */
   const logout = () => {
     console.log("logging out function...");
