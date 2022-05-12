@@ -9,7 +9,7 @@ const  { secret_token }  = require("../backend/config/config");
 function auth() {
     console.log("inside auth")
     var opts = {
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("jwt"),
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: secret_token
     };
     passport.use(

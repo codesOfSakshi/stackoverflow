@@ -5,20 +5,20 @@
     display:flex;
     flex-direction:row;
     align-items:center;
-    width:1000px;
+    justify-content:start;
+    width:850px;
+    column-gap: 10rem;
 }
 
 .usertag-title {
-    display: inline-block;
     background-color: rgb(230, 224, 224);
     padding: 8px;
     border-radius: 5px;
     color: rgb(104, 102, 102);
-    margin-right: 70px;
+    min-width:150px;
 }
 
 .usertag-gold-type {
-    display: inline-block;
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -26,8 +26,13 @@
     margin-right: 10px;
 }
 
+.usertag-no-type{
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+}
+
 .usertag-silver-type {
-    display: inline-block;
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -36,7 +41,6 @@
 }
 
 .usertag-bronze-type {
-    display: inline-block;
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -45,9 +49,7 @@
 }
 
 .usertag-score {
-    margin-left:528px;
 }
 
 .usertag-posts {
-    margin-left: 16px;
 }

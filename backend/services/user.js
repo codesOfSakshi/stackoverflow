@@ -458,7 +458,9 @@ class User {
                 }
               }
               console.log(tagsObj);
-              tagsCombined.push(tagsObj);
+              if(tagsObj && !(tagsObj.score<=0 && tagsObj.posts<=0)){
+                tagsCombined.push(tagsObj);
+              }
               cb(null);
             });
           },

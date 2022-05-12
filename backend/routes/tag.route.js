@@ -16,7 +16,7 @@ router.put('/updateNumQuestions/:tagId',checkAuth, tagController.updateNumQuesti
 router.get('/search/:name', tagController.searchTags);
 
 // Add Tag (Admin only)
-router.post('/add',checkAuth, tagController.createTag);
+router.post('/add', tagController.createTag);
 
 router.get('/badges/:userId',checkAuth, tagController.tagToBadge);
 

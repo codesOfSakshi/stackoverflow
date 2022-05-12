@@ -175,7 +175,7 @@ exports.findBadge = async(reqBody, result) => {
             tags.forEach(tag => {
                 if (tag.tagId === "Curious") {
                     const quesAsked = user.questionsAsked.length;
-                    if (quesAsked <= 2)
+                    if (quesAsked <= 2 && quesAsked>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (quesAsked > 2 && quesAsked < 5)
                         badge.set(tag.tagId, "Silver");
@@ -183,7 +183,7 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Helpfulness") {
                     const quesAnswered = user.questionsAnswered.length;
-                    if (quesAnswered <= 2)
+                    if (quesAnswered <= 2 && quesAnswered>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (quesAnswered > 2 && quesAnswered < 5)
                         badge.set(tag.tagId, "Silver");
@@ -191,7 +191,7 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Popular") {
                     const reputation = user.reputation;
-                    if (reputation <= 10)
+                    if (reputation <= 10 && reputation>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (reputation > 10 && reputation < 15)
                         badge.set(tag.tagId, "Silver");
@@ -199,7 +199,7 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Sportsmanship") {
                     const upVotes = user.upVotesCount.length;
-                    if (upVotes <= 2)
+                    if (upVotes <= 2 && upVotes>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (upVotes > 2 && upVotes < 5)
                         badge.set(tag.tagId, "Silver");
@@ -207,7 +207,7 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Critic") {
                     const downVotes = user.downVotesCount.length;
-                    if (downVotes <= 2)
+                    if (downVotes <= 2 && downVotes>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (downVotes > 2 && downVotes < 5)
                         badge.set(tag.tagId, "Silver");
@@ -226,9 +226,9 @@ exports.findBadge = async(reqBody, result) => {
                     if (user.commentCount > 3)
                         badge.set("Pundit", "Silver");
 
-                    if (tag.score <= 10)
+                    if (tag.score <= 10 && tag.score>0)
                         badge.set(tag.tagId, "Bronze")
-                    if (tag.score <= 15)
+                    if (tag.score <= 15 && tag.score>10)
                         badge.set(tag.tagId, "Silver")
                     if (tag.score > 20)
                         badge.set(tag.tagId, "Gold")

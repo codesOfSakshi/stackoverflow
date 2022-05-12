@@ -35,7 +35,6 @@ function UserAnswerList() {
         <div className="ba bc-black-100 bar-md">
 
             <div id="js-post-summaries">
-
             <UserAnswer answer={answer}/>
 
 

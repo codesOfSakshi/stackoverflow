@@ -28,11 +28,11 @@ const ProfileTab = () => {
               setReputation(response.data.user.reputation);
               setReach(response.data.user.reach);
               console.log(response.data.user);
-              if(response.data.user.answers){
-                setAnswerCount(response.data.user.answers.length);
+              if(response.data.user.questionsAnswered){
+                setAnswerCount(response.data.user.questionsAnswered.length);
               }
-              if(response.data.user.questions){
-                setQuestionCount(response.data.user.questions.length);
+              if(response.data.user.questionsAsked){
+                setQuestionCount(response.data.user.questionsAsked.length);
               }
               setGettingUser(false);
           }else{
