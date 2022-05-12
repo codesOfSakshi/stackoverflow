@@ -26,15 +26,14 @@ export default function UserAnswer({answer}) {
                     <h3 className="s-post-summary--content-title">
 
 
-                        <a href="/questions/61933462/aerospike-as-cache" className="s-link">{ans.title}</a>
+                        <a href={"/question/"+ans._id} className="s-link">{ans.title}</a>
                     </h3>
                     <div className="s-post-summary--meta">
                         { (ans.tags).map(tag=>{
-                            return <div className="s-post-summary--meta-tags tags js-tags t-spring t-caching t-aerospike">
 
-                                <a href="/questions/tagged/spring" className="post-tag flex--item mt0 js-tagname-spring"
-                                   title="" rel="tag">{tag.name}</a>
-                        </div>
+                            return (<span key={tag} style={{display:"inline",marginRight:"10px"}} className="s-post-summary--meta">
+                        <a className="flex--item s-tag" href={"/tag/"+tag}>{tag}</a>
+                    </span>)
                         })}
 
                         <div className="s-user-card s-user-card__minimal">
