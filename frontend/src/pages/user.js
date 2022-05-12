@@ -22,7 +22,7 @@ function User() {
         <div>
             <Navbar/>
             <Row>
-            <Col md={2} sm={2} lg={2}>
+            <Col md={1} sm={1} lg={1}>
                 <br/><br/><br/>
             <SideNav/>
             </Col>

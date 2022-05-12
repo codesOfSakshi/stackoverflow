@@ -9,6 +9,7 @@ const UserTag = ({name,color,score,posts}) => {
         {color==="gold" && <div className="usertag-gold-type"></div>}
         {color==="silver" && <div className="usertag-silver-type"></div>}
         {color==="bronze" && <div className="usertag-bronze-type"></div>}
+        {!color && <div className="usertag-no-type"></div>}
         <div className="usertag-score">{score+" score"}</div>
         <div className="usertag-posts">{posts+" posts"}</div>
     </div>
