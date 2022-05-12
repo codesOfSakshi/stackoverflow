@@ -180,7 +180,7 @@ class Question {
       };
       console.log(type, sortType);
       var sorting = 1;
-      var questions;
+      var questions=[];
       let key = "";
       if (sortType == "desc" || sortType == -1) {
         sorting = -1;
@@ -198,12 +198,6 @@ class Question {
           console.log("Questions fetched from redis");
           // console.log(questions);
           return JSON.parse(questions);
-        }else{
-          console.log("here");
-          // questions = await QuestionModel.find({}).sort({createdAt: sorting})
-          questions = await QuestionModel.find(query).populate("user").sort({
-            createdAt: sorting,
-          });
         }
       } else if (type == "Hot" || type == 2) {
         if(sorting===1){
@@ -216,10 +210,6 @@ class Question {
           console.log("Questions fetched from redis");
           // console.log(questions);
           return JSON.parse(questions);
-        }else{
-          questions = await QuestionModel.find(query)
-          .populate("user")
-          .sort({ views: -1 });
         }
       } else if (type == "Score" || type == 3) {
         if(sorting===1){
@@ -232,10 +222,6 @@ class Question {
           console.log("Questions fetched from redis");
           // console.log(questions);
           return JSON.parse(questions);
-        }else{
-          questions = await QuestionModel.find(query)
-          .populate("user")
-          .sort({ upVotes: -1 });
         }
         } else if (type == "Unanswered" || type == 4) {
          if(sorting===1){
@@ -243,31 +229,13 @@ class Question {
           }else{
             key = "-14" // descending & unanswered
           }
-          questions = await redisClient.get(key);
+          
+          
           if(questions && questions.length){
             console.log("Questions fetched from redis");
             // console.log(questions);
-            return JSON.parse(questions);
-          }else{
-            questions = await QuestionModel.find({
-              answers: { $size: 0 },
-              status: "APPROVED",
-            })
-            .populate("user")
-            .sort({ score: 1 });
           }
       }
-      console.log(questions);
-
-      // var viewIncrement=questions.views+1
-      // console.log("Incrementing the view from "+questions.views+" to "+ viewIncrement)
-      // QuestionModel.findByIdAndUpdate(questionId,{views:viewIncrement})
-
-      // var questionsdata=questions._doc
-      // questionsdata['tagDetails'] = await Utility.getArrayNestedObjects(questions.tags,TagModel)
-      // questionsdata['answersDetails'] = await Utility.getArrayNestedObjects(questions.answers,AnswerModel)
-      // console.log("tttttttT",questions)
-      redisClient.set(key,JSON.stringify(questions));
       return questions;
       // return questions
     } catch (err) {

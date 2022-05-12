@@ -1,10 +1,10 @@
 import {Questions} from "../db/mongoModels/question.js";
-import {userSchema} from "../db/mongoModels/user.js";
+import {Users} from "../db/mongoModels/user.js";
 
 const questioner = async (req, res) => {
       console.log(req)
-      var type=req.type;
-      var sortType=req.sortType;
+      var type=req.body.type;
+      var sortType=req.body.sortType;
       try {
         const query = {
           status: "APPROVED",
@@ -39,8 +39,7 @@ const questioner = async (req, res) => {
           .populate("user")
           .sort({ score: 1 });
         }
-        console.log(questions);
-        return questions;
+        res(null,JSON.stringify(questions));
         // return questions
       } catch (err) {
         console.log(err);

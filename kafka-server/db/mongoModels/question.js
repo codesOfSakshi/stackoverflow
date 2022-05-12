@@ -59,6 +59,10 @@ const questionSchema = new mongoose.Schema({
   activity: {
     type: String,
   },
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'users',
+  }
 });
 
 // export const QuestionSchema = questionSchema;

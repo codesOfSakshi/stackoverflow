@@ -109,7 +109,7 @@ title: { type: String },
         type: Number,
       },
     },
-  ],
+  ]
 });
 
-export const UserModel = mongoose.model("userSchema", userSchema);
+export const Users = mongoose.model("users", userSchema);
