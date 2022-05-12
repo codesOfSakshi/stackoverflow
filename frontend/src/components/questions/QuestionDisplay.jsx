@@ -100,21 +100,22 @@ function QuestionsPage(props) {
             else{
                 setValue(true)
             }
+            // type = 'question'
+            // setqComment("")
+    
+            // axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+            //     .then(response => {
+            //         console.log("++++++", response);
+            //     })
             type = 'question'
             setqComment("")
-    
-            axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+
+            authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
                 .then(response => {
-                    console.log("++++++", response);
+                    console.log(response);
                 })
         }
-        type = 'question'
-        setqComment("")
-
-        authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
-            .then(response => {
-                console.log(response);
-            })
+        
     }
 
     const recordAnswer = () => {

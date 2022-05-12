@@ -11,6 +11,8 @@ router.post("/", checkAuth, async (req, res) => {
     const user = req.body.user;
     const name = req.body.name;
     const response = {};
+
+    console.log("////", user)
     try{
         const addComment = await Comment.postComment(answerId,questionId,type,comment,user, name);
         if(addComment){

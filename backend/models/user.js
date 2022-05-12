@@ -79,7 +79,7 @@ const userSchema = new mongoose.Schema({
     ref: "questions",
   }],
   commentCount: {
-    type: String,
+    type: Number,
     // required: true,
   },
   upVotesCount: [

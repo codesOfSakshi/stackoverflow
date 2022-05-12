@@ -7,11 +7,33 @@ const UserModel = require("../models/user")
 
 class Comment {
   static postComment = async (answerId, questionId, type, comment, user, name) => {
+    var updateCon;
     if (type === "question") {
       try {
 
         var findComments =await UserModel.findById(user);
         console.log("FIND COMMENTS ////", findComments)
+        if(findComments.commentCount){
+          updateCon = {
+            commentCount : findComments.commentCount + 1
+          }
+        }
+        else{
+          updateCon = {
+            commentCount : 1
+          }
+        }
+
+        const findCon = {
+          _id: mongoose.Types.ObjectId(user),
+        };
+
+        const comresult = await UserModel.updateOne(
+          findCon,
+          updateCondition
+        );
+
+        console.log("hkgdalkjga", comresult)
 
         const findCondition = {
           _id: mongoose.Types.ObjectId(questionId),
