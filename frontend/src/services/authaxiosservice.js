@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     function(request) {
-        request.headers.common['Authorization'] = `${localStorage.getItem('token')}`;
+        request.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         return request;
     },
     function(error) {
