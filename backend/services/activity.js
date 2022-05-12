@@ -26,7 +26,7 @@ module.exports = class ActivityService {
   static async updateActivity(activityID, newActivity) {
     const query = { _id: activityID };
     try {
-      console.log("NEW ACTIVITY", newActivity);
+      console.log("NEW ACTIVITY ---------------------------------------------------", newActivity);
       console.log("ADD ACTVITY QUERY", query);
       if(newActivity.type == "answer" || newActivity.type == "comment"|| newActivity.type == "history"){
         const user = await USER.findById(newActivity.by);

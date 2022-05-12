@@ -59,11 +59,15 @@ function AskQuestionEditor(props) {
     }
   },[])
 
+  const trim=(x)=>{
+    return x.replace(/^\s+|\s+$/gm, '');
+  }
+
   const submitHandler =(e)=>{
     console.log(e);
     e.preventDefault();
-    if(!descripiton){
-      setError("Please Enter a valid Description !")
+    if(!trim(descripiton) || !trim(e.target.formBasicTitle.value)){
+      setError("Please Enter a valid Title and Description !")
     }
     else{
     var payload ={
