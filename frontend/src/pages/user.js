@@ -22,11 +22,11 @@ function User() {
         <div>
             <Navbar/>
             <Row>
-            <Col lg={1}>
+            <Col md={2} sm={2} lg={2}>
                 <br/><br/><br/>
             <SideNav/>
             </Col>
-            <Col>
+            <Col md={10} sm={10} lg={10}>
                 <br/>
                 <div className="snippet-hidden mt48 mr48 mb48 ml48">
                     <Profile/>

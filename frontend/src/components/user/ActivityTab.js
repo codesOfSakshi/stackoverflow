@@ -30,22 +30,22 @@ const ActivityTab = () => {
           </div>
           <div className="flex--item fl-grow1">
         {
-                tabSelected==="answers" && <UserAnswerList/>
+                tabSelected==="answers" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserAnswerList/></div>
         }
         {
-                tabSelected==="questions" && <UserQuestionList/>
+                tabSelected==="questions" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserQuestionList/></div>
         }
         {
-            tabSelected==="tags" && <UserTagList/>
+            tabSelected==="tags" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserTagList/></div>
         }
         {
-            tabSelected==="badges" && <UserBadgeList/>
+            tabSelected==="badges" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserBadgeList/></div>
         }
         {
-            tabSelected==="bookmarks" && <UserBookmarkList/>
+            tabSelected==="bookmarks" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserBookmarkList/></div>
         }
         {
-            tabSelected==="reputation" && <UserReputationList/>
+            tabSelected==="reputation" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserReputationList/></div>
         }
           </div>
     </div>
