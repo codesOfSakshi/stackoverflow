@@ -39,7 +39,7 @@ const questioner = async (req, res) => {
           .populate("user")
           .sort({ score: 1 });
         }
-        res(null,JSON.stringify(questions));
+        res(null,questions);
         // return questions
       } catch (err) {
         console.log(err);

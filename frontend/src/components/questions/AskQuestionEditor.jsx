@@ -123,7 +123,7 @@ function AskQuestionEditor(props) {
   //   const formData = new FormData();
   //   formData.append("image", form.formFileSm.files[0])
 
-  //   var api="http://localhost:3001/api"+'/questions_topic/editImage'
+  //   var api="http://localhost:3001/api"+'/shop/editImage'
 
   //   axios.post(api,formData,{'Content-Type': 'multipart/form-data'})
   //   .then(response => {
