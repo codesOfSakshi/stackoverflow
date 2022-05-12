@@ -75,7 +75,7 @@ function AskQuestionEditor(props) {
       images:imageArray
       // userId: question.user._id
     }
-    var api="http://54.183.240.252:3001/api/questions/add"
+    var api="api/questions/add"
       authapi.post(api,payload).then(response => {
         console.log(response.data);
         console.log(response.data.result);
