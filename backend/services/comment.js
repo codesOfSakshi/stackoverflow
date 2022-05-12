@@ -3,11 +3,16 @@ const QuestionModel = require("../models/question.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityModel = require("../models/activity.js");
 const ActivityService = require("./activity.js");
+const UserModel = require("../models/user")
 
 class Comment {
   static postComment = async (answerId, questionId, type, comment, user, name) => {
     if (type === "question") {
       try {
+
+        var findComments =await UserModel.findById(user);
+        console.log("FIND COMMENTS ////", findComments)
+
         const findCondition = {
           _id: mongoose.Types.ObjectId(questionId),
         };
