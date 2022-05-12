@@ -42,7 +42,7 @@ function QuestionsPage(props) {
 
     useEffect(() => {
         console.log("Q ID: ", params.id)
-        var api = "http://54.183.240.252:3001/api/questions/" + params.id
+        var api = "http://localhost:3001/api/questions/" + params.id
         axios.get(api).then(response => {
             console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
@@ -55,7 +55,7 @@ function QuestionsPage(props) {
     }, [value])
 
     const length = () =>{
-        var api = "http://54.183.240.252:3001/api/questions/" + params.id
+        var api = "http://localhost:3001/api/questions/" + params.id
             axios.get(api).then(async response => {
                 await setQuestion(response.data.data)
                 await setlans(response.data.data.answers)
@@ -280,7 +280,7 @@ function QuestionsPage(props) {
                                             setValue(true)
                                         }
                                         setaComment("")
-                                        axios.post("http://54.183.240.252:3001/api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
+                                        authapi.post("api/comment", { type: type, answerId: ans._id, comment: acomment, user: decoded._id, name: decoded.name })
                                             .then(response => {
                                                 
                                                 console.log(response);
