@@ -3,10 +3,10 @@ const router = express.Router();
 const kafka = require("../kafka/client");
 const { Question } = require("../services/question");
 
-const topicName = "shop";
+const topicName = "question_topic";
 
 //1
-//Get products of that particular shop
+//Get products of that particular question_topic
 router.post("/getAllProducts", async (req, res) => {
   const questions =await Question.getQuestionsByType(req.body.type,req.body.sortType)
   console.log("questions============",questions)
