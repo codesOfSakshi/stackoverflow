@@ -4,6 +4,7 @@ import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import {useParams} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import ReactTimeAgo from 'react-time-ago';
+import {axiosInstance as authapi} from '../services/authaxiosservice';
 
 const Answer = (props) => {
 
@@ -51,12 +52,13 @@ const Answer = (props) => {
                         }
                         else{
                             setaComment("")
-                            axios.post("http://localhost:3001/api/comment", { type: type, answerId: props.ans._id, comment: acomment, user: decoded._id, name: decoded.name })
+                            authapi.post("api/comment", { type: type, answerId: props.ans._id, comment: acomment, user: decoded._id, name: decoded.name })
                                 .then(response => {
                                     console.log("////////", response);
                                     // value ? setValue(false) : setValue(true)
+                                    props.function();
                                 })
-                            props.function();
+                            
                         }
                             
                     }} style={{ float: "right", height: "25px", width: "100%", backgroundColor: "#f5f6f6", color: "blue", border: "none" }}>save</Button>

@@ -42,8 +42,8 @@ function QuestionsPage(props) {
     // console.log("decode", decoded)
 
     useEffect(() => {
-        var api = "http://localhost:3001/api/questions/" + params.id
-        axios.get(api).then(response => {
+        var api = "api/questions/" + params.id
+        authapi.get(api).then(response => {
             // console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
             console.log("DISPLAYED QUESTION", response.data.data);
@@ -55,14 +55,20 @@ function QuestionsPage(props) {
     }, [value])
 
     const length = () =>{
-        var api = "http://localhost:3001/api/questions/" + params.id
-            axios.get(api).then(async response => {
-                await setQuestion(response.data.data)
-                await setlans(response.data.data.answers)
-                let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
-                await setOwner(own)
-                await setComments(response.data.data.comment)
-            })  
+        console.log("console in length1");
+        var api = "api/questions/" + params.id
+        console.log("console in length2");
+        authapi.get(api).then(response => {
+            console.log("console in length3");
+            console.log("============", response.data.data.comment)
+            setQuestion(response.data.data)
+            console.log("Done setting data again")
+            console.log("DISPLAYED QUESTION", response.data.data);
+            setlans(response.data.data.answers)
+            let own = (decoded && response.data.data.user && response.data.data.user._id == decoded._id) ? true : false
+            setOwner(own)
+            setComments(response.data.data.comment)
+        })
     }
 
 
@@ -113,6 +119,7 @@ function QuestionsPage(props) {
             authapi.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
                 .then(response => {
                     console.log(response);
+                    length();
                 })
         }
         
