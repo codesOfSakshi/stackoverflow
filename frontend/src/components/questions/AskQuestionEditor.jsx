@@ -3,7 +3,7 @@ import {Form,Row,Card,Button} from 'react-bootstrap';
 import {useEffect,useState,useRef} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 import Cookies from 'universal-cookie';
@@ -48,7 +48,7 @@ function AskQuestionEditor(props) {
     }
     else{
     var arrTags=[]
-    var api="http://localhost:3001/api/tags"
+    var api="api/tags"
     axios.get(api).then(
       response =>{
         response.data.map(tag =>{

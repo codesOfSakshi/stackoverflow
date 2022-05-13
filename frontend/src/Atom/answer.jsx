@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from '../services/axiosservice';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import {useParams} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
@@ -51,7 +51,7 @@ const Answer = (props) => {
                         }
                         else{
                             setaComment("")
-                            axios.post("http://localhost:3001/api/comment", { type: type, answerId: props.ans._id, comment: acomment, user: decoded._id, name: decoded.name })
+                            axios.post("api/comment", { type: type, answerId: props.ans._id, comment: acomment, user: decoded._id, name: decoded.name })
                                 .then(response => {
                                     console.log("////////", response);
                                     // value ? setValue(false) : setValue(true)

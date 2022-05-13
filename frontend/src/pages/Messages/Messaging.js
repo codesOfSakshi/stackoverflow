@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import jwt_decode from 'jwt-decode';
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import Talk from "talkjs";
 import './Messaging.css'
 import { Row,Col } from 'react-bootstrap';
@@ -30,7 +30,7 @@ function Messaging() {
         let search = e.target.value
         if(search.length >= 3){
             
-            axios.get("http://localhost:3001/api/user/searchbyname/" + search)
+            axios.get("api/user/searchbyname/" + search)
             .then(response => {
                     if(response.data.data){
                         setUsers(response.data.data);

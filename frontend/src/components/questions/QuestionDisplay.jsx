@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Editor from "react-markdown-editor-lite";
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import Upvote from '../../Atom/upvote';
 import Answer from '../../Atom/answer';
 import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'
@@ -42,7 +42,7 @@ function QuestionsPage(props) {
     // console.log("decode", decoded)
 
     useEffect(() => {
-        var api = "http://localhost:3001/api/questions/" + params.id
+        var api = "api/questions/" + params.id
         axios.get(api).then(response => {
             // console.log("============", response.data.data.comment)
             setQuestion(response.data.data)
@@ -55,7 +55,7 @@ function QuestionsPage(props) {
     }, [value])
 
     const length = () =>{
-        var api = "http://localhost:3001/api/questions/" + params.id
+        var api = "api/questions/" + params.id
             axios.get(api).then(async response => {
                 await setQuestion(response.data.data)
                 await setlans(response.data.data.answers)
@@ -103,7 +103,7 @@ function QuestionsPage(props) {
             type = 'question'
             setqComment("")
     
-            axios.post("http://localhost:3001/api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
+            axios.post("api/comment", { type: type, questionId: question._id, comment: qcomment, user: decoded._id, name: decoded.name })
                 .then(response => {
                     console.log("++++++", response);
                 })

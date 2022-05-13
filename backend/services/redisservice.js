@@ -1,7 +1,7 @@
 const { createClient } = require('redis');
 
 const client = createClient({
-  url: 'redis://localhost:6379'
+  url: 'redis://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:6379'
 });
 
 client.on('error', (err) => console.log('Redis Client Error', err));
