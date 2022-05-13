@@ -49,22 +49,22 @@ exports.getTaggedQuestions = async (reqBody, result) => {
         
         // Interesting (latest)
         if(reqBody.filterType == 1){
-            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).sort({_id: -1});
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({_id: -1});
             console.log("By Interesting:", questions);
         }
         // Hot (Views)
         else if(reqBody.filterType == 2){
-            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).sort({views: -1});
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({views: -1});
             console.log("By Hot:", questions);
         }
         // Score (Upvotes)
         else if(reqBody.filterType == 3){
-            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).sort({'upVotes': -1});
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({'upVotes': -1});
             console.log("By Score:", questions);
         }
         // Unanswered
         else if(reqBody.filterType == 4){
-            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED" , answers: { $size: 0 } }).sort({score:1});
+            questions = await QuestionModel.find({'tags' : reqBody.tagId, 'status': "APPROVED" , answers: { $size: 0 } }).populate("user").sort({score:1});
             console.log("By Unanswered:", questions);
         }
 
