@@ -50,10 +50,16 @@ app.use(passport.initialize());
 // );
 
 app.use(cors({
-  origin:"http://http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3000",
+  origin:"http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3000",
   credentials: true,
   methods:["GET","POST","DELETE","PUT"]
 }))
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", 'http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3000');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
