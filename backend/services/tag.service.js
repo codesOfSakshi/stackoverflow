@@ -198,7 +198,7 @@ exports.findBadge = async(reqBody, result) => {
                     else if (reputation >= 15)
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Sportsmanship") {
-                    const upVotes = user.upVotesCount.length;
+                    const upVotes = user.upVotesCount;
                     if (upVotes <= 2 && upVotes>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (upVotes > 2 && upVotes < 5)
@@ -206,7 +206,7 @@ exports.findBadge = async(reqBody, result) => {
                     else if (upVotes >= 5)
                         badge.set(tag.tagId, "Gold");
                 } else if (tag.tagId === "Critic") {
-                    const downVotes = user.downVotesCount.length;
+                    const downVotes = user.downVotesCount;
                     if (downVotes <= 2 && downVotes>0)
                         badge.set(tag.tagId, "Bronze");
                     else if (downVotes > 2 && downVotes < 5)

@@ -82,18 +82,18 @@ const userSchema = new mongoose.Schema({
     type: Number,
     // required: true,
   },
-  upVotesCount: [
+  upVotesCount:
     {
-      type: String,
+      type: Number,
       // required: true,
-    },
-  ],
-  downVotesCount: [
+    }
+  ,
+  downVotesCount:
     {
-      type: String,
+      type: Number,
       // required: true,
-    },
-  ],
+    }
+  ,
   badges: {
     type: Array,
     // required: true,
