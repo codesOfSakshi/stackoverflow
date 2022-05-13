@@ -216,7 +216,7 @@ exports.findBadge = async(reqBody, result) => {
                         badge.set(tag.tagId, "Gold");
                 }
                 else {
-                    if(result>0) {
+                    if(views>0) {
                         if (views > 5)
                             badge.set("Notable Question", "Gold");
 
