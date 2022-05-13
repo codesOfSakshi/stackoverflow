@@ -1,5 +1,5 @@
 import React, {useEffect, useState, Fragment} from 'react';
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import './TagsPage.scss';
 import TagPanel from '../../components/Tags/TagPanel';
 import { Row,Col } from 'react-bootstrap';
@@ -14,7 +14,7 @@ const TagsPage = () => {
     useEffect(() => {
 
         async function getTags() {
-            let response = axios.get("http://localhost:3001/api/tags");
+            let response = axios.get("api/tags");
             response = await response;
     
             setTags(response.data);
@@ -34,7 +34,7 @@ const TagsPage = () => {
 
         if(query.length === 0){
             async function getTags() {
-                let response = axios.get("http://localhost:3001/api/tags");
+                let response = axios.get("api/tags");
                 response = await response;
         
                 setTags(response.data);
@@ -46,7 +46,7 @@ const TagsPage = () => {
 
             console.log("Search tag: ", query);
             // Handle Tag Search here
-            axios.get("http://localhost:3001/api/tags/search/" + query)
+            axios.get("api/tags/search/" + query)
                 .then(response => {
                     if(response.data.length > 0){
                         setTags(response.data.slice(0, 5));

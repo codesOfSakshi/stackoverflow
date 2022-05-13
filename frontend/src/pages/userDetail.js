@@ -86,7 +86,7 @@ export default function ReviewCard() {
                 profilePicture:cookies.get('imageUrl')
             })
         }
-        fetch("http://localhost:3001/api/user/edit-partial/"+user._id,req)
+        fetch("http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3001/api/user/edit-partial/"+user._id,req)
             .then(response => {
                 if(response.status===200)
                 {   console.log("User updated successfully")

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Editor from "react-markdown-editor-lite";
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import Upvote from '../../Atom/upvote';
 import Answer from '../../Atom/answer';
 import EditorCustomReadOnly from '../../Atom/EditorCustomReadOnly'

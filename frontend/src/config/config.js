@@ -1,10 +1,10 @@
 exports.constants = {
   IP: {
-    ipAddress: "localhost",
+    ipAddress: "stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com",
     port: "3001",
   },
   API: {
-    baseURL: "http://localhost:3001",
+    baseURL: "http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3001",
     TAG: {
       addTag : "/api/tags/add",
       getTags: "/api/tags/"
@@ -29,5 +29,5 @@ exports.constants = {
     questionRejected: "REJECTED",
     questionWaiting: "PENDING",
   },
-  baseUrl:'http://localhost:3001'
+  baseUrl:'http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com:3001'
 };

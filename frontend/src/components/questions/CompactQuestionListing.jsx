@@ -1,5 +1,5 @@
 import {Form,Row,Col,Card,Button} from 'react-bootstrap';
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import {useEffect,useState} from 'react';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ function CompactQuestionListing({searchResult, questions}) {
         setHeaderMessage("All Questions");
         console.log("calling useeffect");
         
-        var api="http://localhost:3001/api"+'/backend-redis-kafka/getAllProducts'
+        var api="api"+'/backend-redis-kafka/getAllProducts'
         var payload={
           "sortType":1,
           "type":1
@@ -72,7 +72,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
   const repopulate=(e,num)=>{
     e.preventDefault()
-    var api="http://localhost:3001/api"+'/questions'
+    var api="api"+'/questions'
     var payload={
       "sortType":1,
       "type":num

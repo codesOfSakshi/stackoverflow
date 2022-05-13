@@ -1,7 +1,7 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import TaggedQuestions from '../../components/Tags/TaggedQuestions';
 import {useLocation, useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../services/axiosservice';
 import { toggleButtonClasses } from '@mui/material';
 import CompactQuestion from '../../Atom/CompactQuestion';
 import { useParams } from 'react-router-dom';
@@ -31,7 +31,7 @@ const TagPage = () => {
                 filterType: 1
             }
 
-            let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+            let response = axios.post("api/tags/questionbytag/", payload );
             response = await response;
     
             if(response.status === 200){
@@ -60,7 +60,7 @@ const TagPage = () => {
             tagId: params.tagId,
             filterType: filterType
         }
-        let response = axios.post("http://localhost:3001/api/tags/questionbytag/", payload );
+        let response = axios.post("api/tags/questionbytag/", payload );
         response = await response;
 
         if(response.status === 200){

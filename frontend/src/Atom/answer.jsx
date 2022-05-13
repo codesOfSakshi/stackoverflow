@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from '../services/axiosservice';
 import { Row, Col, Badge, Button, Card } from 'react-bootstrap';
 import {useParams} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
