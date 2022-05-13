@@ -349,105 +349,206 @@ module.exports = class SearchService {
   }
 
 
+  // static async searchNested(parsedData) {
+  //   try {
+
+  //   console.log("here")
+  //   // const questions = await QUESITONMODEL.find()
+  //   var query="{\"$and\":["
+  //   // var parsedData={
+  //   //   tags:["JAVA","PYTHON"],
+  //   //   phrases:["REACTS"],
+  //   //   user:"",
+  //   //   accepted:true,
+  //   // }
+
+  //   console.log("parsedData")
+  //   for (var i=0;i<parsedData.tags.length;i++){
+  //     if(i!=0){
+  //       query+=","
+  //     }
+  //     var tag="{\"tags\":\""+parsedData.tags[i]+"\"}"
+  //     query+=tag
+  //   }
+
+  //   if(parsedData.user){
+  //     query+=","
+  //     var user="{\"user\":\""+parsedData.user+"\"}"
+  //     query+=user
+  //   }
+
+  //   if(parsedData.accepted===false){
+  //     query+=","
+  //     var user="{\"status\":\""+"PENDING"+"\"}"
+  //     query+=user
+  //   }
+  //   else{
+  //     query+=","
+  //     var user="{\"status\":\""+"APPROVED"+"\"}"
+  //     query+=user
+  //   }
+
+  //   query+="]}"
+  //   console.log(query)
+
+
+  //   if(parsedData.phrases.length>=1){
+  //     var phrasesQuery="{\"$text\":{\"$search\":\""
+      
+  //     for (var i=0;i<parsedData.phrases.length;i++){
+  //       var phrase="\\\""+parsedData.phrases[i]+"\\\""
+  //       phrasesQuery+=phrase
+  //     }
+  //     phrasesQuery+="\"}}"
+
+  //     var answerPhraseQuery={}
+  //     for (var i=0;i<parsedData.phrases.length;i++){
+  //       var phrase="{\"description\":"+new RegExp(parsedData.phrases[i])+"i}"
+  //       answerPhraseQuery.description=new RegExp(parsedData.phrases[i])
+  //     }
+  //     console.log("Query running in answers model : ",answerPhraseQuery)
+  //     const answers = await ANSWERMODEL.find(answerPhraseQuery).select("_id")
+  //     console.log("Answers returned with same description : ",answers)
+
+
+  //     var ansArray=[]
+  //     answers.map(
+  //       answer=>{
+  //         ansArray.push(mongoose.Types.ObjectId(answer._id))
+  //       })
+
+  //     const answerQuery="{\"answers\":{\"$in\":"+JSON.stringify(ansArray)+"}}"
+
+  //     //Only questions
+  //     if(parsedData.question!==undefined && parsedData.question===true){
+  //       query=JSON.parse(query)
+  //       console.log(query)
+  //       query.$and.push(JSON.parse(phrasesQuery))
+  //     }
+  //     //Only answers
+  //     else if (parsedData.answer!==undefined && parsedData.answer===true){
+  //       console.log("Running only for answers")
+  //       query=JSON.parse(query)
+  //       query.$and.answers={}
+  //       query.$and.answers.$in=ansArray
+  //     }
+  //     //Or Questions or Answers
+  //     else{
+  //       query=JSON.parse(query)
+  //       query.$and.$or=[]
+  //       query.$and.$or.push(JSON.parse(phrasesQuery))
+  //       query.$and.$or.answers={}
+  //       query.$and.$or.answers.$in=ansArray
+  //     }
+  //   }
+  //   console.log("Final Query :",query)
+  //   if(typeof query==="string"){
+  //     query=JSON.parse(query)
+  //   }
+
+  //   const questions = await QUESITONMODEL.find(query)
+  //   console.log("Query end here",query,questions)
+  //   return questions
+  // } 
+  // catch (error) {
+  //   console.log(
+  //     "There was an error in SearchService.searchUsersByName and the error is \n",
+  //     error
+  //   );
+  //   return null;
+  // }
+
   static async searchNested(parsedData) {
     try {
 
     console.log("here")
     // const questions = await QUESITONMODEL.find()
-    var query="{\"$and\":["
-    // var parsedData={
-    //   tags:["JAVA","PYTHON"],
-    //   phrases:["REACTS"],
-    //   user:"",
-    //   accepted:true,
-    // }
+    var query={}
+    query.$and=[]
 
     console.log("parsedData")
     for (var i=0;i<parsedData.tags.length;i++){
-      if(i!=0){
-        query+=","
-      }
-      var tag="{\"tags\":\""+parsedData.tags[i]+"\"}"
-      query+=tag
+      var queryTag={}
+      queryTag.tags=parsedData.tags[i]
+      query.$and.push(queryTag)
     }
 
     if(parsedData.user){
-      query+=","
-      var user="{\"user\":\""+parsedData.user+"\"}"
-      query+=user
+      var queryTag={}
+      queryTag.user=parsedData.user
+      query.$and.push(queryTag)
     }
 
     if(parsedData.accepted===false){
-      query+=","
-      var user="{\"status\":\""+"PENDING"+"\"}"
-      query+=user
+      var queryTag={}
+      queryTag.status="PENDING"
+      query.$and.push(queryTag)
     }
     else{
-      query+=","
-      var user="{\"status\":\""+"APPROVED"+"\"}"
-      query+=user
+      var queryTag={}
+      queryTag.status="APPROVED"
+      query.$and.push(queryTag)
     }
-
-    query+="]}"
-    console.log(query)
 
 
     if(parsedData.phrases.length>=1){
-      var phrasesQuery="{\"$text\":{\"$search\":\""
-      
+      var phrasesQuery={}
+      phrasesQuery.$and=[]
       for (var i=0;i<parsedData.phrases.length;i++){
-        var phrase="\\\""+parsedData.phrases[i]+"\\\""
-        phrasesQuery+=phrase
+        phrasesQuery.$and.push({description:new RegExp(parsedData.phrases[i])})
       }
-      phrasesQuery+="\"}}"
-
-      var answerPhraseQuery={}
-      for (var i=0;i<parsedData.phrases.length;i++){
-        var phrase="{\"description\":"+new RegExp(parsedData.phrases[i])+"i}"
-        answerPhraseQuery.description=new RegExp(parsedData.phrases[i])
-      }
-      console.log("Query running in answers model : ",answerPhraseQuery)
-      const answers = await ANSWERMODEL.find(answerPhraseQuery).select("_id")
-      console.log("Answers returned with same description : ",answers)
-
-
-      var ansArray=[]
-      answers.map(
-        answer=>{
-          ansArray.push(answer._id)
-        })
-
-      const answerQuery="{\"answers\":{\"$in\":"+JSON.stringify(ansArray)+"}}"
 
       //Only questions
       if(parsedData.question!==undefined && parsedData.question===true){
-        query=JSON.parse(query)
-        console.log(query)
-        query.$and.push(JSON.parse(phrasesQuery))
+        // console.log(JSON.stringify(query))
+        console.log("phrasesQuery",phrasesQuery)
+        query.$and.push(phrasesQuery)
       }
       //Only answers
-      else if (parsedData.answer!==undefined && parsedData.answer===true){
-        console.log("Running only for answers")
-        query=JSON.parse(query)
-        query.$and.answers={}
-        query.$and.answers.$in=ansArray
-      }
-      //Or Questions or Answers
       else{
-        query=JSON.parse(query)
-        query.$and.$or=[]
-        query.$and.$or.push(JSON.parse(phrasesQuery))
-        query.$and.$or.answers={}
-        query.$and.$or.answers.$in=ansArray
+          var answerPhraseQuery={}
+          answerPhraseQuery.$and=[]
+          for (var i=0;i<parsedData.phrases.length;i++){
+            answerPhraseQuery.$and.push({description:new RegExp(parsedData.phrases[i])})
+          }
+          console.log("Query running in answers model : ",answerPhraseQuery)
+          const answersList = await ANSWERMODEL.find(answerPhraseQuery).distinct('_id')
+          console.log("Answers returned with same description : ",answersList)
+
+
+        var ansArray=[]
+
+          if (parsedData.answer!==undefined && parsedData.answer===true){
+            console.log("Running only for answers")
+            let answers={}
+            answers.$in=answersList
+            console.log("answersOnly",answers)
+            query.$and.push({answers})
+          }
+          //Or Questions or Answers
+          else{
+            console.log("Running for questions and answers")
+            
+            var mixQuery=[]
+            let answers={}
+            answers.$in=answersList
+            mixQuery.push({answers})
+            mixQuery.push(phrasesQuery)
+            console.log("Answers query : ",{answers})
+            console.log("Answers query : ",phrasesQuery)
+            var $or={}
+            $or=mixQuery
+            console.log("Orquery: ",{$or})
+            query.$and.push({$or})
+          }
       }
     }
+    console.log("Answer Query",answerPhraseQuery)
+    console.log("Answer Array",ansArray)
     console.log("Final Query :",query)
-    if(typeof query==="string"){
-      query=JSON.parse(query)
-    }
 
     const questions = await QUESITONMODEL.find(query)
-    console.log("Query end here",query,questions)
+
     return questions
   } 
   catch (error) {
@@ -457,5 +558,6 @@ module.exports = class SearchService {
     );
     return null;
   }
+
 
 }}
