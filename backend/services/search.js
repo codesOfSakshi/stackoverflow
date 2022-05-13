@@ -546,8 +546,13 @@ module.exports = class SearchService {
     console.log("Answer Query",answerPhraseQuery)
     console.log("Answer Array",ansArray)
     console.log("Final Query :",query)
-
-    const questions = await QUESITONMODEL.find(query)
+    
+    if(parsedData.views===undefined && parsedData.views==false){
+    const questions = await QUESITONMODEL.find(query).sort({upVotes:sorting})
+    }
+    else {
+    const questions = await QUESITONMODEL.find(query).sort({views:sorting})
+    }
 
     return questions
   } 
