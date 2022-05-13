@@ -22,7 +22,7 @@ export default function UserAnswer({answer}) {
                     {ans.bestAns===undefined&&
                         <div className="s-post-summary--stats-item has-answers " title="1 answer">
 
-                            <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
+                            <span className="s-post-summary--stats-item-number">{ans.answers.length}</span>
                             <span className="s-post-summary--stats-item-unit">answer</span>
                         </div>}
                     {ans.bestAns&&
@@ -32,7 +32,7 @@ export default function UserAnswer({answer}) {
                                  viewBox="0 0 14 14">
                                 <path d="M13 3.41 11.59 2 5 8.59 2.41 6 1 7.41l4 4 8-8Z"></path>
                             </svg>
-                            <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
+                            <span className="s-post-summary--stats-item-number">{ans.answers.length}</span>
                             <span className="s-post-summary--stats-item-unit">answers</span>
                         </div>
                     }
