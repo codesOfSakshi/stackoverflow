@@ -85,6 +85,56 @@ exports.getTaggedQuestions = async (reqBody, result) => {
 }
 
 
+// Get All questions per tag
+exports.getUserTaggedQuestions = async (reqBody, result) => {
+    try{
+
+        console.log("Tag: ", reqBody.tagId);
+        console.log("Sorting as: ", reqBody.filterType)
+        console.log("User as: ", reqBody.userId)
+
+        // Get Tag Info for Page
+        const tag = await TagModel.findOne({name:reqBody.tagId});
+
+        let questions;
+        
+        // Interesting (latest)
+        if(reqBody.filterType == 1){
+            questions = await QuestionModel.find({'user':reqBody.userId ,'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({_id: -1});
+            console.log("By Interesting:", questions);
+        }
+        // Hot (Views)
+        else if(reqBody.filterType == 2){
+            questions = await QuestionModel.find({'user':reqBody.userId, 'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({views: -1});
+            console.log("By Hot:", questions);
+        }
+        // Score (Upvotes)
+        else if(reqBody.filterType == 3){
+            questions = await QuestionModel.find({'user':reqBody.userId, 'tags' : reqBody.tagId, 'status': "APPROVED"}).populate("user").sort({'upVotes': -1});
+            console.log("By Score:", questions);
+        }
+        // Unanswered
+        else if(reqBody.filterType == 4){
+            questions = await QuestionModel.find({'user':reqBody.userId, 'tags' : reqBody.tagId, 'status': "APPROVED" , answers: { $size: 0 } }).populate("user").sort({score:1});
+            console.log("By Unanswered:", questions);
+        }
+
+        if(questions.length > 0){
+            result(null, {questions: questions , tag:tag});
+        }
+        else if(reqBody.filterType == 4)
+        {
+            result(null, {questions: questions , tag:tag});
+        }
+        else{
+            result(null , {status:false , message:"No Questions for this tag"});
+        }
+    }
+    catch(err){
+        result(err);
+    }
+}
+
 // Update Number of Questions for Tag
 exports.updateNumQuestions = async(tagName, result) => {
 
@@ -220,7 +270,7 @@ exports.findBadge = async(reqBody, result) => {
                         if (views > 5)
                             badge.set("Notable Question", "Gold");
 
-                        if (views > 15)
+                        if (views > 15 )
                             badge.set("Famous Question", "Gold");
                     }
 

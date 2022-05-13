@@ -14,6 +14,7 @@ import AskQuestion from "./pages/AskQuestion";
 import EditQuestion from "./pages/EditQuestion";
 import TagsPage from "./pages/AllTagsPage/TagsPage";
 import TagPage from "./pages/TagPage/TagPage";
+import UserTagPage from "./pages/TagPage/UserTagPage";
 import Analytics from "./components/admin/Analytics";
 import Admin from "./pages/admin/admin";
 import Messaging from "./pages/Messages/Messaging";
@@ -41,6 +42,7 @@ function App() {
       <Route path="/edit/:questionId" element={<EditQuestion />} />
       <Route path="/tags" element={<TagsPage />} />
       <Route path="/tag/:tagId" element={<TagPage />} />
+      <Route path="/usertag/:userId/:tagId" element={<UserTagPage />} />
       <Route path="/question/:id" element={<QuestionDisplayPage />} />
       <Route path="/messaging" element={<Messaging />} />
       <Route path="/allmessages" element={<AllMessages />} />

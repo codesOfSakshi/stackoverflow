@@ -19,8 +19,8 @@ export default function ProfileView() {
     const [user,setUser] = useState("");
     const theme = useTheme();
     const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token.split('.')[1], { header: true });
-    const logincred= decoded._id;
+    const decoded = token?jwt_decode(token.split('.')[1], { header: true }):null;
+    const logincred=decoded? decoded._id:null;
     const getUser = async () => {
         try{
             const response = await authapi.get(GET_USER_API+userId);
@@ -70,7 +70,7 @@ export default function ProfileView() {
                 <Stack direction="row">
                     <CalendarMonthIcon/>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Visited today
+                        {user.location}
                     </Typography>
                 </Stack>
             </Stack>
@@ -80,7 +80,7 @@ export default function ProfileView() {
             </Box>
             </Box>
         </div>
-            {userId == logincred && <div className="flex--item">
+            {logincred!=null&& userId == logincred && <div className="flex--item">
 
             <a className="flex--item s-btn s-btn__outlined s-btn__muted s-btn__icon s-btn__sm"
                href={"/user/edit/"+userId}>

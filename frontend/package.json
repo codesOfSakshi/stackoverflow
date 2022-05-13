@@ -45,8 +45,8 @@
     "eject": "react-scripts eject",
     "server": "nodemon ../backend/server.js",
     "client": "npm start",
-    "kafka": "nodemon ../kafka-server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run kafka\""
+    "kafka": "nodemon ../kafka-server/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [

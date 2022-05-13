@@ -22,19 +22,20 @@ const questioner = async (req, res) => {
           questions = await Questions.find(query)
           .populate("user")
           .sort({
-            createdAt: sorting,
+            createdAt: -1,
           });
         } else if (type == "Hot" || type == 2) {
           questions = await Questions.find(query)
           .populate("user")
-          .sort({ views: sorting });
+          .sort({ views: -1 });
         } else if (type == "Score" || type == 3) {
           questions = await Questions.find(query)
-          .populate("user");
-          sort({ answers: sorting });
+          .populate("user")
+          .sort({ upVotes : -1 });
         } else if (type == "Unanswered" || type == 4) {
-          questions = await Questions.find(query, {
+          questions = await Questions.find({
             answers: { $size: 0 },
+            status: "APPROVED"
           })
           .populate("user")
           .sort({ score: 1 });

@@ -42,6 +42,30 @@ exports.getTaggedQuestions = (req, res) => {
 }
 
 
+// Get All Tags
+exports.getUserTaggedQuestions = (req, res) => {
+    console.log("Inside Tags Controller: Get Questions for: ", req.body.tagId);
+    console.log("Inside Tags Controller: User: ", req.body.userId);
+
+    TagService.getUserTaggedQuestions(req.body, (err, result) => {
+        if(err)
+        {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        else if(result.status == false){
+            console.log("No questions tagged with: ", req.body.tagId)
+            res.status(404).send(result);
+        }
+        else{
+            console.log("Tagged Questions for: ", req.body.tagId);
+            console.log(result);
+            res.status(200).send(result);
+        }
+    })
+}
+
+
 // Update Tag numQuestions
 exports.updateNumQuestions = (req, res) => {
     console.log("Inside Tags Controller: Update Num Questions: ", req.params.tagId);

@@ -143,7 +143,7 @@ export default function ReviewCard() {
                     <input className="s-input wmx4 sm:wmx-initial" id="displayName" name="DisplayName" type="text"
                            value={location} maxLength="30" onChange={(e) => setLocation(e.target.value)}/>
                 </div>
-                <h4>Title</h4>
+                <h4>About</h4>
                 <div className="d-flex ps-relative">
                     <input className="s-input wmx4 sm:wmx-initial" id="displayName" name="DisplayName" type="text"
                            value={title}  maxLength="30" onChange={(e) => setTitle(e.target.value)}/>

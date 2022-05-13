@@ -36,7 +36,7 @@ const ActivityTab = () => {
                 tabSelected==="questions" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserQuestionList/></div>
         }
         {
-            tabSelected==="tags" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserTagList/></div>
+            tabSelected==="tags" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserTagList activityTab={true}/></div>
         }
         {
             tabSelected==="badges" && <div className="user-prof-mrgn-tp user-prof-mrgn-left"><UserBadgeList/></div>

@@ -72,7 +72,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
   const repopulate=(e,num)=>{
     e.preventDefault()
-    var api="api"+'/questions'
+    var api="api"+'/backend-redis-kafka/getAllProducts'
     var payload={
       "sortType":1,
       "type":num

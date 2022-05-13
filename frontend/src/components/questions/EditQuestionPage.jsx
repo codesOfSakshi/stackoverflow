@@ -128,7 +128,7 @@ function EditQuestionPage(props) {
         Include all the information someone would need to answer your question
         {/* <MyEditor/> */}
         {/* <div id="editor-container-questionDisplay-edit"></div> */}
-        {question && <EditorCustom setImages={setImages}  setDescription={setDescription} preDefault={question.description} images={question.images}></EditorCustom>}
+        {question && <EditorCustom setImage={setImages}  setDescription={setDescription} preDefault={question.description} images={question.images}></EditorCustom>}
         {error && <div style={{color: "red"}}>
         {error}
       </div>}

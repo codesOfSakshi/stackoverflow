@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
+import ReactTimeAgo from "react-time-ago";
 
 
 export default function UserQuestion({question}) {
@@ -17,13 +18,13 @@ export default function UserQuestion({question}) {
                     <span className="s-post-summary--stats-item-number">{que.score}</span>
                     <span className="s-post-summary--stats-item-unit">vote</span>
                 </div>
-                {que.bestAns===undefined&&
+                {que.best===false&&
                 <div className="s-post-summary--stats-item has-answers " title="1 answer">
 
                     <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
                     <span className="s-post-summary--stats-item-unit">answer</span>
                 </div>}
-                {que.bestAns&&
+                {que.best===true&&
                     <div className="s-post-summary--stats-item has-answers has-accepted-answer"
                          title="one of the answers was accepted as the correct answer">
                         <svg aria-hidden="true" className="svg-icon iconCheckmarkSm" width="14" height="14"
@@ -69,8 +70,10 @@ export default function UserQuestion({question}) {
 
                         </div>
 
-                        <time className="s-user-card--time">asked <span title="2020-05-21 11:26:53Z"
-                                                                        className="relativetime">{que.createdat}</span>
+                        <time className="s-user-card--time">
+                        <span className="relativetime">
+                            <ReactTimeAgo date={Date.parse(que?.createdAt)} locale="en-US" />
+                        </span>
                         </time>
                     </div>
 
