@@ -1,5 +1,5 @@
 var kafka = require("kafka-node");
-var kafkaIP="localhost";
+var kafkaIP="52.53.222.153";
 
 function ConnectionProvider() {
   this.getConsumer = function (topic_name) {
