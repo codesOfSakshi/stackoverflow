@@ -3,11 +3,36 @@ const QuestionModel = require("../models/question.js");
 const AnswerModel = require("../models/answer.js");
 const ActivityModel = require("../models/activity.js");
 const ActivityService = require("./activity.js");
+const UserModel = require("../models/user")
 
 class Comment {
   static postComment = async (answerId, questionId, type, comment, user, name) => {
     if (type === "question") {
+      console.log("INSIDE QUESTIONNNNNNN")
       try {
+
+        var findComments =await UserModel.findById(user);
+        if(findComments.commentCount){
+          console.log("inside ocmmentssss")
+          var updateCon = {
+            commentCount : findComments.commentCount + 1
+          }
+        }
+        else{
+          console.log("outside ocmmentssss")
+          
+          var updateCon = {
+            commentCount : 1
+          }
+        }
+        const findCon = {
+          _id: mongoose.Types.ObjectId(user),
+        };
+
+        const comresult = await UserModel.updateOne(
+          findCon,
+          updateCon
+        );
         const findCondition = {
           _id: mongoose.Types.ObjectId(questionId),
         };
@@ -26,9 +51,6 @@ class Comment {
           { returnOriginal: false }
         );
         if (result) {
-          console.log("RESULT FROM QUESTION COMMENT IS", result);
-          // add comment activity
-
           var newActivity = {
             type: "comment",
             comment: comment,
@@ -42,13 +64,41 @@ class Comment {
           return {};
         }
       } catch (err) {
-        console.log(err);
+        console.log("Error is", err);
         throw new Error(
-          "Some unexpected error occurred while inserting answer"
+          "Some unexpected error occurred while inserting comment"
         );
       }
     } else {
       try {
+
+        var findComments =await UserModel.findById(user);
+        if(findComments.commentCount){
+          var updateCon = {
+            commentCount : findComments.commentCount + 1
+          }
+        }
+        else{
+          console.log("outside ocmmentssss")
+          
+          var updateCon = {
+            commentCount : 1
+          }
+        }
+
+        const findCon = {
+          _id: mongoose.Types.ObjectId(user),
+        };
+
+        // findCon.commentCount = 1
+        // findCon.save()
+
+        const comresult = await UserModel.updateOne(
+          findCon,
+          updateCon
+        );
+
+
         const findCondition = {
           _id: mongoose.Types.ObjectId(answerId),
         };
