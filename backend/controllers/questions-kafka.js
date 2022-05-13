@@ -10,7 +10,7 @@ const topicName = "question_topic";
 router.post("/getAllProducts", async (req, res) => {
   const questions =await Question.getQuestionsByType(req.body.type,req.body.sortType)
   console.log("questions============",questions)
-  if(questions.length==0){
+  if(!questions || questions.length==0){
     msg = {};
     msg.params = req.params
     msg.body = req.body;
