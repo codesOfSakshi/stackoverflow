@@ -40,7 +40,6 @@ const handleTopicRequest = (topicName,functionName) => {
 			producer.send(payloads, (err, data) => {
 				console.log("Payload sent back to producer => ", data);
 			});
-
 			return;
 		});
 	});
