@@ -220,7 +220,7 @@ exports.findBadge = async(reqBody, result) => {
                         if (views > 5)
                             badge.set("Notable Question", "Gold");
 
-                        if (views > 15)
+                        if (views > 15 )
                             badge.set("Famous Question", "Gold");
                     }
 

@@ -70,7 +70,7 @@ export default function ProfileView() {
                 <Stack direction="row">
                     <CalendarMonthIcon/>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Visited today
+                        {user.location}
                     </Typography>
                 </Stack>
             </Stack>

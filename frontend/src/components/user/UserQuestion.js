@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
+import ReactTimeAgo from "react-time-ago";
 
 
 export default function UserQuestion({question}) {
@@ -69,8 +70,10 @@ export default function UserQuestion({question}) {
 
                         </div>
 
-                        <time className="s-user-card--time">asked <span title="2020-05-21 11:26:53Z"
-                                                                        className="relativetime">{que.createdat}</span>
+                        <time className="s-user-card--time">
+                        <span className="relativetime">
+                            <ReactTimeAgo date={Date.parse(que?.createdAt)} locale="en-US" />
+                        </span>
                         </time>
                     </div>
 

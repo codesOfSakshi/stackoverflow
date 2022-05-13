@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import ReactTimeAgo from "react-time-ago";
 
 
 export default function UserAnswer({answer}) {
@@ -18,6 +19,23 @@ export default function UserAnswer({answer}) {
                         <span className="s-post-summary--stats-item-number">{ans.score}</span>
                         <span className="s-post-summary--stats-item-unit">vote</span>
                     </div>
+                    {ans.bestAns===undefined&&
+                        <div className="s-post-summary--stats-item has-answers " title="1 answer">
+
+                            <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
+                            <span className="s-post-summary--stats-item-unit">answer</span>
+                        </div>}
+                    {ans.bestAns&&
+                        <div className="s-post-summary--stats-item has-answers has-accepted-answer"
+                             title="one of the answers was accepted as the correct answer">
+                            <svg aria-hidden="true" className="svg-icon iconCheckmarkSm" width="14" height="14"
+                                 viewBox="0 0 14 14">
+                                <path d="M13 3.41 11.59 2 5 8.59 2.41 6 1 7.41l4 4 8-8Z"></path>
+                            </svg>
+                            <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
+                            <span className="s-post-summary--stats-item-unit">answers</span>
+                        </div>
+                    }
 
 
                 </div>
@@ -47,8 +65,10 @@ export default function UserAnswer({answer}) {
 
                             </div>
 
-                            <time className="s-user-card--time">asked <span title="2020-05-21 11:26:53Z"
-                                                                            className="relativetime">{ans.createdAt}</span>
+                            <time className="s-user-card--time">
+                        <span className="relativetime">
+                            <ReactTimeAgo date={Date.parse(ans?.createdAt)} locale="en-US" />
+                        </span>
                             </time>
                         </div>
 
