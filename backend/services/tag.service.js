@@ -223,7 +223,7 @@ exports.findBadge = async(reqBody, result) => {
                             badge.set("Famous Question", "Gold");
                     }
 
-                    if (user.commentCount > 3)
+                    if (user.commentCount >= 3)
                         badge.set("Pundit", "Silver");
 
                     if (tag.score <= 10 && tag.score>0)
