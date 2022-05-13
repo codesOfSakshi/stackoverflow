@@ -277,19 +277,20 @@ router.get("/question/activity/:userId", checkAuth, async (req, res) => {
     try{
 
         const userObj = {userId};
-        const successData = await User.getUserQuestionById(userObj);
-        console.log("response-->>")
-        console.log(successData)
-        if(successData){
-            response.success = true;
-            response.data = successData;
-            response.status = 200;
-            res.status(200).send(response);
-        }else{
-            response.success = false;
-            response.status = 400;
-            res.status(400).send(response);
-        }
+        User.getUserQuestionById(userObj,(error, successData)=>{
+            console.log("response-->>")
+            console.log(successData)
+            if(successData){
+                response.success = true;
+                response.data = successData;
+                response.status = 200;
+                res.status(200).send(response);
+            }else{
+                response.success = false;
+                response.status = 400;
+                res.status(400).send(response);
+            }
+        });
     }catch(e){
         console.log(e);
         response.success = false;

@@ -64,6 +64,10 @@ const questionSchema = new mongoose.Schema({
   user:{
     type:mongoose.Schema.Types.ObjectId,
     ref: 'users',
+  },
+  best:{
+    type: Boolean,
+    default: false
   }
 
 });
