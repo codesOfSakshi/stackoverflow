@@ -188,6 +188,20 @@ class User {
         console.log(up);
         console.log(down);
         responses["score"] = up - down;
+        let bestans = responses.bestAns
+        if(bestans) {
+           let answer=  AnswerModel.findById(mongoose.Types.ObjectId(bestans))
+           answer =JSON.parse(JSON.stringify(answer));
+           if(answer.user===userId)
+             responses["best"] = true;
+           else
+             responses["best"] = false;
+        }
+        else
+        {
+          responses["best"] = false;
+        }
+
       });
 
       response = JSON.parse(JSON.stringify(response));
@@ -234,8 +248,10 @@ class User {
         console.log(answerIds);
         console.log(responses.bestAns);
         if (answerIds.includes(responses.bestAns)) {
-          responses["best"] = "true";
+          responses["best"] = true;
         }
+        else
+          responses["best"] = false;
       });
       response = JSON.parse(JSON.stringify(response));
       if (response) {
