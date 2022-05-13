@@ -13,9 +13,8 @@ const config = require("./config/config");
 const user = require("./controllers/user");
 const search = require("./routes/search");
 const question = require("./controllers/questions");
-const passportLocal = require('passport-local').Strategy;
+const passportLocal = require("passport-local").Strategy;
 const questionKafkaRedis = require("./controllers/questions-kafka");
-
 
 require("./models/tag.js");
 
@@ -48,6 +47,8 @@ app.use(passport.initialize());
 //     credentials: true,
 //   })
 // );
+
+app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 
@@ -126,5 +127,6 @@ app.use("/api/comment", comment);
 app.use("/api/vote", vote);
 app.use("/api/activity", activity);
 app.use("/api/comments/getcomments", comment);
-app.use('/api/backend-redis-kafka',questionKafkaRedis);
+app.use("/api/backend-redis-kafka", questionKafkaRedis);
 
+module.exports = app;
