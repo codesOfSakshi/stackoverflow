@@ -47,7 +47,7 @@ exports.getUserTaggedQuestions = (req, res) => {
     console.log("Inside Tags Controller: Get Questions for: ", req.body.tagId);
     console.log("Inside Tags Controller: User: ", req.body.userId);
 
-    TagService.getTaggedQuestions(req.body, (err, result) => {
+    TagService.getUserTaggedQuestions(req.body, (err, result) => {
         if(err)
         {
             console.log(err);
