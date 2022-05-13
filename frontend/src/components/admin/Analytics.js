@@ -106,10 +106,10 @@ const Tags = ({ tag }) => (
 const User = ({ user }) => (
   <div class="s-user-card s-user-card__full">
     {console.log("IN USER", user)}
-    <a href="…" class="s-avatar s-avatar__48 s-user-card--avatar">
+    <a href={"user/"+user._id} class="s-avatar s-avatar__48 s-user-card--avatar">
       {" "}
-      {user.name}
-      <img class="s-avatar--image" src={user.profilePic} />
+      {user.name || "user name"}
+      <img class="s-avatar--image" src={user.profilePicture || "https://i.stack.imgur.com/1Bds0.png"} />
     </a>
     <div class="s-user-card--info">
       {/* <a href="#" class="s-user-card--link d-flex g4">
@@ -139,6 +139,7 @@ const User = ({ user }) => (
         </ul> */}
       <div class="s-user-card--location">{user.location}</div>
     </div>
+    <br />
   </div>
 );
 export default Analytics;
