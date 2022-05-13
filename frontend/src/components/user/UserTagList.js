@@ -7,7 +7,7 @@ import {Link, useNavigate, useLocation, useParams} from "react-router-dom";
 import {axiosInstance as authapi} from '../../services/authaxiosservice';
 const GET_USER_TAGS_API = "api/user/tags/";
 
-const UserTagList = () => {
+const UserTagList = ({profileTab,activityTab}) => {
 
   const navigate = useNavigate();
   const search = useLocation().search;
@@ -59,7 +59,7 @@ const UserTagList = () => {
             !gettingTags && tags && tags.map((eachTag)=>{
                 return (
                     <div>
-                        <UserTag key={eachTag._id} name={eachTag.tagId} score={eachTag.score} color={eachTag.color} posts={eachTag.posts}></UserTag>
+                        <UserTag profileTab={profileTab} activityTab={activityTab} key={eachTag._id} name={eachTag.tagId} score={eachTag.score} color={eachTag.color} posts={eachTag.posts}></UserTag>
                     </div>
                 )
             })

@@ -9,6 +9,9 @@ router.get('/', tagController.getAllTags);
 // Get all questions per tag
 router.post('/questionbytag', tagController.getTaggedQuestions);
 
+router.post('/userquestionbytag', tagController.getTaggedQuestions);
+
+
 // Update NumQuestions of tag
 router.put('/updateNumQuestions/:tagId',checkAuth, tagController.updateNumQuestions);
 

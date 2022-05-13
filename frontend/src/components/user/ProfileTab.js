@@ -54,7 +54,7 @@ const ProfileTab = () => {
         <UserStats reach={reach} reputation={reputation} answerCount={answerCount} questionCount={questionCount}/>
         <div className="profiletab-item-userbadgeinfo-container">
           <UserBadgeInfo/>
-          <UserTagList/>
+          <UserTagList profileTab={true} />
           <UserTopPostList userId={userId}/>
         </div>
       </div>
