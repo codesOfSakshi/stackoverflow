@@ -198,7 +198,6 @@ class Vote{
                     );
 
 
-
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_QUESTION",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
