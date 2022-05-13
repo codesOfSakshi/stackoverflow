@@ -1,10 +1,12 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom';
 import { Grid } from '@mui/material';
+import ReactTimeAgo from 'react-time-ago'
 
 const TaggedQuestions = (props) => {
     
     const navigate = useNavigate();
+    console.log(props.question);
 
     // Navigates to the question page for question clicked
     const navigateToQuestion = () => {
@@ -66,26 +68,22 @@ const TaggedQuestions = (props) => {
 
                     <div class="s-user-card s-user-card__minimal">
 
-                        {/* <a href="/users/16834391/arvydas" class="s-avatar s-avatar__16 s-user-card--avatar">
+                        <a href="" class="s-avatar s-avatar__16 s-user-card--avatar">
                 <div class="gravatar-wrapper-16 js-user-hover-target" data-user-id="16834391">
-                <img src="https://i.stack.imgur.com/irb32.jpg?s=32&amp;g=1" alt="user avatar" width="16" height="16" class="s-avatar--image"/>
+                <img src={props.question.user.profilePicture} alt="user avatar" width="16" height="16" class="s-avatar--image"/>
                 </div>
-                </a> */}
+                </a>
 
                         <div class="s-user-card--info">
                             <div class="s-user-card--link d-flex gs4">
-                                <a href="/users/16834391/arvydas" class="flex--item">{props.question.userId}</a>
+                                <a href="" class="flex--item">{props.question.user.name}</a>
                             </div>
 
-                            {/* <ul class="s-user-card--awards">
-                <li class="s-user-card--rep">
-                <span class="todo-no-class-here" title="reputation score " dir="ltr">1</span>
-                </li>
-                </ul> */}
                         </div>
 
-                        {/* <time class="s-user-card--time">asked <span title="2022-04-27 04:25:18Z" class="relativetime">2 mins ago</span></time> */}
-
+                        <time class="s-user-card--time">
+                                    {props.question.createdAt &&
+                                        <ReactTimeAgo date={Date.parse(props.question.createdAt)} locale="en-US" />}</time>
                     </div>
 
                 </div>

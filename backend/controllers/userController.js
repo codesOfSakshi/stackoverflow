@@ -64,7 +64,7 @@ module.exports = class UserController {
     });
 
     returnMessage.user = user;
-    returnMessage.token =  "JWT " + token;
+    returnMessage.token = token;
     returnMessage.success = true;
     returnMessage.status = 200;
     returnMessage.message = "Signed in successfully";

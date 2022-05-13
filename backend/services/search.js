@@ -442,6 +442,10 @@ module.exports = class SearchService {
       }
     }
     console.log("Final Query :",query)
+    if(typeof query==="string"){
+      query=JSON.parse(query)
+    }
+
     const questions = await QUESITONMODEL.find(query)
     console.log("Query end here",query,questions)
     return questions

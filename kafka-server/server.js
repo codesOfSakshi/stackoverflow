@@ -46,4 +46,4 @@ const handleTopicRequest = (topicName,functionName) => {
 	});
 };
 
-handleTopicRequest("questions_topic",question);
+handleTopicRequest("question_topic",question);
