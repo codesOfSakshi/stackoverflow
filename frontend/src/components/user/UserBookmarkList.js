@@ -17,10 +17,10 @@ function UserBookmarkList({bookmarkQuestions}) {
       setGettingUserBookMarks(true);
       try{
           const response = await authapi.get(GET_USER_BOOKMARKS_API+userId);
-          if(response && response.data && response.data.success && response.data.bookMarkQuestions){
-              console.log(response.data.bookMarkQuestions);
+          if(response && response.data ){
+              console.log(response.data.data);
               setGettingUserBookMarks(false);
-              setBookMarkQuestions(response.data.bookMarkQuestions);
+              setBookMarkQuestions(response.data.data);
           }else{
               setGettingUserBookMarks(false);
           }

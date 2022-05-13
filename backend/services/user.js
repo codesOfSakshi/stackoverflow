@@ -298,17 +298,71 @@ class User {
     }
   };
 
-  static getBookMarkQuestionIds = async ({ userId }) => {
+  static getBookMarkQuestionIds = async ({ userId }, outercb) =>  {
+
     try {
       const query = {
         _id: mongoose.Types.ObjectId(userId),
       };
       let user = await UserModel.findOne(query);
       console.log(user, "user");
-
-      user = JSON.parse(JSON.stringify(user));
       if (user?.bookmark?.length) {
         console.log(user.bookmark);
+        user = JSON.parse(JSON.stringify(user));
+        let questionIds = user.bookmark;
+        const questionObj = {};
+        questionObj.questionIds = questionIds;
+        let response = await Question.getQuestions(questionObj);
+        response = response.filter(
+            (responses) => responses.status === "APPROVED"
+        );
+        console.log(user, "user");
+        var result= []
+        async.each(
+            response,
+            (responses,cb)=>{
+              let up = responses.upVotes === undefined ? 0 : responses.upVotes.length;
+              let down =
+                  responses.downVotes === undefined ? 0 : responses.downVotes.length;
+              console.log(up);
+              console.log(down);
+              responses["score"] = up - down;
+              let bestans = responses.bestAns
+              AnswerModel.findById(bestans).then((answer)=>{
+                if(answer && answer.user)
+                {
+                  answer = JSON.parse(JSON.stringify(answer));
+                  if (answer.user === userId) {
+                    responses["best"] = true;
+                    console.log(responses.best)
+                  } else
+                    responses["best"] = false;
+                }
+                else
+                {
+                  responses["best"] = false;
+                }
+                result.push(responses)
+                cb(null);
+              });
+            },
+            function(error){
+              if(error){
+                outercb(error);
+              }else{
+                response = JSON.parse(JSON.stringify(result));
+                if (response) {
+                  outercb(null,response);
+                } else {
+                  outercb(null,[]);
+                }
+              }
+            }
+        )
+
+
+
+
         return user.bookmark;
       } else {
         return [];
@@ -316,7 +370,7 @@ class User {
     } catch (err) {
       console.log(err);
       throw new Error(
-        "Some unexpected error occurred while getting bookmark question ids"
+          "Some unexpected error occurred while getting bookmark question ids"
       );
     }
   };

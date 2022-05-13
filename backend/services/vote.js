@@ -24,7 +24,9 @@ class Vote{
             if(findQuestion){
                 let userfindCondition =  findQuestion.user
             }
-            let user= await UserModel.findOne(userfindCondition);
+            let reputationuser= await UserModel.findOne(userfindCondition);
+
+            console.log("user is", reputationuser)
 
             try
             {
@@ -124,7 +126,7 @@ class Vote{
                         allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
                         resdownvote = allUserDownvote1;
-                        reputationIncrement = user.reputation+10
+                        reputationIncrement = reputationuser.reputation+10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -140,7 +142,7 @@ class Vote{
                         allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
                         resdownvote = removeUserDownvote1;
-                        reputationIncrement = user.reputation + 10
+                        reputationIncrement = reputationuser.reputation + 10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -151,7 +153,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote1;
                         resdownvote = allUserDownvote1;
-                        reputationIncrement = user.reputation
+                        reputationIncrement = reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -274,7 +276,7 @@ class Vote{
                         allUserDownvote2.push(voter)
                         resupvote = allUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=user.reputation-10
+                        reputationIncrement=reputationuser.reputation-10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -289,7 +291,8 @@ class Vote{
                         allUserDownvote2.push(voter)
                         resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=user.reputation-10
+                        console.log("user in reputation is----", user, reputationuser.reputation)
+                        reputationIncrement=reputationuser.reputation-10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -300,7 +303,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -312,7 +315,7 @@ class Vote{
                         }
                         resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -342,13 +345,18 @@ class Vote{
             }
         }
         else{
+            // var findAnswer =await AnswerModel.findById(answerId);
+            // if(findAnswer){
+            //     userfindCondition = {"_id":mongoose.Types.ObjectId(findAnswer.user)}
+            // }
+            // user = await UserModel.findOne(userfindCondition);
             try
             {
                 var findAnswer =await AnswerModel.findById(answerId);
                 if(findAnswer){
                     let userfindCondition =  findAnswer.user
                 }
-                let user= await UserModel.findOne(userfindCondition);
+                let reputationuser= await UserModel.findOne(userfindCondition);
                 
                 if(voteType === 'Upvote'){
 
@@ -420,7 +428,7 @@ class Vote{
                         allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
                         resdownvote = allUserDownvote3;
-                        reputationIncrement=user.reputation+5
+                        reputationIncrement=reputationuser.reputation+5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -435,7 +443,7 @@ class Vote{
                         allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
                         resdownvote = removeUserDownvote3;
-                        reputationIncrement=user.reputation+5
+                        reputationIncrement=reputationuser.reputation+5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -447,7 +455,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote3;
                         resdownvote = allUserDownvote3;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -459,7 +467,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote3;
                         resdownvote = removeUserDownvote3;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -550,7 +558,7 @@ class Vote{
                         allUserDownvote4.push(voter)
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=user.reputation-5
+                        reputationIncrement=reputationuser.reputation-5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -565,7 +573,7 @@ class Vote{
                         allUserDownvote4.push(voter)
                         resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=user.reputation-5
+                        reputationIncrement=reputationuser.reputation-5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -576,7 +584,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -588,7 +596,7 @@ class Vote{
                         }
                         resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=user.reputation
+                        reputationIncrement=reputationuser.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }

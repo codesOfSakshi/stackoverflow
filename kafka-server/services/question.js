@@ -22,7 +22,7 @@ const questioner = async (req, res) => {
           questions = await Questions.find(query)
           .populate("user")
           .sort({
-            createdAt: -1,
+            createdAt: -1
           });
         } else if (type == "Hot" || type == 2) {
           questions = await Questions.find(query)

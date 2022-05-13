@@ -7,9 +7,33 @@ function UserBookmark({bookMarkQuestion}) {
         <div className="ba bc-black-100">
             <div className="s-post-summary--stats">
                 <Stack direction="row" spacing={2}>
-                <div className="s-post-summary--stats-item has-answers">
-                    {bookMarkQuestion.answers.length+" answers"}
-                </div>
+                    {bookMarkQuestion.best===false&&
+                        <div className="s-post-summary--stats-item has-answers " title="1 answer">
+
+                            <span className="s-post-summary--stats-item-number">{bookMarkQuestion.answers.length}</span>
+                            <span className="s-post-summary--stats-item-unit">answer</span>
+                        </div>}
+                    {bookMarkQuestion.best===true&&
+                        <div className="s-post-summary--stats-item has-answers has-accepted-answer"
+                             title="one of the answers was accepted as the correct answer">
+                            <svg aria-hidden="true" className="svg-icon iconCheckmarkSm" width="14" height="14"
+                                 viewBox="0 0 14 14">
+                                <path d="M13 3.41 11.59 2 5 8.59 2.41 6 1 7.41l4 4 8-8Z"></path>
+                            </svg>
+                            <span className="s-post-summary--stats-item-number">{bookMarkQuestion.answers.length}</span>
+                            <span className="s-post-summary--stats-item-unit">answers</span>
+                        </div>
+                    }
+
+
+
+
+
+
+
+
+
+
                  <div className="s-post-summary--stats-item">
                     {(bookMarkQuestion?.views ? bookMarkQuestion?.views : 0 )+" views"}
                 </div>
