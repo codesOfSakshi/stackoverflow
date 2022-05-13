@@ -22,7 +22,34 @@ class Vote{
         if(type === 'question'){
             try
             {
+                
                 if(voteType === 'Upvote'){
+
+                    var findUpvotesCount =await UserModel.findById(voter);
+                    if(findUpvotesCount.upVotesCount){
+                    console.log("inside upvotescount")
+                    var updateCon = {
+                        upVotesCount : findUpvotesCount.upVotesCount + 1
+                    }
+                    }
+                    else{
+                    console.log("outside upvotescount")
+                    
+                    var updateCon = {
+                        upVotesCount : 1
+                    }
+                    }
+                    const findCon = {
+                    _id: mongoose.Types.ObjectId(voter),
+                    };
+
+                    const ucountresult = await UserModel.updateOne(
+                    findCon,
+                    updateCon
+                    );
+
+
+
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "UPVOTE_QUESTION",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
@@ -145,6 +172,33 @@ class Vote{
                     }
                 }
                 else{
+
+
+                    var findDownvotesCount =await UserModel.findById(voter);
+                    if(findDownvotesCount.downVotesCount){
+                    console.log("inside upvotescount1")
+                    var updateCon = {
+                        downVotesCount : findDownvotesCount.downVotesCount + 1
+                    }
+                    }
+                    else{
+                    console.log("outside upvotescount1")
+                    
+                    var updateCon = {
+                        downVotesCount : 1
+                    }
+                    }
+                    const findCon = {
+                    _id: mongoose.Types.ObjectId(voter),
+                    };
+
+                    const dcountresult = await UserModel.updateOne(
+                    findCon,
+                    updateCon
+                    );
+
+
+
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_QUESTION",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(questionId),
@@ -287,6 +341,35 @@ class Vote{
             try
             {
                 if(voteType === 'Upvote'){
+
+
+                    var findUpvotesCount =await UserModel.findById(voter);
+                    if(findUpvotesCount.upVotesCount){
+                    console.log("inside upvotescount")
+                    var updateCon = {
+                        upVotesCount : findUpvotesCount.upVotesCount + 1
+                    }
+                    }
+                    else{
+                    console.log("outside upvotescount")
+                    
+                    var updateCon = {
+                        upVotesCount : 1
+                    }
+                    }
+                    const findCon = {
+                    _id: mongoose.Types.ObjectId(voter),
+                    };
+
+                    const ucountresult = await UserModel.updateOne(
+                    findCon,
+                    updateCon
+                    );
+
+
+
+
+
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "UPVOTE_ANSWER",userId:user.id });
                     console.log("answer", answerId, type, voter)
                     let findCondition = {
@@ -390,6 +473,36 @@ class Vote{
                     }
                 }
                 else{
+
+                    var findDownvotesCount =await UserModel.findById(voter);
+                    if(findDownvotesCount.downVotesCount){
+                    console.log("inside upvotescount1")
+                    var updateCon = {
+                        downVotesCount : findDownvotesCount.downVotesCount + 1
+                    }
+                    }
+                    else{
+                    console.log("outside upvotescount1")
+                    
+                    var updateCon = {
+                        downVotesCount : 1
+                    }
+                    }
+                    const findCon = {
+                    _id: mongoose.Types.ObjectId(voter),
+                    };
+
+                    const dcountresult = await UserModel.updateOne(
+                    findCon,
+                    updateCon
+                    );
+
+
+
+
+
+
+
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_ANSWER",userId:user.id });
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
