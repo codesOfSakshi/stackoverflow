@@ -50,13 +50,13 @@ app.use(passport.initialize());
 // );
 
 app.use(cors({
-  origin:"http://52.53.222.153:3000",
+  origin:["http://52.53.222.153:3000","http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com"],
   credentials: true,
   methods:["GET","POST","DELETE","PUT"]
 }))
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", 'http://52.53.222.153:3000');
+  res.header("Access-Control-Allow-Origin", ['http://52.53.222.153:3000','http://stackoverflow-lb-1188096937.us-west-1.elb.amazonaws.com']);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
