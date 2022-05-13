@@ -417,7 +417,7 @@ class User {
   static getUserTags = async ({ userId }, outercb) => {
     try {
       const query = {
-        user: mongoose.Types.ObjectId(userId),
+        "_id": mongoose.Types.ObjectId(userId),
       };
       let user = await UserModel.findOne(query);
       user = JSON.parse(JSON.stringify(user));
