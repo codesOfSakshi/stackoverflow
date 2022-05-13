@@ -14,12 +14,14 @@ class Vote{
         let resdownvote = null;
         let userUpdateCondition = {};
         var reputationIncrement=null;
-        let userfindCondition = {
-            _id:mongoose.Types.ObjectId(voter),
-        };
-        let user= await UserModel.findOne(userfindCondition);
-
+        let userfindCondition = {};
+        let user = {};
         if(type === 'question'){
+            var findQuestion = await QuestionModel.findById(questionId);
+            if(findQuestion){
+                userfindCondition =  { "_id" : mongoose.Types.ObjectId(findQuestion.user)}
+            }
+            user = await UserModel.findOne(userfindCondition);
             try
             {
                 
@@ -338,6 +340,11 @@ class Vote{
             }
         }
         else{
+            var findAnswer =await AnswerModel.findById(answerId);
+            if(findAnswer){
+                userfindCondition = {"_id":mongoose.Types.ObjectId(findAnswer.user)}
+            }
+            user = await UserModel.findOne(userfindCondition);
             try
             {
                 if(voteType === 'Upvote'){
