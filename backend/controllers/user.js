@@ -40,28 +40,20 @@ router.get("/bookmark/:userId",checkAuth,  async (req, res) => {
     const response = {};
     try{
         const userObj = {userId};
-        const questionIds = await User.getBookMarkQuestionIds(userObj);
-        if(questionIds?.length){
-            const questionObj = {};
-            questionObj.questionIds = questionIds;
-            const questions = await Question.getQuestions(questionObj);
-            if(questions?.length){
+        User.getBookMarkQuestionIds(userObj,(error, successData)=>{
+            console.log("response-->>")
+            console.log(successData)
+            if(successData){
                 response.success = true;
-                response.bookMarkQuestions = questions;
+                response.data = successData;
                 response.status = 200;
                 res.status(200).send(response);
             }else{
-                response.success = true;
-                response.bookMarkQuestions = [];
-                response.status = 200;
-                res.status(200).send(response);
+                response.success = false;
+                response.status = 400;
+                res.status(400).send(response);
             }
-        }else{
-            response.success = true;
-            response.bookMarkQuestions = [];
-            response.status = 200;
-            res.status(200).send(response);
-        }
+        });
     }catch(e){
         console.log(e);
         response.success = false;
