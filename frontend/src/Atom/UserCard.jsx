@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ReactTimeAgo from 'react-time-ago';
 import { useLocation } from 'react-router-dom';
 import { constants } from "../config/config";
-import axios from "axios";
+import {axiosInstance as authapi} from '../services/authaxiosservice';
 
 export default function UserCard(props) {  
     const location = useLocation();
@@ -17,7 +17,7 @@ export default function UserCard(props) {
   const navigate = useNavigate();
 
 useEffect(() => {
-    axios
+    authapi
     .get(GETBADGES)
     .then((response) => {
       if (response && response.data) {

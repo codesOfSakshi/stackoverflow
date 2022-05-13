@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {Vote} = require("../services/vote");
+const {checkAuth} = require("../passport");
 
-router.post("/",  async (req, res) => {
+router.post("/", checkAuth, async (req, res) => {
     console.log("in vote")
     const voteType = req.body.voteType;
     const questionId = req.body.questionId;

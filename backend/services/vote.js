@@ -38,15 +38,15 @@ class Vote{
                         tagHistory.set(userTag.tagId, userTag.score)
                     })
                     tags.map(tag=>{
-                        if(tagHistory.has(tag.tagId))
+                        if(tagHistory.has(tag))
                         {
-                            let val=  tagHistory.get(tag.tagId)
+                            let val=  tagHistory.get(tag)
                             val++;
-                            tagHistory.set(tag.tagId,val)
+                            tagHistory.set(tag,val)
                         }
                         else
                         {
-                            tagHistory.set(tag.tagId,1)
+                            tagHistory.set(tag,1)
                         }
                     })
 
@@ -161,15 +161,15 @@ class Vote{
                         tagHistory.set(userTag.tagId, userTag.score)
                     })
                     tags.map(tag=>{
-                        if(tagHistory.has(tag.tagId))
+                        if(tagHistory.has(tag))
                         {
-                            let val=  tagHistory.get(tag.tagId)
+                            let val=  tagHistory.get(tag)
                             val--;
-                            tagHistory.set(tag.tagId,val)
+                            tagHistory.set(tag,val)
                         }
                         else
                         {
-                            tagHistory.set(tag.tagId,-1)
+                            tagHistory.set(tag,-1)
                         }
                     })
 

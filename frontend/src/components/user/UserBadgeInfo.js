@@ -5,7 +5,7 @@ import GoldBadge from "./GoldBadge";
 import SilverBadge from "./SilverBadge";
 import BronzeBadge from "./BronzeBadge";
 import {useParams} from "react-router-dom";
-import axiosService from "../../services/axiosservice";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 
 const UserBadgeInfo = () => {
     const [badges, setBadges] = useState([]);
@@ -25,7 +25,7 @@ const UserBadgeInfo = () => {
     const getUser = async () => {
 
         try{
-            const response = await axiosService.get(GET_USER_API+userId);
+            const response = await authapi.get(GET_USER_API+userId);
             console.log(response)
             if(response && response.data){
                 console.log(response.data.tags[0][0])

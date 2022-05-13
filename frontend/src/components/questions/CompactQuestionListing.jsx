@@ -47,7 +47,8 @@ function CompactQuestionListing({searchResult, questions}) {
       } else {
         setHeaderMessage("All Questions");
         console.log("calling useeffect");
-        var api="http://localhost:3001/api"+'/questions'
+        
+        var api="http://localhost:3001/api"+'/backend-redis-kafka/getAllProducts'
         var payload={
           "sortType":1,
           "type":1
@@ -109,7 +110,7 @@ function CompactQuestionListing({searchResult, questions}) {
 
             <div>
             </div>
-            {questionsAll.map((question) =>{  return (<div key={question._id}><hr /><CompactQuestion questions={question} /></div>)})}
+            {questionsAll && questionsAll.map((question) =>{  return (<div key={question._id}><hr /><CompactQuestion questions={question} /></div>)})}
             {/* <PaginatedList
             list={questionsAll}
             itemsPerPage={10}

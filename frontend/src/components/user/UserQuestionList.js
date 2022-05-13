@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import UserQuestion from './UserQuestion'
-import axiosService from "../../services/axiosservice";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
+
 import {useParams} from "react-router-dom";
 function UserQuestionList() {
 
@@ -15,7 +16,7 @@ function UserQuestionList() {
     const getUser = async () => {
 
         try{
-            const response = await axiosService.get(GET_USER_API+userId);
+            const response = await authapi.get(GET_USER_API+userId);
 
                 console.log(response.data.data)
                 setQuestion(response.data.data);

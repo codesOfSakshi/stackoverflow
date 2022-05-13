@@ -23,21 +23,21 @@ class Comment {
         const result = await QuestionModel.findByIdAndUpdate(
           findCondition,
           updateCondition,
-          // { returnOriginal: false }
+          { returnOriginal: false }
         );
         if (result) {
           console.log("RESULT FROM QUESTION COMMENT IS", result);
-          //add comment activity
+          // add comment activity
 
-          // var newActivity = {
-          //   type: "comment",
-          //   comment: comment,
-          //   by: result.user,
-          // };
+          var newActivity = {
+            type: "comment",
+            comment: comment,
+            by: result.user,
+          };
 
-          // await ActivityService.updateActivity(result.activity, newActivity);
+        await ActivityService.updateActivity(result.activity, newActivity);
 
-          return result;
+        return result;
         } else {
           return {};
         }

@@ -1,6 +1,7 @@
 const USERMODEL = require("../models/user");
 const QUESITONMODEL = require("../models/question");
 const ANSWERMODEL = require("../models/answer");
+const mongoose = require("mongoose");
 
 module.exports = class SearchService {
   /**
@@ -346,4 +347,115 @@ module.exports = class SearchService {
       return null;
     }
   }
-};
+
+
+  static async searchNested(parsedData) {
+    try {
+
+    console.log("here")
+    // const questions = await QUESITONMODEL.find()
+    var query="{\"$and\":["
+    // var parsedData={
+    //   tags:["JAVA","PYTHON"],
+    //   phrases:["REACTS"],
+    //   user:"",
+    //   accepted:true,
+    // }
+
+    console.log("parsedData")
+    for (var i=0;i<parsedData.tags.length;i++){
+      if(i!=0){
+        query+=","
+      }
+      var tag="{\"tags\":\""+parsedData.tags[i]+"\"}"
+      query+=tag
+    }
+
+    if(parsedData.user){
+      query+=","
+      var user="{\"user\":\""+parsedData.user+"\"}"
+      query+=user
+    }
+
+    if(parsedData.accepted===false){
+      query+=","
+      var user="{\"status\":\""+"PENDING"+"\"}"
+      query+=user
+    }
+    else{
+      query+=","
+      var user="{\"status\":\""+"APPROVED"+"\"}"
+      query+=user
+    }
+
+    query+="]}"
+    console.log(query)
+
+
+    if(parsedData.phrases.length>=1){
+      var phrasesQuery="{\"$text\":{\"$search\":\""
+      
+      for (var i=0;i<parsedData.phrases.length;i++){
+        var phrase="\\\""+parsedData.phrases[i]+"\\\""
+        phrasesQuery+=phrase
+      }
+      phrasesQuery+="\"}}"
+
+      var answerPhraseQuery={}
+      for (var i=0;i<parsedData.phrases.length;i++){
+        var phrase="{\"description\":"+new RegExp(parsedData.phrases[i])+"i}"
+        answerPhraseQuery.description=new RegExp(parsedData.phrases[i])
+      }
+      console.log("Query running in answers model : ",answerPhraseQuery)
+      const answers = await ANSWERMODEL.find(answerPhraseQuery).select("_id")
+      console.log("Answers returned with same description : ",answers)
+
+
+      var ansArray=[]
+      answers.map(
+        answer=>{
+          ansArray.push(answer._id)
+        })
+
+      const answerQuery="{\"answers\":{\"$in\":"+JSON.stringify(ansArray)+"}}"
+
+      //Only questions
+      if(parsedData.question!==undefined && parsedData.question===true){
+        query=JSON.parse(query)
+        console.log(query)
+        query.$and.push(JSON.parse(phrasesQuery))
+      }
+      //Only answers
+      else if (parsedData.answer!==undefined && parsedData.answer===true){
+        console.log("Running only for answers")
+        query=JSON.parse(query)
+        query.$and.answers={}
+        query.$and.answers.$in=ansArray
+      }
+      //Or Questions or Answers
+      else{
+        query=JSON.parse(query)
+        query.$and.$or=[]
+        query.$and.$or.push(JSON.parse(phrasesQuery))
+        query.$and.$or.answers={}
+        query.$and.$or.answers.$in=ansArray
+      }
+    }
+    console.log("Final Query :",query)
+    if(typeof query==="string"){
+      query=JSON.parse(query)
+    }
+
+    const questions = await QUESITONMODEL.find(query)
+    console.log("Query end here",query,questions)
+    return questions
+  } 
+  catch (error) {
+    console.log(
+      "There was an error in SearchService.searchUsersByName and the error is \n",
+      error
+    );
+    return null;
+  }
+
+}}

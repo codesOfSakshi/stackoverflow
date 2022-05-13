@@ -45,6 +45,7 @@ class User {
     const admin = "false";
     const reputation = 0;
     const createdAt = new Date().toISOString().slice(0, 10);
+    const profilePicture = "https://i.stack.imgur.com/1Bds0.png";
     const query = {
       name,
       email,
@@ -53,6 +54,7 @@ class User {
       admin,
       reputation,
       createdAt,
+      profilePicture,
     };
     let savedUser;
     try {
@@ -84,7 +86,7 @@ class User {
     }
   };
 
-  static getUserById = async (userId ) => {
+  static getUserById = async (userId) => {
     console.log(userId);
     try {
       let user = await UserModel.findById(mongoose.Types.ObjectId(userId));
@@ -137,7 +139,9 @@ class User {
       const query = {
         user: mongoose.Types.ObjectId(userId),
       };
-      let user = await UserModel.findById(mongoose.Types.ObjectId(userId)).populate([
+      let user = await UserModel.findById(
+        mongoose.Types.ObjectId(userId)
+      ).populate([
         "questionsAsked",
         "questionsAnswered.questionId",
         "questionsAnswered.answerId",
@@ -347,7 +351,7 @@ class User {
 
   static editUserPartially = (req) => {
     try {
-      UserModel.findOneAndUpdate(
+     UserModel.findByIdAndUpdate(
         mongoose.Types.ObjectId(req.params.userId), // query
         {
           $set: {
@@ -423,9 +427,9 @@ class User {
               questions = JSON.parse(JSON.stringify(questions));
               tagsObj.posts = questions.length;
               let tagDataObj = tags.filter((eachTag) => {
-                if(eachTagId){
+                if (eachTagId) {
                   return eachTag.name === eachTagId.toString();
-                }else{
+                } else {
                   return false;
                 }
               });
@@ -434,9 +438,9 @@ class User {
                 tagsObj.name = tagDataObj.name;
               }
               let tagUserObj = user.tagIds.filter((eachTag) => {
-                if(eachTagId){
+                if (eachTagId) {
                   return eachTag.tagId === eachTagId.toString();
-                }else{
+                } else {
                   return false;
                 }
               });
@@ -454,18 +458,24 @@ class User {
                 }
               }
               console.log(tagsObj);
-              tagsCombined.push(tagsObj);
+              if(tagsObj && !(tagsObj.score<=0 && tagsObj.posts<=0)){
+                tagsCombined.push(tagsObj);
+              }
               cb(null);
             });
           },
           function (error) {
             if (error) {
               console.log(error);
-              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
+              tagsCombined = tagsCombined.sort(function (a, b) {
+                return b.score - a.score;
+              });
               outercb(null, tagsCombined);
             } else {
               console.log(tagsCombined);
-              tagsCombined = tagsCombined.sort(function (a, b) {return b.score - a.score});
+              tagsCombined = tagsCombined.sort(function (a, b) {
+                return b.score - a.score;
+              });
               outercb(null, tagsCombined);
             }
           }
@@ -570,7 +580,7 @@ class User {
         createdat: -1,
       });
 
-      let answer =JSON.parse(JSON.stringify(res));
+      let answer = JSON.parse(JSON.stringify(res));
       if (answer) {
         return answer;
       } else {
@@ -653,7 +663,7 @@ class User {
       let questionsAnswered = userDetails.questionsAnswered;
       const questionWithScore = [];
       for (let questionAnswered of questionsAnswered) {
-        const tmp = questionAnswered.questionId
+        const tmp = questionAnswered.questionId;
         if (tmp) {
           tmp.score =
             (questionAnswered?.answerId?.upVotes?.length === undefined

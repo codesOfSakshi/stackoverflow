@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import UserAnswer from './UserAnswer'
-import axiosService from "../../services/axiosservice";
+import {axiosInstance as authapi} from '../../services/authaxiosservice';
 import {useParams} from "react-router-dom";
 function UserAnswerList() {
 
@@ -16,7 +16,7 @@ function UserAnswerList() {
     const getUser = async () => {
 
         try{
-            const response = await axiosService.get(GET_USER_API+userId);
+            const response = await authapi.get(GET_USER_API+userId);
             if(response && response.data){
                     console.log(response.data.data)
                     setAnswer(response.data.data);
@@ -35,7 +35,6 @@ function UserAnswerList() {
         <div className="ba bc-black-100 bar-md">
 
             <div id="js-post-summaries">
-
             <UserAnswer answer={answer}/>
 
 
