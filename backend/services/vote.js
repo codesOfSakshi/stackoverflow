@@ -14,45 +14,38 @@ class Vote{
         let resdownvote = null;
         let userUpdateCondition = {};
         var reputationIncrement=null;
-        // let userfindCondition = {
-        //     _id:mongoose.Types.ObjectId(voter),
-        // };
+        let userfindCondition = {
+            _id:mongoose.Types.ObjectId(voter),
+        };
+        let user= await UserModel.findOne(userfindCondition);
 
         if(type === 'question'){
-
-            var findQuestion =await QuestionModel.findById(questionId);
-            if(findQuestion){
-                let userfindCondition =  findQuestion.user
-            }
-            let reputationuser= await UserModel.findOne(userfindCondition);
-
-            console.log("user is", reputationuser)
-
             try
             {
+
                 if(voteType === 'Upvote'){
 
                     var findUpvotesCount =await UserModel.findById(voter);
                     if(findUpvotesCount.upVotesCount){
-                    console.log("inside upvotescount")
-                    var updateCon = {
-                        upVotesCount : findUpvotesCount.upVotesCount + 1
-                    }
+                        console.log("inside upvotescount")
+                        var updateCon = {
+                            upVotesCount : findUpvotesCount.upVotesCount + 1
+                        }
                     }
                     else{
-                    console.log("outside upvotescount")
-                    
-                    var updateCon = {
-                        upVotesCount : 1
-                    }
+                        console.log("outside upvotescount")
+
+                        var updateCon = {
+                            upVotesCount : 1
+                        }
                     }
                     const findCon = {
-                    _id: mongoose.Types.ObjectId(voter),
+                        _id: mongoose.Types.ObjectId(voter),
                     };
 
                     const ucountresult = await UserModel.updateOne(
-                    findCon,
-                    updateCon
+                        findCon,
+                        updateCon
                     );
 
 
@@ -116,17 +109,17 @@ class Vote{
                     let allUserDownvote1 = questionparse1.downVotes.filter((user)=>{
                         return(user);
                     })
-                    
+
                     if(userUpvote1.length === 0 && userDownvote1.length === 0){
                         updateCondition = {
                             $addToSet:{
                                 "upVotes":  voter
-                            } 
+                            }
                         }
                         allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
                         resdownvote = allUserDownvote1;
-                        reputationIncrement = reputationuser.reputation+10
+                        reputationIncrement = user.reputation+10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -142,7 +135,7 @@ class Vote{
                         allUserUpvote1.push(voter)
                         resupvote = allUserUpvote1;
                         resdownvote = removeUserDownvote1;
-                        reputationIncrement = reputationuser.reputation + 10
+                        reputationIncrement = user.reputation + 10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -153,7 +146,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote1;
                         resdownvote = allUserDownvote1;
-                        reputationIncrement = reputationuser.reputation
+                        reputationIncrement = user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -175,7 +168,7 @@ class Vote{
                         console.log("RESULT FROM QUESTION VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
                     }else{
-                        return {}; 
+                        return {};
                     }
                 }
                 else{
@@ -183,26 +176,27 @@ class Vote{
 
                     var findDownvotesCount =await UserModel.findById(voter);
                     if(findDownvotesCount.downVotesCount){
-                    console.log("inside upvotescount1")
-                    var updateCon = {
-                        downVotesCount : findDownvotesCount.downVotesCount + 1
-                    }
+                        console.log("inside upvotescount1")
+                        var updateCon = {
+                            downVotesCount : findDownvotesCount.downVotesCount + 1
+                        }
                     }
                     else{
-                    console.log("outside upvotescount1")
-                    
-                    var updateCon = {
-                        downVotesCount : 1
-                    }
+                        console.log("outside upvotescount1")
+
+                        var updateCon = {
+                            downVotesCount : 1
+                        }
                     }
                     const findCon = {
-                    _id: mongoose.Types.ObjectId(voter),
+                        _id: mongoose.Types.ObjectId(voter),
                     };
 
                     const dcountresult = await UserModel.updateOne(
-                    findCon,
-                    updateCon
+                        findCon,
+                        updateCon
                     );
+
 
 
                     const reputationResult = await ReputationHistory.insertReputationHistory({action: "DOWNVOTE_QUESTION",userId:user.id });
@@ -266,7 +260,7 @@ class Vote{
                     let allUserDownvote2 = questionparse2.downVotes.filter((user)=>{
                         return(user);
                     })
-                    
+
                     if(userDownvote2.length === 0 && userUpvote2.length === 0){
                         updateCondition = {
                             $addToSet:{
@@ -276,7 +270,7 @@ class Vote{
                         allUserDownvote2.push(voter)
                         resupvote = allUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=reputationuser.reputation-10
+                        reputationIncrement=user.reputation-10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -291,8 +285,7 @@ class Vote{
                         allUserDownvote2.push(voter)
                         resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        console.log("user in reputation is----", user, reputationuser.reputation)
-                        reputationIncrement=reputationuser.reputation-10
+                        reputationIncrement=user.reputation-10
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -303,7 +296,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -315,7 +308,7 @@ class Vote{
                         }
                         resupvote = removeUserUpvote2;
                         resdownvote = allUserDownvote2;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -325,7 +318,7 @@ class Vote{
                         _id:mongoose.Types.ObjectId(voter),
                     };
 
-                    
+
                     let represult2 = await UserModel.updateOne(userfindCondition,userUpdateCondition)
 
 
@@ -335,7 +328,7 @@ class Vote{
                         console.log("RESULT FROM QUESTION VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
                     }else{
-                        return {}; 
+                        return {};
                     }
                 }
             }
@@ -345,43 +338,32 @@ class Vote{
             }
         }
         else{
-            // var findAnswer =await AnswerModel.findById(answerId);
-            // if(findAnswer){
-            //     userfindCondition = {"_id":mongoose.Types.ObjectId(findAnswer.user)}
-            // }
-            // user = await UserModel.findOne(userfindCondition);
             try
             {
-                var findAnswer =await AnswerModel.findById(answerId);
-                if(findAnswer){
-                    let userfindCondition =  findAnswer.user
-                }
-                let reputationuser= await UserModel.findOne(userfindCondition);
-                
                 if(voteType === 'Upvote'){
 
 
                     var findUpvotesCount =await UserModel.findById(voter);
                     if(findUpvotesCount.upVotesCount){
-                    console.log("inside upvotescount")
-                    var updateCon = {
-                        upVotesCount : findUpvotesCount.upVotesCount + 1
-                    }
+                        console.log("inside upvotescount")
+                        var updateCon = {
+                            upVotesCount : findUpvotesCount.upVotesCount + 1
+                        }
                     }
                     else{
-                    console.log("outside upvotescount")
-                    
-                    var updateCon = {
-                        upVotesCount : 1
-                    }
+                        console.log("outside upvotescount")
+
+                        var updateCon = {
+                            upVotesCount : 1
+                        }
                     }
                     const findCon = {
-                    _id: mongoose.Types.ObjectId(voter),
+                        _id: mongoose.Types.ObjectId(voter),
                     };
 
                     const ucountresult = await UserModel.updateOne(
-                    findCon,
-                    updateCon
+                        findCon,
+                        updateCon
                     );
 
 
@@ -393,7 +375,7 @@ class Vote{
                     let findCondition = {
                         _id:mongoose.Types.ObjectId(answerId),
                     };
-                    
+
                     let getanswer1= await AnswerModel.findOne(findCondition);
                     let answerparse1 = JSON.parse(JSON.stringify(getanswer1))
                     console.log("hgkvds", answerparse1)
@@ -420,7 +402,7 @@ class Vote{
                         return(user);
                     })
 
-                    
+
                     if(userUpvote3.length === 0 && userDownvote3.length === 0){
                         updateCondition = {
                             $addToSet:{ "upVotes": voter}
@@ -428,7 +410,7 @@ class Vote{
                         allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
                         resdownvote = allUserDownvote3;
-                        reputationIncrement=reputationuser.reputation+5
+                        reputationIncrement=user.reputation+5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -443,7 +425,7 @@ class Vote{
                         allUserUpvote3.push(voter)
                         resupvote = allUserUpvote3;
                         resdownvote = removeUserDownvote3;
-                        reputationIncrement=reputationuser.reputation+5
+                        reputationIncrement=user.reputation+5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -455,7 +437,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote3;
                         resdownvote = allUserDownvote3;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -467,17 +449,17 @@ class Vote{
                         }
                         resupvote = allUserUpvote3;
                         resdownvote = removeUserDownvote3;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
                     }
 
-                     let userfindCondition = {
+                    let userfindCondition = {
                         _id:mongoose.Types.ObjectId(voter),
                     };
 
-                
+
                     let represult3 = await UserModel.updateOne(userfindCondition,userUpdateCondition)
 
 
@@ -487,32 +469,32 @@ class Vote{
                         console.log("RESULT FROM ANSWER VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
                     }else{
-                        return {}; 
+                        return {};
                     }
                 }
                 else{
 
                     var findDownvotesCount =await UserModel.findById(voter);
                     if(findDownvotesCount.downVotesCount){
-                    console.log("inside upvotescount1")
-                    var updateCon = {
-                        downVotesCount : findDownvotesCount.downVotesCount + 1
-                    }
+                        console.log("inside upvotescount1")
+                        var updateCon = {
+                            downVotesCount : findDownvotesCount.downVotesCount + 1
+                        }
                     }
                     else{
-                    console.log("outside upvotescount1")
-                    
-                    var updateCon = {
-                        downVotesCount : 1
-                    }
+                        console.log("outside upvotescount1")
+
+                        var updateCon = {
+                            downVotesCount : 1
+                        }
                     }
                     const findCon = {
-                    _id: mongoose.Types.ObjectId(voter),
+                        _id: mongoose.Types.ObjectId(voter),
                     };
 
                     const dcountresult = await UserModel.updateOne(
-                    findCon,
-                    updateCon
+                        findCon,
+                        updateCon
                     );
 
 
@@ -548,7 +530,7 @@ class Vote{
                     let allUserUpvote4 = answerparse2.upVotes.filter((user)=>{
                         return(user);
                     })
-                    
+
                     if(userDownvote4.length === 0 && userUpvote4.length === 0){
                         updateCondition = {
                             $addToSet:{
@@ -558,7 +540,7 @@ class Vote{
                         allUserDownvote4.push(voter)
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=reputationuser.reputation-5
+                        reputationIncrement=user.reputation-5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -573,7 +555,7 @@ class Vote{
                         allUserDownvote4.push(voter)
                         resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=reputationuser.reputation-5
+                        reputationIncrement=user.reputation-5
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -584,7 +566,7 @@ class Vote{
                         }
                         resupvote = allUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -596,7 +578,7 @@ class Vote{
                         }
                         resupvote = removeUserUpvote4;
                         resdownvote = allUserDownvote4 ;
-                        reputationIncrement=reputationuser.reputation
+                        reputationIncrement=user.reputation
                         userUpdateCondition = {
                             "reputation":  reputationIncrement,
                         }
@@ -607,7 +589,7 @@ class Vote{
                         _id:mongoose.Types.ObjectId(voter),
                     };
 
-                    
+
                     let represult4 = await UserModel.updateOne(userfindCondition,userUpdateCondition)
 
 
@@ -617,7 +599,7 @@ class Vote{
                         console.log("RESULT FROM ANSWER VOTE IS", result);
                         return ({"result":result , "Upvotes" : resupvote, "Downvotes" : resdownvote});
                     }else{
-                        return {}; 
+                        return {};
                     }
                 }
             }
