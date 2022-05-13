@@ -166,6 +166,7 @@ exports.findBadge = async(reqBody, result) => {
         const questionObj = {};
         questionObj.questionIds = questions;
         const views = await Question.getScoreById(questionObj);
+        console.log("views--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>")
         console.log(views)
         const tags = user.tagIds;
 
