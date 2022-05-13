@@ -28,7 +28,7 @@ router.post("/getAllProducts", async (req, res) => {
         key+="2";
       }else if(req.body.type == "Score" || req.body.type == 3){
         key+="3";
-      }else if(type == "Unanswered" || type == 4){
+      }else if(req.body.type == "Unanswered" || req.body.type == 4){
         key+="4";
       }
           redisClient.set(key,JSON.stringify(results));

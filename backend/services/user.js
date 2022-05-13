@@ -163,7 +163,7 @@ class User {
     }
   };
 
-  static getUserQuestionById = async ({ userId }) => {
+  static getUserQuestionById = async ({ userId }, outercb) => {
     try {
       const query = {
         user: mongoose.Types.ObjectId(userId),
@@ -178,39 +178,48 @@ class User {
         (responses) => responses.status === "APPROVED"
       );
       console.log(user, "user");
-      response.map((responses) => {
-        console.log("responses------------------------>>>>>>>>>>");
-        console.log(responses.upVotes);
-        console.log(responses.downVotes);
-        let up = responses.upVotes === undefined ? 0 : responses.upVotes.length;
-        let down =
-          responses.downVotes === undefined ? 0 : responses.downVotes.length;
-        console.log(up);
-        console.log(down);
-        responses["score"] = up - down;
-        let bestans = responses.bestAns
-        if(bestans) {
-           let answer=  AnswerModel.findById(mongoose.Types.ObjectId(bestans))
-           answer =JSON.parse(JSON.stringify(answer));
-           if(answer.user===userId)
-             responses["best"] = true;
-           else
-             responses["best"] = false;
-        }
-        else
-        {
-          responses["best"] = false;
-        }
-
-      });
-
-      response = JSON.parse(JSON.stringify(response));
-
-      if (response) {
-        return response;
-      } else {
-        return [];
-      }
+       var result= []
+       async.each(
+           response,
+           (responses,cb)=>{
+             let up = responses.upVotes === undefined ? 0 : responses.upVotes.length;
+             let down =
+                 responses.downVotes === undefined ? 0 : responses.downVotes.length;
+             console.log(up);
+             console.log(down);
+             responses["score"] = up - down;
+             let bestans = responses.bestAns
+             AnswerModel.findById(bestans).then((answer)=>{
+               if(answer && answer.user)
+               {
+                 answer = JSON.parse(JSON.stringify(answer));
+                 if (answer.user === userId) {
+                   responses["best"] = true;
+                   console.log(responses.best)
+                 } else
+                   responses["best"] = false;
+               }
+               else
+               {
+                 responses["best"] = false;
+               }
+               result.push(responses)
+               cb(null);
+             });
+           },
+           function(error){
+             if(error){
+                outercb(error);
+             }else{
+               response = JSON.parse(JSON.stringify(result));
+               if (response) {
+                 outercb(null,response);
+               } else {
+                 outercb(null,[]);
+               }
+             }
+           }
+       )
     } catch (err) {
       console.log(err);
       throw new Error(

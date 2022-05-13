@@ -22,16 +22,16 @@ const questioner = async (req, res) => {
           questions = await Questions.find(query)
           .populate("user")
           .sort({
-            createdAt: sorting,
+            createdAt: -1
           });
         } else if (type == "Hot" || type == 2) {
           questions = await Questions.find(query)
           .populate("user")
-          .sort({ views: sorting });
+          .sort({ views: -1 });
         } else if (type == "Score" || type == 3) {
           questions = await Questions.find(query)
           .populate("user")
-          .sort({ answers: sorting });
+          .sort({ upVotes : -1 });
         } else if (type == "Unanswered" || type == 4) {
           questions = await Questions.find({
             answers: { $size: 0 },
