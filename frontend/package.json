@@ -46,7 +46,7 @@
     "server": "nodemon ../backend/server.js",
     "client": "npm start",
     "kafka": "nodemon ../kafka-server/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run kafka\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [
