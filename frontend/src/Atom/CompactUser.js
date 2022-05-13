@@ -9,7 +9,7 @@ function CompactUser({ name, profilePic, reputation, location, _id }) {
     profilePic != null
       ? profilePic
       : `https://www.gravatar.com/avatar/4e0c20b401183f5646ae297c943f5da4?s=96&amp;d=identicon&amp;r=PG&amp;f=1`;
-  reputation = reputation != null ? reputation : 100;
+  reputation = reputation != null ? reputation : 0;
   name = name != null ? name : "Default name";
   location = location != null ? location : "San Jose, CA";
   const USERURL = `/user/${_id}`;

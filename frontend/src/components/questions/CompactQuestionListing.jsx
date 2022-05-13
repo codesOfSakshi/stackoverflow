@@ -25,7 +25,7 @@ function CompactQuestionListing({searchResult, questions}) {
     // const [questionsAll, setlmain] = useState([]);
     // const [state, setstate] = useState(1);
     const [headerMessage, setHeaderMessage] = useState("");
-    const [numOfQuestions, setNumOfQuestions] = useState(-1);
+    const [numOfQuestions, setNumOfQuestions] = useState(0);
     const routeQuestion = () =>{
       navigate(`/askquestion`)
     }
@@ -83,6 +83,22 @@ function CompactQuestionListing({searchResult, questions}) {
       setlmain(response.data.data)
  })
   }
+
+  const repopulatefilter=(e,num)=>{
+    e.preventDefault()
+    if(num==1){
+      var qes = [...questionsAll]
+      qes.sort((a,b)=>(a.upVotes.length>b.upVotes.length)?-1:1)
+      setlmain(qes)
+      console.log("Filtering on upVotes=========")
+    }
+    else{
+      var qes = [...questionsAll]
+      qes.sort((a,b)=>(a.views>b.views)?-1:1)
+      setlmain(qes)
+      console.log("Filtering views=========")
+    }
+ }
   return (
     <div>
         <div style={{ width: '60rem',textAlign:'left' }}>
@@ -97,12 +113,17 @@ function CompactQuestionListing({searchResult, questions}) {
             </h4>
             </Col>
             <Col>
-            <div className="s-btn-group" style={{"float":"right"}}>
-                <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulate(e,1)}>Interesting</button>
+            {searchResult?
+            (<div className="s-btn-group" style={{"float":"right"}}>
+                <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulatefilter(e,1)}>Votes</button>
+                <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulatefilter(e,2)}>Views</button>
+            </div>):
+            (<div className="s-btn-group" style={{"float":"right"}}>
+                <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulate(e,1)}>Intresting</button>
                 <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulate(e,2)}>Hot</button>
                 <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulate(e,3)}>Scored</button>
                 <button className="s-btn s-btn__muted s-btn__outlined" role="button" onClick={e=>repopulate(e,4)}>Unanswered</button>
-            </div>
+            </div>)}
             </Col>
             </Row>
             {/* {console.log("@@@##@#@# QUE ALL:",questionsAll)} */}

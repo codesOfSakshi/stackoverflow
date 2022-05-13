@@ -333,7 +333,7 @@ module.exports = class SearchService {
         query.name = { $regex: `^${name}`, $options: "i" };
       }
 
-      const users = await USERMODEL.find(query);
+      const users = await USERMODEL.find(query).sort({reputation:-1});
       if (users) {
         return users;
       } else {
