@@ -18,13 +18,13 @@ export default function UserQuestion({question}) {
                     <span className="s-post-summary--stats-item-number">{que.score}</span>
                     <span className="s-post-summary--stats-item-unit">vote</span>
                 </div>
-                {que.bestAns===undefined&&
+                {que.best===false&&
                 <div className="s-post-summary--stats-item has-answers " title="1 answer">
 
                     <span className="s-post-summary--stats-item-number">{que.answers.length}</span>
                     <span className="s-post-summary--stats-item-unit">answer</span>
                 </div>}
-                {que.bestAns&&
+                {que.best===true&&
                     <div className="s-post-summary--stats-item has-answers has-accepted-answer"
                          title="one of the answers was accepted as the correct answer">
                         <svg aria-hidden="true" className="svg-icon iconCheckmarkSm" width="14" height="14"
