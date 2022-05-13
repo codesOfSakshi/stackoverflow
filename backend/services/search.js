@@ -495,7 +495,7 @@ module.exports = class SearchService {
       var phrasesQuery={}
       phrasesQuery.$and=[]
       for (var i=0;i<parsedData.phrases.length;i++){
-        phrasesQuery.$and.push({description:new RegExp(parsedData.phrases[i])})
+        phrasesQuery.$and.push({description:new RegExp(parsedData.phrases[i],"i")})
       }
 
       //Only questions
@@ -509,7 +509,7 @@ module.exports = class SearchService {
           var answerPhraseQuery={}
           answerPhraseQuery.$and=[]
           for (var i=0;i<parsedData.phrases.length;i++){
-            answerPhraseQuery.$and.push({description:new RegExp(parsedData.phrases[i])})
+            answerPhraseQuery.$and.push({description:new RegExp(parsedData.phrases[i],"i")})
           }
           console.log("Query running in answers model : ",answerPhraseQuery)
           const answersList = await ANSWERMODEL.find(answerPhraseQuery).distinct('_id')
