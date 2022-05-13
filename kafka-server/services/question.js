@@ -33,8 +33,9 @@ const questioner = async (req, res) => {
           .populate("user")
           .sort({ answers: sorting });
         } else if (type == "Unanswered" || type == 4) {
-          questions = await Questions.find(query, {
+          questions = await Questions.find({
             answers: { $size: 0 },
+            status: "APPROVED"
           })
           .populate("user")
           .sort({ score: 1 });
