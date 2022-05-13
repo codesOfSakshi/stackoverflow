@@ -229,11 +229,11 @@ class Question {
           }else{
             key = "-14" // descending & unanswered
           }
-          
-          
+          questions = await redisClient.get(key);
           if(questions && questions.length){
             console.log("Questions fetched from redis");
             // console.log(questions);
+            return JSON.parse(questions);
           }
       }
       return questions;

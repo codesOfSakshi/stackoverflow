@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const kafka = require("../kafka/client");
 const { Question } = require("../services/question");
+const redisClient = require('../services/redisservice.js');
 
 const topicName = "question_topic";
 
@@ -15,7 +16,22 @@ router.post("/getAllProducts", async (req, res) => {
     msg.params = req.params
     msg.body = req.body;
     kafka.make_request(topicName, msg, (err, results) => {
-        // redisClient.set(key,JSON.stringify(questions));
+      let key = "";
+      if (req.body.sortType == "desc" || req.body.sortType == -1) {
+        key = "-1";
+      }else{
+        key = "1";
+      }
+      if(req.body.type == "Interesting" || req.body.type == 1){
+        key+="1";
+      }else if(req.body.type == "Hot" || req.body.type == 2){
+        key+="2";
+      }else if(req.body.type == "Score" || req.body.type == 3){
+        key+="3";
+      }else if(type == "Unanswered" || type == 4){
+        key+="4";
+      }
+          redisClient.set(key,JSON.stringify(results));
           if(err){ 
           console.log(e);
           response.success = false;
@@ -30,7 +46,13 @@ router.post("/getAllProducts", async (req, res) => {
           response.status = 200;
           res.status(200).send(response);
           }
-  });}
+  });}else{
+    var response={};
+    response.success = true;
+    response.data = questions;
+    response.status = 200;
+    res.status(200).send(response);
+  }
 })
 
   // try{
